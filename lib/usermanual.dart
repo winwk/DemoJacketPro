@@ -73,7 +73,7 @@ class _userManState extends State<userMan> {
                   fontFamily: "MPLUSRounded1c"),
             ),
             Text(
-              "เพราะจะมีการแจ้งเตือนให้ผู้ใช้ทราบตลอดเวลา 5555555",
+              "เพราะจะมีการแจ้งเตือนให้ผู้ใช้ทราบตลอดเวลา 5555555 เจษเด็กเหี้ย",
               style: TextStyle(
                   fontSize: 14.0,
                   color: Colors.white,
