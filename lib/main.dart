@@ -5,5 +5,5 @@ void main() {
   runApp(userMan());
 }
 
-//สร้างเอง เทสล่าสุด เนมเทส
+//eiei
 
