@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jackket/usermanual.dart';
-
+import 'register.dart';
 class home extends StatefulWidget {
   @override
   _homeState createState() => _homeState();
@@ -107,7 +107,7 @@ class _homeState extends State<home> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),
           onPressed: () {
-            Navigator.pushNamed(context, userMan.route);
+            Navigator.pushNamed(context, Register_Screen.route);
           }),
     );
   }
@@ -129,6 +129,7 @@ class _homeState extends State<home> {
             ),
           )
       ),
+      
     );
   }
 }
