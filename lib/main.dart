@@ -3,8 +3,15 @@ import 'package:jackket/home.dart';
 import 'usermanual.dart';
 
 void main() {
-  runApp(home());
+  runApp(MyApp());
 }
 
-//คือหยังว้ะ
-
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: home(),
+      routes: {userMan.route: (context) => userMan()},
+    );
+  }
+}

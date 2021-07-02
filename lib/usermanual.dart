@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import "home.dart";
+import 'home.dart';
+
 class userMan extends StatefulWidget {
+
+  static String route = "user";
+
   @override
   _userManState createState() => _userManState();
 }
@@ -71,7 +75,7 @@ class _userManState extends State<userMan> {
                 fontFamily: "MPLUSRounded1c"),
           ),
           Text(
-            "เพราะจะมีการแจ้งเตือนให้ผู้ใช้ทราบตลอดเวลา 5555555 เจษและวีนเด็กเหี้ย",
+            "เพราะจะมีการแจ้งเตือนให้ผู้ใช้ทราบตลอดเวลา",
             style: TextStyle(
                 fontSize: 14.0,
                 color: Colors.white,
