@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Register_Screen extends StatefulWidget {
+  
   static String route = "register_SC";
 
   @override

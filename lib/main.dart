@@ -4,8 +4,17 @@ import 'package:jackket/manual.dart';
 import 'package:jackket/register.dart';
 
 void main() {
-  runApp(home());
+  runApp(MyApp());
 }
 
-//สร้างเอง เทสล่าสุด เนมเทส
-
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: home(),
+      routes: {
+        Register_Screen.route: (context) => Register_Screen()
+      },
+    );
+  }
+}
