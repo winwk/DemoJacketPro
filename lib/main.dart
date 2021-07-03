@@ -4,7 +4,7 @@ import 'package:jackket/manual.dart';
 import 'package:jackket/register.dart';
 
 void main() {
-  runApp(Register_Screen());
+  runApp(home());
 }
 
 //สร้างเอง เทสล่าสุด เนมเทส
