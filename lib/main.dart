@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:jackket/home.dart';
-import 'usermanual.dart';
+import 'package:jackket/manual.dart';
+
 
 void main() {
-  runApp(home());
+  runApp(MyApp());
 }
 
-//คือหยังว้ะ
+//สร้างเอง เทสล่าสุด เนมเทส
 
