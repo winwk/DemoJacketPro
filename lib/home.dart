@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:jackket/usermanual.dart';
+
 import 'register.dart';
+
 class home extends StatefulWidget {
   @override
   _homeState createState() => _homeState();
 }
-
 
 class _homeState extends State<home> {
   Widget showTextLogo() {
@@ -127,9 +127,7 @@ class _homeState extends State<home> {
                 showButton()
               ],
             ),
-          )
-      ),
-      
+          )),
     );
   }
 }
