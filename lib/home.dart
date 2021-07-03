@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:jackket/usermanual.dart';
+import 'register.dart';
 class home extends StatefulWidget {
   @override
   _homeState createState() => _homeState();
 }
+
 
 class _homeState extends State<home> {
   Widget showTextLogo() {
@@ -49,7 +51,7 @@ class _homeState extends State<home> {
     return Image.asset(
       "assets/login1.png",
       width: 300,
-      height: 400,
+      height: 300,
     );
   }
 
@@ -92,20 +94,21 @@ class _homeState extends State<home> {
       width: 300,
       height: 50,
       child: RaisedButton(
-        child: Text(
-          "ลงทะเบียน",
-          style: TextStyle(
-            fontFamily: "MPLUSRounded1c",
-            color: Color(0xFF707070),
-            fontSize: 20.0,
-            fontWeight: FontWeight.bold,
+          child: Text(
+            "ลงทะเบียน",
+            style: TextStyle(
+              fontFamily: "MPLUSRounded1c",
+              color: Color(0xFF707070),
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        color: Color(0xFFE5EFC1),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30))),
-        onPressed: () {},
-      ),
+          color: Color(0xFFE5EFC1),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+          onPressed: () {
+            Navigator.pushNamed(context, Register_Screen.route);
+          }),
     );
   }
 
@@ -124,7 +127,9 @@ class _homeState extends State<home> {
                 showButton()
               ],
             ),
-          )),
+          )
+      ),
+      
     );
   }
 }
