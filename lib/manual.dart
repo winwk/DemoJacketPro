@@ -253,9 +253,12 @@ class MyPage3Widget extends StatelessWidget{
   }
 }
 
-class MyPage4Widget extends StatelessWidget{
+class MyPage4Widget extends StatefulWidget{
   @override
-  Widget showLogo4() {
+  _MyPage4WidgetState createState() => _MyPage4WidgetState();
+}
+class _MyPage4WidgetState extends State<MyPage4Widget> {
+   Widget showLogo4() {
        return Container(
         margin: EdgeInsets.only(top: 100),
         child: Image.asset("assets/logo4.png",
@@ -301,5 +304,5 @@ class MyPage4Widget extends StatelessWidget{
       ),
     );
   }
+  }
 
-}
