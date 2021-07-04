@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
 
+  
 class home extends StatefulWidget {
-
-  static String route = "home_SC";
+  static String route = "home";
   @override
   _homeState createState() => _homeState();
 }
@@ -109,6 +109,7 @@ class _homeState extends State<home> {
               borderRadius: BorderRadius.all(Radius.circular(30))),
           onPressed: () {
             Navigator.pushNamed(context, Register_Screen.route);
+            
           }),
     );
   }

@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Manual(),
       routes: {
+        home.route: (context) => home(),
         Register_Screen.route: (context) => Register_Screen()
       },
     );

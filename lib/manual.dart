@@ -1,5 +1,9 @@
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'home.dart';
+import 'register.dart';
+
 class Manual extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,7 +25,6 @@ class PageViewDemo extends StatefulWidget {
 }
 
 class _PageViewDemoState extends State<PageViewDemo> {
-
   PageController _controller = PageController(
     initialPage: 0,
   );
@@ -41,7 +44,6 @@ class _PageViewDemoState extends State<PageViewDemo> {
         MyPage2Widget(),
         MyPage3Widget(),
         MyPage4Widget(),
-        
       ],
     );
   }
@@ -64,11 +66,13 @@ class MyPage1Widget extends StatelessWidget {
       ),
     );
   }
+
   Widget showLogo() {
     return Container(
         margin: EdgeInsets.only(top: 50),
         child: Image.asset("assets/logo.png"));
   }
+
   Widget showTextLogo2() {
     return Container(
       margin: EdgeInsets.zero,
@@ -129,6 +133,7 @@ class MyPage1Widget extends StatelessWidget {
       ),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -150,19 +155,22 @@ class MyPage1Widget extends StatelessWidget {
 class MyPage2Widget extends StatelessWidget {
   @override
   Widget showLogo2() {
-       return Container(
+    return Container(
         margin: EdgeInsets.only(top: 100),
-        child: Image.asset("assets/logo2.png",
-        width: 400,
-        height: 500,));
+        child: Image.asset(
+          "assets/logo2.png",
+          width: 400,
+          height: 500,
+        ));
   }
+
   Widget showText() {
     return Container(
       margin: EdgeInsets.only(top: 20),
       alignment: Alignment.topCenter,
       child: Column(
         children: [
-        Text(
+          Text(
             "แสดงตำแหน่งของผู้ที่สวมใส่แจ็คเก็ต",
             style: TextStyle(
                 fontSize: 18.0,
@@ -186,7 +194,8 @@ class MyPage2Widget extends StatelessWidget {
         ],
       ),
     );
-  } 
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -203,23 +212,25 @@ class MyPage2Widget extends StatelessWidget {
   }
 }
 
-class MyPage3Widget extends StatelessWidget{
+class MyPage3Widget extends StatelessWidget {
   @override
   Widget showLogo3() {
-       return Container(
+    return Container(
         margin: EdgeInsets.only(top: 100),
-        child: Image.asset("assets/logo3.png",
-        width: 400,
-        height: 500,));
-    
+        child: Image.asset(
+          "assets/logo3.png",
+          width: 400,
+          height: 500,
+        ));
   }
+
   Widget showText() {
     return Container(
       margin: EdgeInsets.only(top: 20),
       alignment: Alignment.topCenter,
       child: Column(
         children: [
-        Text(
+          Text(
             "สามารถเพิ่มและจัดการแก้ไข",
             style: TextStyle(
                 fontSize: 18.0,
@@ -236,7 +247,8 @@ class MyPage3Widget extends StatelessWidget{
         ],
       ),
     );
-  } 
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -261,18 +273,20 @@ class _MyPage4WidgetState extends State<MyPage4Widget> {
    Widget showLogo4() {
        return Container(
         margin: EdgeInsets.only(top: 100),
-        child: Image.asset("assets/logo4.png",
-        width: 400,
-        height: 500,));
-    
+        child: Image.asset(
+          "assets/logo4.png",
+          width: 400,
+          height: 500,
+        ));
   }
+
   Widget showText() {
     return Container(
       margin: EdgeInsets.only(top: 20),
       alignment: Alignment.topCenter,
       child: Column(
         children: [
-        Text(
+          Text(
             "จัดการและแก้ไขข้อมูลบัญชีของผู้ดูแล",
             style: TextStyle(
                 fontSize: 18.0,
@@ -289,7 +303,16 @@ class _MyPage4WidgetState extends State<MyPage4Widget> {
         ],
       ),
     );
-  } 
+  }
+
+  Widget nextButton(){
+    return ElevatedButton(
+      onPressed: (){
+        Navigator.pushNamed(context, home.route);
+      }, child: Text("เริ่มต้นการใช้งาน")
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -299,6 +322,7 @@ class _MyPage4WidgetState extends State<MyPage4Widget> {
           children: [
             showLogo4(),
             showText(),
+            nextButton()
           ],
         ),
       ),

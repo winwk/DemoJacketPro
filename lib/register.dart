@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jackket/home.dart';
 
 class Register_Screen extends StatefulWidget {
-  
-  static String route = "register_SC";
-
+  static String route = "register";
   @override
   _Register_ScreenState createState() => _Register_ScreenState();
 }
@@ -38,6 +37,12 @@ class _Register_ScreenState extends State<Register_Screen> {
                   fontSize: 45.0,
                   fontWeight: FontWeight.bold),
             ),
+          ),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(30.0),
+          child: Column(
+            children: [],
           ),
         ),
       ),
