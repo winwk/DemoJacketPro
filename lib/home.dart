@@ -106,10 +106,11 @@ class _homeState extends State<home> {
           color: Color(0xFFE5EFC1),
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),
-          onPressed: () {
-            Navigator.pushNamed(context, Register_Screen.route);
-            
-          }),
+          onPressed: (){
+        Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Register_Screen()),);
+      }),
     );
   }
 
