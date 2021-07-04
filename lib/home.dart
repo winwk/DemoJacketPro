@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
-
-  
+import 'manual.dart';
 class home extends StatefulWidget {
-  static String route = "home";
+  static String route = "home_SC";
   @override
   _homeState createState() => _homeState();
 }

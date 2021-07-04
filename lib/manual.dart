@@ -5,6 +5,8 @@ import 'home.dart';
 import 'register.dart';
 
 class Manual extends StatelessWidget {
+
+  static String route = "manual_SC";
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -320,9 +322,7 @@ class _MyPage4WidgetState extends State<MyPage4Widget> {
   Widget nextButton(){
     return ElevatedButton(
       onPressed: (){
-        Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => home()),);
+        Navigator.pushNamed(context, home.route);
       }, child: Text("เริ่มต้นการใช้งาน")
     );
   }
