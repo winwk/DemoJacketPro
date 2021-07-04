@@ -49,7 +49,11 @@ class _PageViewDemoState extends State<PageViewDemo> {
   }
 }
 
-class MyPage1Widget extends StatelessWidget {
+class MyPage1Widget extends StatefulWidget{
+  @override
+  _MyPage1WidgetState createState() => _MyPage1WidgetState();
+}
+class _MyPage1WidgetState extends State<MyPage1Widget> {
   @override
   Widget showTextLogo() {
     return Container(
@@ -152,7 +156,11 @@ class MyPage1Widget extends StatelessWidget {
   }
 }
 
-class MyPage2Widget extends StatelessWidget {
+class MyPage2Widget extends StatefulWidget{
+  @override
+  _MyPage2WidgetState createState() => _MyPage2WidgetState();
+}
+class _MyPage2WidgetState extends State<MyPage2Widget> {
   @override
   Widget showLogo2() {
     return Container(
@@ -212,7 +220,11 @@ class MyPage2Widget extends StatelessWidget {
   }
 }
 
-class MyPage3Widget extends StatelessWidget {
+class MyPage3Widget extends StatefulWidget{
+  @override
+  _MyPage3WidgetState createState() => _MyPage3WidgetState();
+}
+class _MyPage3WidgetState extends State<MyPage3Widget> {
   @override
   Widget showLogo3() {
     return Container(
@@ -308,7 +320,9 @@ class _MyPage4WidgetState extends State<MyPage4Widget> {
   Widget nextButton(){
     return ElevatedButton(
       onPressed: (){
-        Navigator.pushNamed(context, home.route);
+        Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => home()),);
       }, child: Text("เริ่มต้นการใช้งาน")
     );
   }
