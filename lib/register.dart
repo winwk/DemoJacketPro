@@ -38,7 +38,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                       ))),
               validator: (String? value) {
                 if (value == null || value.trim().length == 0) {
-                  return "กรุณาระบบข้อมูล";
+                  return "กรุณาระบุข้อมูล";
                 }
                 return null;
               },
@@ -71,7 +71,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                       ))),
               validator: (String? value) {
                 if (value == null || value.trim().length == 0) {
-                  return "กรุณาระบบข้อมูล";
+                  return "กรุณาระบุข้อมูล";
                 }
                 if (!RegExp(
                         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
@@ -107,7 +107,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                       ))),
               validator: (String? value) {
                 if (value == null || value.trim().length == 0) {
-                  return "กรุณาระบบข้อมูล";
+                  return "กรุณาระบุข้อมูล";
                 }
                 if (value.length <= 6) {
                   return "รหัสผ่านไม่ควรน้อยกว่า 6 ตัวอักษร";
