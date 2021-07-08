@@ -14,7 +14,6 @@ class MyApp extends StatelessWidget {
       home: Manual(),
       routes: {
         Register_Screen.route: (context) => Register_Screen(),
-        
       },
     );
   }

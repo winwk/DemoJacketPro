@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:form_field_validator/form_field_validator.dart';
 import 'package:jackket/home.dart';
 
 class Register_Screen extends StatefulWidget {
   static String route = "register";
+
   @override
   _Register_ScreenState createState() => _Register_ScreenState();
 }
 
 class _Register_ScreenState extends State<Register_Screen> {
-  String password = "";
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  validator() {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      print("validate");
+    } else {
+      print("not validate");
+    }
+  }
 
-  Widget nametext() {
+  Widget buildUserName() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
@@ -18,7 +27,7 @@ class _Register_ScreenState extends State<Register_Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
+            TextFormField(
               decoration: InputDecoration(
                   icon: Icon(Icons.face),
                   labelText: "ชื่อ",
@@ -27,6 +36,12 @@ class _Register_ScreenState extends State<Register_Screen> {
                       borderSide: BorderSide(
                         color: Colors.white,
                       ))),
+              validator: (String? value) {
+                if (value == null || value.trim().length == 0) {
+                  return "กรุณาระบบข้อมูล";
+                }
+                return null;
+              },
             )
           ],
         ),
@@ -34,7 +49,7 @@ class _Register_ScreenState extends State<Register_Screen> {
     );
   }
 
-  Widget emailtext() {
+  Widget buildEmail() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
@@ -42,7 +57,7 @@ class _Register_ScreenState extends State<Register_Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
+            TextFormField(
               keyboardType: TextInputType.emailAddress,
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
@@ -54,6 +69,17 @@ class _Register_ScreenState extends State<Register_Screen> {
                       borderSide: BorderSide(
                         color: Colors.white,
                       ))),
+              validator: (String? value) {
+                if (value == null || value.trim().length == 0) {
+                  return "กรุณาระบบข้อมูล";
+                }
+                if (!RegExp(
+                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                    .hasMatch(value)) {
+                  return "กรุรากรอกอีเมลให้ถูกต้อง";
+                }
+                return null;
+              },
             )
           ],
         ),
@@ -61,7 +87,7 @@ class _Register_ScreenState extends State<Register_Screen> {
     );
   }
 
-  Widget buildpassword() {
+  Widget buildPassword() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
@@ -69,7 +95,7 @@ class _Register_ScreenState extends State<Register_Screen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextField(
+            TextFormField(
               decoration: InputDecoration(
                   icon: Icon(Icons.password_rounded),
                   hintText: "กรอหรหัสผ่านของคุณ...",
@@ -79,6 +105,15 @@ class _Register_ScreenState extends State<Register_Screen> {
                       borderSide: BorderSide(
                         color: Colors.white,
                       ))),
+              validator: (String? value) {
+                if (value == null || value.trim().length == 0) {
+                  return "กรุณาระบบข้อมูล";
+                }
+                if (value.length <= 6) {
+                  return "รหัสผ่านไม่ควรน้อยกว่า 6 ตัวอักษร";
+                }
+                return null;
+              },
             )
           ],
         ),
@@ -86,27 +121,21 @@ class _Register_ScreenState extends State<Register_Screen> {
     );
   }
 
-  Widget NextButton2() {
+  Widget regisButton2() {
     return SizedBox(
-      width: 300,
-      height: 50,
-      child: RaisedButton(
-          child: Text(
-            "ลงทะเบียน",
-            style: TextStyle(
-              fontFamily: "MPLUSRounded1c",
-              color: Color(0xFF707070),
-              fontSize: 20.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          color: Color(0xFFE5EFC1),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30))),
+        width: 300,
+        height: 50,
+        child: ElevatedButton(
           onPressed: () {
-            
-          }),
-    );
+            validator();
+          },
+          child: Text("ลงทะเบียน",
+              style: TextStyle(
+                  fontFamily: "MPLUSRounded1c",
+                  color: Color(0xFF707070),
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold)),
+        ));
   }
 
   @override
@@ -142,22 +171,27 @@ class _Register_ScreenState extends State<Register_Screen> {
         ),
         body: Padding(
           padding: const EdgeInsets.all(30.0),
-          child: Column(
-            children: [
-              nametext(),
-              SizedBox(
-                height: 20.0,
+          child: Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  buildUserName(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  buildEmail(),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  buildPassword(),
+                  SizedBox(
+                    height: 50.0,
+                  ),
+                  regisButton2()
+                ],
               ),
-              emailtext(),
-              SizedBox(
-                height: 20.0,
-              ),
-              buildpassword(),
-              SizedBox(
-                height: 50.0,
-              ),
-              NextButton2()
-            ],
+            ),
           ),
         ),
       ),
