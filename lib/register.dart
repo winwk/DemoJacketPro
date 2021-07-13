@@ -1,8 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:jackket/home.dart';
-import 'package:jackket/signin.dart';
+import 'package:jackket/login.dart';
 
 class Register_Screen extends StatefulWidget {
   static String route = "register";
@@ -16,10 +15,10 @@ class _Register_ScreenState extends State<Register_Screen> {
   validator() {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       print("validate");
-       Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => signin_Screen()),
-            );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => signin_Screen()),
+      );
     } else {
       print("not validate");
     }
@@ -133,9 +132,7 @@ class _Register_ScreenState extends State<Register_Screen> {
         height: 50,
         child: ElevatedButton(
           onPressed: () {
-            
             validator();
-            
           },
           child: Text(
             "ลงทะเบียน",
