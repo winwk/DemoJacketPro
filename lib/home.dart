@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'register.dart';
 import 'manual.dart';
+
 class home extends StatefulWidget {
   static String route = "home_SC";
   @override
@@ -71,7 +72,7 @@ class _homeState extends State<home> {
     return SizedBox(
       width: 300,
       height: 50,
-      child: RaisedButton(
+      child: ElevatedButton(
         child: Text(
           "เข้าสู่ระบบ",
           style: TextStyle(
@@ -81,9 +82,11 @@ class _homeState extends State<home> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        color: Color(0xFFE5EFC1),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30))),
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xFFE5EFC1),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+        ),
         onPressed: () {},
       ),
     );
@@ -93,7 +96,7 @@ class _homeState extends State<home> {
     return SizedBox(
       width: 300,
       height: 50,
-      child: RaisedButton(
+      child: ElevatedButton(
           child: Text(
             "ลงทะเบียน",
             style: TextStyle(
@@ -103,14 +106,17 @@ class _homeState extends State<home> {
               fontWeight: FontWeight.bold,
             ),
           ),
-          color: Color(0xFFE5EFC1),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-          onPressed: (){
-        Navigator.push(
+          style: ElevatedButton.styleFrom(
+            primary: Color(0xFFE5EFC1),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+          ),
+          onPressed: () {
+            Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Register_Screen()),);
-      }),
+              MaterialPageRoute(builder: (context) => Register_Screen()),
+            );
+          }),
     );
   }
 

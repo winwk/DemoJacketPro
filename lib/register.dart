@@ -129,12 +129,18 @@ class _Register_ScreenState extends State<Register_Screen> {
           onPressed: () {
             validator();
           },
-          child: Text("ลงทะเบียน",
-              style: TextStyle(
-                  fontFamily: "MPLUSRounded1c",
-                  color: Color(0xFF707070),
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold)),
+          child: Text(
+            "ลงทะเบียน",
+            style: TextStyle(
+                fontFamily: "MPLUSRounded1c",
+                color: Color(0xFF707070),
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold),
+          ),
+          style: ElevatedButton.styleFrom(
+              primary: Color(0xFFE5EFC1),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(30)))),
         ));
   }
 
