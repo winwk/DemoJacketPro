@@ -1,347 +1,304 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'register.dart';
+import 'package:flutter/services.dart';
+import 'package:jackket/home.dart';
 
-class Manual extends StatelessWidget {
+class OnboardingScreen extends StatefulWidget{
+  static var route;
+
+  @override 
+  _OnboardingScreenState createState() => _OnboardingScreenState();
+}
+
+class _OnboardingScreenState extends State<OnboardingScreen> {
+  final int _numPages = 4;
+  final PageController _pageController = PageController(initialPage: 0);
+  int _currentPage = 0;
+
+  List<Widget> _buildPageIndicator(){
+    List<Widget> list = [];
+    for (int i = 0; i < _numPages; i++){
+      list.add(i == _currentPage ? _indicator(true) : _indicator(false));
+    }
+    return list;
+  }
+
+   
+
+  Widget _indicator(bool isActive) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 150),
+    margin: EdgeInsets.symmetric(horizontal: 8.0),
+    height: 8.0,
+    width: isActive ? 24.0 : 16.0,
+    decoration: BoxDecoration(
+      color: isActive ? Colors.white : Color(0xFF2F4F4F),
+      borderRadius: BorderRadius.all(Radius.circular(12)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-          child: PageViewDemo(),
+    var scaffold = Scaffold(
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.1, 0.4, 0.7, 0.9],
+            colors: [
+              Color(0xFF557B83),
+              Color(0xFF557B83),
+              Color(0xFF557B83),
+              Color(0xFF557B83),
+            ],
+            
+            
+          ),
+        
         ),
-      ),
-    );
-  }
-}
+        
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 80.0),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: <Widget>[
+          Container(
+            height: 600.0,
+            child: PageView(
+              physics: ClampingScrollPhysics(),
+              controller: _pageController,
+              onPageChanged: (int page) {
+                setState(() {
+                  _currentPage = page;
+                });
+              },
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.all(40.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 10.0),
+                  Text(
+                    'Jacket',
+                    style: TextStyle(
+                    fontSize: 50.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "MPLUSRounded1c",
+                   ),
+                  ),
+                  SizedBox(height: 1.0),
+                  Text(
+                    'Detection',
+                    style: TextStyle(
+                    fontSize: 50.0,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "MPLUSRounded1c",
+                   ),
+                  ),
+                  Center(
+                    child: 
+                    Image(
+                      image: AssetImage('assets/logo.png',
+                  ),
+                  height: 250.0,
+                  width: 250.0,
+                  ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    'แอพพลิเคชั่นสำหรับระบุตำแหน่งของ',
+                    style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                  Text(
+                    'ผู้พิการทางด้านสายตาตลอดเวลาเพื่อให้ผู้ใช้',
+                    style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                  Text(
+                    'ไม่ต้องกังวลว่าคนที่คุณรักจะเดินทาง',
+                    style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                  Text(
+                    'ไปไหนมาไหนแล้วจะเดินชนสิ่งกีดขวาง',
+                    style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                  Text(
+                    'เพราะจะมีการแจ้งเตือนให้ผู้ใช้ทราบตลอดเวลา',
+                    style: TextStyle(
+                    fontSize: 15.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                ]
+                )
+                ),
 
-class PageViewDemo extends StatefulWidget {
-  @override
-  _PageViewDemoState createState() => _PageViewDemoState();
-}
+                Padding(
+                  padding: EdgeInsets.all(40.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                  Center(
+                    child: Image(
+                      image: AssetImage('assets/logo2.png',
+                  ),
+                  height: 400.0,
+                  width: 500.0,
+                  ),
+                  ),
+                  SizedBox(height: 30.0),
+                  Text(
+                    'แสดงตำแหน่งของผู้ที่สวมใส่แจ็คเก็ต',
+                    style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                  Text(
+                    'ได้แบบเรียลไทม์และยังสามารถดู',
+                    style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                  Text(
+                    'สถานะการเชื่อมต่อของแจ็คเก็ตแต่ละตัวได้',
+                    style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                ]
+                )
+                ),
 
-class _PageViewDemoState extends State<PageViewDemo> {
-  PageController _controller = PageController(
-    initialPage: 0,
-  );
+                Padding(
+                  padding: EdgeInsets.all(40.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                  Center(
+                    child: Image(
+                      image: AssetImage('assets/logo3.png',
+                  ),
+                  height: 400.0,
+                  width: 500.0,
+                  ),
+                  ),
+                  SizedBox(height: 30.0),
+                  Text(
+                    'สามารถเพิ่มและจัดการแก้ไข',
+                    style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                  Text(
+                    'โปรไฟล์ของแจ็คเก็ตแต่ละตัวได้',
+                    style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                ]
+                )
+                ),
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+                  Padding(
+                  padding: EdgeInsets.all(40.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                  Center(
+                    child: Image(
+                      image: AssetImage('assets/logo4.png',
+                  ),
+                  height: 400.0,
+                  width: 500.0,
+                  ),
+                  ),
+                  SizedBox(height: 30.0),
+                  Text(
+                    'จัดการและแก้ไขข้อมูลบัญชีของผู้ดูแล',
+                    style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                  Text(
+                    'และสามารถตั้งค่าการแจ้งเตือนได้',
+                    style: TextStyle(
+                    fontSize: 16.0,
+                    color: Colors.white,
+                    fontFamily: "MPLUSRounded1c"
+                    ),
+                  ),
+                ]
+                ),
+                ),
 
-  @override
-  Widget build(BuildContext context) {
-    return PageView(
-      controller: _controller,
-      children: [
-        MyPage1Widget(),
-        MyPage2Widget(),
-        MyPage3Widget(),
-        MyPage4Widget(),
-      ],
-    );
-  }
-}
-
-class MyPage1Widget extends StatefulWidget{
-  @override
-  _MyPage1WidgetState createState() => _MyPage1WidgetState();
-}
-class _MyPage1WidgetState extends State<MyPage1Widget> {
-  @override
-  Widget showTextLogo() {
-    return Container(
-      margin: EdgeInsets.only(top: 100.0),
-      alignment: Alignment.topCenter,
-      child: Text(
-        "Jacket",
-        style: TextStyle(
-          fontSize: 60.0,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontFamily: "MPLUSRounded1c",
-        ),
-      ),
-    );
-  }
-
-  Widget showLogo() {
-    return Container(
-        margin: EdgeInsets.only(top: 50),
-        child: Image.asset("assets/logo.png"));
-  }
-
-  Widget showTextLogo2() {
-    return Container(
-      margin: EdgeInsets.zero,
-      alignment: Alignment.topCenter,
-      child: Text(
-        "Detection",
-        style: TextStyle(
-          fontSize: 60.0,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-          fontFamily: "MPLUSRounded1c",
-        ),
-      ),
-    );
-  }
-
-  Widget showText() {
-    return Container(
-      margin: EdgeInsets.only(top: 10),
-      child: Column(
-        children: [
-          Text(
-            "แอพพลิเคชั่นสำหรับระบุตำแหน่งของ",
-            style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-          Text(
-            "ผู้พิการทางด้านสายตาตลอดเวลาเพื่อให้ผู้ใช้",
-            style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-          Text(
-            "ไม่ต้องกังวลว่าคนที่คุณรักจะเดินทาง",
-            style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-          Text(
-            "ไปไหนมาไหนแล้วจะเดินชนสิ่งกีดขวาง",
-            style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-          Text(
-            "เพราะจะมีการแจ้งเตือนให้ผู้ใช้ทราบตลอดเวลา",
-            style: TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          )
+              ],
+              ),
+              ),
+            Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _buildPageIndicator(),
+                ), 
         ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Color(0xFF557B83),
-        body: Column(
-          children: [
-            showTextLogo(),
-            showTextLogo2(),
-            showLogo(),
-            showText(),
-          ],
         ),
-      ),
-    );
-  }
-}
-
-class MyPage2Widget extends StatefulWidget{
-  @override
-  _MyPage2WidgetState createState() => _MyPage2WidgetState();
-}
-class _MyPage2WidgetState extends State<MyPage2Widget> {
-  @override
-  Widget showLogo2() {
-    return Container(
-        margin: EdgeInsets.only(top: 100),
-        child: Image.asset(
-          "assets/logo2.png",
-          width: 400,
-          height: 500,
-        ));
-  }
-
-  Widget showText() {
-    return Container(
-      margin: EdgeInsets.only(top: 20),
-      alignment: Alignment.topCenter,
-      child: Column(
-        children: [
-          Text(
-            "แสดงตำแหน่งของผู้ที่สวมใส่แจ็คเก็ต",
-            style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-          Text(
-            "ได้แบบเรียลไทม์และยังสามารถดู",
-            style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-          Text(
-            "สถานะการเชื่อมต่อของแจ็คเก็ตแต่ละตัวได้",
-            style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Color(0xFF557B83),
-        body: Column(
-          children: [
-            showLogo2(),
-            showText(),
-          ],
         ),
+         ),
       ),
+    bottomSheet: _currentPage == _numPages - 1
+          ? Container(
+              height: 60.0,
+              width: double.infinity,
+              color: Color(0xFFE5EFC1),
+                  child: FlatButton(
+              child: Text("เริ่มต้นใช้งาน",
+              style: TextStyle(
+                        color: Color(0xFF707070),
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
+                      ),),
+              onPressed: () {
+                if(_currentPage == _numPages -1){
+                  Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (context) => home()),);
+                }
+              },
+            ),
+            )
+          : Text(''),
     );
-  }
-}
-
-class MyPage3Widget extends StatefulWidget{
-  @override
-  _MyPage3WidgetState createState() => _MyPage3WidgetState();
-}
-class _MyPage3WidgetState extends State<MyPage3Widget> {
-  @override
-  Widget showLogo3() {
-    return Container(
-        margin: EdgeInsets.only(top: 100),
-        child: Image.asset(
-          "assets/logo3.png",
-          width: 400,
-          height: 500,
-        ));
-  }
-
-  Widget showText() {
-    return Container(
-      margin: EdgeInsets.only(top: 20),
-      alignment: Alignment.topCenter,
-      child: Column(
-        children: [
-          Text(
-            "สามารถเพิ่มและจัดการแก้ไข",
-            style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-          Text(
-            "โปรไฟล์ของแจ็คเก็ตแต่ละตัวได้",
-            style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Color(0xFF557B83),
-        body: Column(
-          children: [
-            showLogo3(),
-            showText(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MyPage4Widget extends StatefulWidget{
-  @override
-  _MyPage4WidgetState createState() => _MyPage4WidgetState();
-}
-class _MyPage4WidgetState extends State<MyPage4Widget> {
-   Widget showLogo4() {
-       return Container(
-        margin: EdgeInsets.only(top: 100),
-        child: Image.asset(
-          "assets/logo4.png",
-          width: 400,
-          height: 500,
-        ));
-  }
-
-  Widget showText() {
-    return Container(
-      margin: EdgeInsets.only(top: 20),
-      alignment: Alignment.topCenter,
-      child: Column(
-        children: [
-          Text(
-            "จัดการและแก้ไขข้อมูลบัญชีของผู้ดูแล",
-            style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-          Text(
-            "และสามารถตั้งค่าการแจ้งเตือนได้",
-            style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-                fontFamily: "MPLUSRounded1c"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget nextButton(){
-    return ElevatedButton(
-      onPressed: (){
-        Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => home()),);
-      }, child: Text("เริ่มต้นใช้งาน")
-    );
+    return scaffold; 
     
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Color(0xFF557B83),
-        body: Column(
-          children: [
-            showLogo4(),
-            showText(),
-            nextButton()
-          ],
-        ),
-      ),
-    );
-  }
-  }
+}
 
