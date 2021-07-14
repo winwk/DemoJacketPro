@@ -8,6 +8,7 @@ class home1 extends StatefulWidget {
 class _home1State extends State<home1> {
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: bottomNavigationBar,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
@@ -40,23 +41,52 @@ class _home1State extends State<home1> {
         ),
       ),
       body: Container(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              title: Text('Home'),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              title: Text('Home'),
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              title: Text('Profile'),
-              backgroundColor: Colors.blue),
-        ],
-      ),
       backgroundColor: Color(0xFF557B83),
     );
+  }
+
+  Widget get bottomNavigationBar {
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(25), topLeft: Radius.circular(25)),
+          boxShadow: [
+            BoxShadow(color: Colors.black38, spreadRadius: 0, blurRadius: 10),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25.0),
+            topRight: Radius.circular(25.0),
+          ),
+          child: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            items: <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: new Image.asset(
+                  "assets/jacbutton.png",
+                  scale: 2.5,
+                ),
+                title: new Text(''),
+              ),
+              BottomNavigationBarItem(
+                icon: new Image.asset(
+                  "assets/homebutton.png",
+                  scale: 2.5,
+                ),
+                title: new Text(''),
+              ),
+              BottomNavigationBarItem(
+                icon: new Image.asset(
+                  "assets/profilebutton.png",
+                  scale: 2.5,
+                ),
+                title: new Text(''),
+              ),
+            ],
+          ),
+        ));
   }
 }

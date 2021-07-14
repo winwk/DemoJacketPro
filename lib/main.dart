@@ -6,7 +6,6 @@ import 'package:jackket/register.dart';
 import 'package:jackket/login.dart';
 import 'package:jackket/manual.dart';
 
-
 void main() {
   runApp(MyApp());
 }
@@ -15,12 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: OnboardingScreen(),
+      home: home1(),
       routes: {
         Register_Screen.route: (context) => Register_Screen(),
       },
-      
-      
     );
   }
 }
