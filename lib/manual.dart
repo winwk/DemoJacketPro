@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jackket/home.dart';
+import 'package:jackket/register.dart';
 
 class OnboardingScreen extends StatefulWidget{
   static var route;
@@ -266,21 +267,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ],
               ),
               ),
-            Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+
+           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildPageIndicator(),
-                ), 
+                ),
+
         ],
         ),
         ),
          ),
       ),
-    bottomSheet: _currentPage == _numPages - 1
+                
+  floatingActionButton : _currentPage == _numPages - 1
           ? Container(
               height: 60.0,
-              width: double.infinity,
-              color: Color(0xFFE5EFC1),
-                  child: FlatButton(
+              margin: EdgeInsets.all(0),
+              width: 150,
+            child: Align(
+                          alignment: FractionalOffset.bottomCenter,
+              child: FlatButton(
               child: Text("เริ่มต้นใช้งาน",
               style: TextStyle(
                         color: Color(0xFF707070),
@@ -293,12 +299,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     context, MaterialPageRoute(builder: (context) => home()),);
                 }
               },
+              color: Color(0xFFE5EFC1),
+              
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40),
+              ),
             ),
             )
+          )
           : Text(''),
     );
     return scaffold; 
     
   }
+  
 }
 
