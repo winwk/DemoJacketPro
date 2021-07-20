@@ -65,7 +65,9 @@ flutter:
     - assets/homebutton.png
     - assets/jacbutton.png
     - assets/profilebutton.png
-
+    - assets/homebuttontap.png
+    - assets/jacbuttontap.png
+    - assets/profilebuttontap.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

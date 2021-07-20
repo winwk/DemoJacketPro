@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jackket/Homepage.dart';
+import 'package:jackket/Jacketpage.dart';
+import 'package:jackket/Profilepage.dart';
 
 class home1 extends StatefulWidget {
   @override
@@ -6,41 +9,23 @@ class home1 extends StatefulWidget {
 }
 
 class _home1State extends State<home1> {
+  int _currentIndex = 1;
+  final List<Widget> _children = [
+    JacketPage(),
+    HomePage(),
+    ProfilePage(),
+  ];
+
+  void onTappedBar(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: bottomNavigationBar,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70),
-        child: AppBar(
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 20, top: 10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.notifications,
-                    size: 40, color: Color(0xffE5EFC1)),
-              ),
-            )
-          ],
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25))),
-          centerTitle: true,
-          backgroundColor: Color(0xff39AEA9),
-          title: Text(
-            "หน้าหลัก",
-            style: TextStyle(
-                color: Color(0xFFFFFFFF),
-                fontFamily: "MPLUSRounded1c",
-                fontSize: 45.0,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      body: Container(),
+      body: _children[_currentIndex],
       backgroundColor: Color(0xFF557B83),
     );
   }
@@ -60,6 +45,8 @@ class _home1State extends State<home1> {
             topRight: Radius.circular(25.0),
           ),
           child: BottomNavigationBar(
+            onTap: onTappedBar,
+            currentIndex: _currentIndex,
             type: BottomNavigationBarType.fixed,
             showSelectedLabels: false,
             showUnselectedLabels: false,
@@ -69,6 +56,10 @@ class _home1State extends State<home1> {
                   "assets/jacbutton.png",
                   scale: 2.5,
                 ),
+                activeIcon: new Image.asset(
+                  "assets/jacbuttontap.png",
+                  scale: 2.5,
+                ),
                 title: new Text(''),
               ),
               BottomNavigationBarItem(
@@ -76,11 +67,19 @@ class _home1State extends State<home1> {
                   "assets/homebutton.png",
                   scale: 2.5,
                 ),
+                activeIcon: new Image.asset(
+                  "assets/homebuttontap.png",
+                  scale: 2.5,
+                ),
                 title: new Text(''),
               ),
               BottomNavigationBarItem(
                 icon: new Image.asset(
                   "assets/profilebutton.png",
+                  scale: 2.5,
+                ),
+                activeIcon: new Image.asset(
+                  "assets/profilebuttontap.png",
                   scale: 2.5,
                 ),
                 title: new Text(''),
