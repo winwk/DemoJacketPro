@@ -4,14 +4,20 @@ import 'package:jackket/Profilepage.dart';
 
 class Changepass extends StatefulWidget {
   static String route = "Change";
-  @override 
+  @override
   _ChangepassState createState() => _ChangepassState();
 }
 
-class _ChangepassState extends State<Changepass>{
-    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-    final _passwordController = TextEditingController();
-    final _confirmPasswordController = TextEditingController();
+class _ChangepassState extends State<Changepass> {
+  Widget box() {
+    return SizedBox(
+      height: 20,
+    );
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
@@ -19,6 +25,7 @@ class _ChangepassState extends State<Changepass>{
     _confirmPasswordController.dispose();
     super.dispose();
   }
+
   validator() {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       print("validate");
@@ -69,32 +76,28 @@ class _ChangepassState extends State<Changepass>{
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
         padding: const EdgeInsets.all(7.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              obscureText: true,
-              controller: _passwordController,
-              validator: (String? value) {
-                if (value!.isEmpty) {
-                  return "กรุณาระบุข้อมูล";
-                } else if (value.length < 6) {
-                  return "รหัสผ่านไม่ควรน้อยกว่า 6 ตัวอักษร";
-                }
-                return null;
-              },
-              decoration: InputDecoration(
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          TextFormField(
+            obscureText: true,
+            controller: _passwordController,
+            validator: (String? value) {
+              if (value!.isEmpty) {
+                return "กรุณาระบุข้อมูล";
+              } else if (value.length < 6) {
+                return "รหัสผ่านไม่ควรน้อยกว่า 6 ตัวอักษร";
+              }
+              return null;
+            },
+            decoration: InputDecoration(
                 labelText: "รหัสผ่านใหม่",
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ))),
-              ),
-            
-          ]
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide(
+                      color: Colors.white,
+                    ))),
+          ),
+        ]),
       ),
-    ),
     );
   }
 
@@ -107,24 +110,23 @@ class _ChangepassState extends State<Changepass>{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-            child: TextFormField(
+                child: TextFormField(
               obscureText: true,
               controller: _confirmPasswordController,
-               validator: (String? value) {
+              validator: (String? value) {
                 if (value != _passwordController.value.text) {
                   return 'รหัสผ่านไม่ตรงกัน!';
                 }
                 return null;
               },
               decoration: InputDecoration(
-                labelText: "ยืนยันรหัสผ่าน",
+                  labelText: "ยืนยันรหัสผ่าน",
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide(
                         color: Colors.white,
                       ))),
-            )
-            )
+            ))
           ],
         ),
       ),
@@ -133,7 +135,7 @@ class _ChangepassState extends State<Changepass>{
 
   Widget Button() {
     return SizedBox(
-        width: 300,
+        width: 200,
         height: 50,
         child: ElevatedButton(
           onPressed: () {
@@ -160,7 +162,7 @@ class _ChangepassState extends State<Changepass>{
       home: Scaffold(
         backgroundColor: Color(0xFF557B83),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(90),
+          preferredSize: Size.fromHeight(70),
           child: AppBar(
             automaticallyImplyLeading: true,
             leading: IconButton(
@@ -175,14 +177,17 @@ class _ChangepassState extends State<Changepass>{
                     bottomRight: Radius.circular(25))),
             centerTitle: true,
             backgroundColor: Color(0xff39AEA9),
-            title: Text(
-              "เปลี่ยนรหัสผ่าน",
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontFamily: "Jasmine",
-                  fontSize: 60.0,
-                  fontWeight: FontWeight.bold),
-            ),
+            title: Column(children: [
+              box(),
+              Text(
+                "เปลี่ยนรหัสผ่าน",
+                style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: "Jasmine",
+                    fontSize: 60.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
           ),
         ),
         body: Padding(
@@ -194,32 +199,26 @@ class _ChangepassState extends State<Changepass>{
                 children: [
                   buildPassword(),
                   SizedBox(
-                    height: 50.0,
+                    height: 30.0,
                   ),
                   newPassword(),
                   SizedBox(
-                    height: 50.0,
+                    height: 30.0,
                   ),
                   confirmPassword(),
                   SizedBox(
-                    height: 50.0,
+                    height: 30.0,
                   ),
                   Button(),
                   SizedBox(
-                    height: 50.0,
+                    height: 30.0,
                   ),
-                  
                 ],
               ),
             ),
           ),
         ),
-
-    
       ),
     );
   }
 }
-
-
-

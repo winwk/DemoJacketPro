@@ -7,6 +7,12 @@ class signin_Screen extends StatefulWidget {
 }
 
 class _signin_ScreenState extends State<signin_Screen> {
+  Widget box() {
+    return SizedBox(
+      height: 20,
+    );
+  }
+
   Widget email() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -57,7 +63,7 @@ class _signin_ScreenState extends State<signin_Screen> {
 
   Widget SignInButton() {
     return SizedBox(
-        width: 300,
+        width: 200,
         height: 50,
         child: ElevatedButton(
           onPressed: () {
@@ -71,7 +77,7 @@ class _signin_ScreenState extends State<signin_Screen> {
             style: TextStyle(
                 fontFamily: "Jasmine",
                 color: Color(0xFF707070),
-                fontSize: 20.0,
+                fontSize: 30.0,
                 fontWeight: FontWeight.bold),
           ),
           style: ElevatedButton.styleFrom(
@@ -90,11 +96,14 @@ class _signin_ScreenState extends State<signin_Screen> {
           preferredSize: Size.fromHeight(70),
           child: AppBar(
             automaticallyImplyLeading: true,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_sharp),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 20, top: 10),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios_sharp),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
             ),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -102,14 +111,17 @@ class _signin_ScreenState extends State<signin_Screen> {
                     bottomRight: Radius.circular(25))),
             centerTitle: true,
             backgroundColor: Color(0xff39AEA9),
-            title: Text(
-              "เข้าสู่ระบบ",
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontFamily: "Jasmine",
-                  fontSize: 55.0,
-                  fontWeight: FontWeight.bold),
-            ),
+            title: Column(children: [
+              box(),
+              Text(
+                "เข้าสู่ระบบ",
+                style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: "Jasmine",
+                    fontSize: 60.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
           ),
         ),
         body: Padding(

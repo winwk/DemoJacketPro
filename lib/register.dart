@@ -11,6 +11,12 @@ class Register_Screen extends StatefulWidget {
 }
 
 class _Register_ScreenState extends State<Register_Screen> {
+  Widget box() {
+    return SizedBox(
+      height: 20,
+    );
+  }
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   validator() {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
@@ -128,7 +134,7 @@ class _Register_ScreenState extends State<Register_Screen> {
 
   Widget regisButton2() {
     return SizedBox(
-        width: 300,
+        width: 200,
         height: 50,
         child: ElevatedButton(
           onPressed: () {
@@ -137,9 +143,9 @@ class _Register_ScreenState extends State<Register_Screen> {
           child: Text(
             "ลงทะเบียน",
             style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+                fontFamily: "Jasmine",
                 color: Color(0xFF707070),
-                fontSize: 20.0,
+                fontSize: 30.0,
                 fontWeight: FontWeight.bold),
           ),
           style: ElevatedButton.styleFrom(
@@ -155,7 +161,7 @@ class _Register_ScreenState extends State<Register_Screen> {
       home: Scaffold(
         backgroundColor: Color(0xFF557B83),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(90),
+          preferredSize: Size.fromHeight(70),
           child: AppBar(
             automaticallyImplyLeading: true,
             leading: IconButton(
@@ -170,14 +176,17 @@ class _Register_ScreenState extends State<Register_Screen> {
                     bottomRight: Radius.circular(25))),
             centerTitle: true,
             backgroundColor: Color(0xff39AEA9),
-            title: Text(
-              "ลงทะเบียน",
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontFamily: "MPLUSRounded1c",
-                  fontSize: 45.0,
-                  fontWeight: FontWeight.bold),
-            ),
+            title: Column(children: [
+              box(),
+              Text(
+                "ลงทะเบียน",
+                style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: "Jasmine",
+                    fontSize: 60.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
           ),
         ),
         body: Padding(
