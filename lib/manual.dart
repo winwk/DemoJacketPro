@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/register.dart';
 
-class OnboardingScreen extends StatefulWidget {
+class Manual extends StatefulWidget {
   static var route;
 
   @override
-  _OnboardingScreenState createState() => _OnboardingScreenState();
+  _ManualState createState() => _ManualState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _ManualState extends State<Manual> {
   final int _numPages = 4;
   final PageController _pageController = PageController(initialPage: 0);
   int _currentPage = 0;
@@ -255,12 +255,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildPageIndicator(),
                 ),
+                  
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: _currentPage == _numPages - 1
+      floatingActionButton: 
+      _currentPage == _numPages - 1
           ? Container(
               height: 60.0,
               margin: EdgeInsets.all(0),
