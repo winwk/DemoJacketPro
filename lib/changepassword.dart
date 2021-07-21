@@ -1,95 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:jackket/home.dart';
-import 'package:jackket/login.dart';
+import 'package:jackket/JacketProfile.dart';
+import 'package:jackket/Profilepage.dart';
 
-class Register_Screen extends StatefulWidget {
-  static String route = "register";
-
-  @override
-  _Register_ScreenState createState() => _Register_ScreenState();
+class Changepass extends StatefulWidget {
+  static String route = "Change";
+  @override 
+  _ChangepassState createState() => _ChangepassState();
 }
 
-class _Register_ScreenState extends State<Register_Screen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+class _ChangepassState extends State<Changepass>{
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    final _passwordController = TextEditingController();
+    final _confirmPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
   validator() {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       print("validate");
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => signin_Screen()),
+        MaterialPageRoute(builder: (context) => ProfilePage()),
       );
     } else {
       print("not validate");
     }
-  }
-
-  Widget buildUserName() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Padding(
-        padding: const EdgeInsets.all(7.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              decoration: InputDecoration(
-                  icon: Icon(Icons.face),
-                  labelText: "ชื่อ",
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ))),
-              validator: (String? value) {
-                if (value == null || value.trim().length == 0) {
-                  return "กรุณาระบุข้อมูล";
-                }
-                return null;
-              },
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildEmail() {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-      child: Padding(
-        padding: const EdgeInsets.all(7.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextFormField(
-              keyboardType: TextInputType.emailAddress,
-              textInputAction: TextInputAction.done,
-              decoration: InputDecoration(
-                  hintText: "name@example.com",
-                  icon: Icon(Icons.email),
-                  labelText: "อีเมล",
-                  enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide(
-                        color: Colors.white,
-                      ))),
-              validator: (String? value) {
-                if (value == null || value.trim().length == 0) {
-                  return "กรุณาระบุข้อมูล";
-                }
-                if (!RegExp(
-                        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-                    .hasMatch(value)) {
-                  return "กรุรากรอกอีเมลให้ถูกต้อง";
-                }
-                return null;
-              },
-            )
-          ],
-        ),
-      ),
-    );
   }
 
   Widget buildPassword() {
@@ -102,9 +41,8 @@ class _Register_ScreenState extends State<Register_Screen> {
           children: [
             TextFormField(
               decoration: InputDecoration(
-                  icon: Icon(Icons.password_rounded),
                   hintText: "กรอกรหัสผ่านของคุณ...",
-                  labelText: "รหัสผ่าน",
+                  labelText: "รหัสผ่านปัจจุบัน",
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide(
@@ -126,7 +64,74 @@ class _Register_ScreenState extends State<Register_Screen> {
     );
   }
 
-  Widget regisButton2() {
+  Widget newPassword() {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Padding(
+        padding: const EdgeInsets.all(7.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              obscureText: true,
+              controller: _passwordController,
+              validator: (String? value) {
+                if (value!.isEmpty) {
+                  return "กรุณาระบุข้อมูล";
+                } else if (value.length < 6) {
+                  return "รหัสผ่านไม่ควรน้อยกว่า 6 ตัวอักษร";
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                labelText: "รหัสผ่านใหม่",
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ))),
+              ),
+            
+          ]
+      ),
+    ),
+    );
+  }
+
+  Widget confirmPassword() {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Padding(
+        padding: const EdgeInsets.all(7.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+            child: TextFormField(
+              obscureText: true,
+              controller: _confirmPasswordController,
+               validator: (String? value) {
+                if (value != _passwordController.value.text) {
+                  return 'รหัสผ่านไม่ตรงกัน!';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                labelText: "ยืนยันรหัสผ่าน",
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ))),
+            )
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget Button() {
     return SizedBox(
         width: 300,
         height: 50,
@@ -135,11 +140,11 @@ class _Register_ScreenState extends State<Register_Screen> {
             validator();
           },
           child: Text(
-            "ลงทะเบียน",
+            "ยืนยัน",
             style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+                fontFamily: "Jasmine",
                 color: Color(0xFF707070),
-                fontSize: 20.0,
+                fontSize: 30.0,
                 fontWeight: FontWeight.bold),
           ),
           style: ElevatedButton.styleFrom(
@@ -171,11 +176,11 @@ class _Register_ScreenState extends State<Register_Screen> {
             centerTitle: true,
             backgroundColor: Color(0xff39AEA9),
             title: Text(
-              "ลงทะเบียน",
+              "เปลี่ยนรหัสผ่าน",
               style: TextStyle(
                   color: Color(0xFFFFFFFF),
-                  fontFamily: "MPLUSRounded1c",
-                  fontSize: 45.0,
+                  fontFamily: "Jasmine",
+                  fontSize: 60.0,
                   fontWeight: FontWeight.bold),
             ),
           ),
@@ -187,25 +192,34 @@ class _Register_ScreenState extends State<Register_Screen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  buildUserName(),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  buildEmail(),
-                  SizedBox(
-                    height: 20.0,
-                  ),
                   buildPassword(),
                   SizedBox(
                     height: 50.0,
                   ),
-                  regisButton2()
+                  newPassword(),
+                  SizedBox(
+                    height: 50.0,
+                  ),
+                  confirmPassword(),
+                  SizedBox(
+                    height: 50.0,
+                  ),
+                  Button(),
+                  SizedBox(
+                    height: 50.0,
+                  ),
+                  
                 ],
               ),
             ),
           ),
         ),
+
+    
       ),
     );
   }
 }
+
+
+
