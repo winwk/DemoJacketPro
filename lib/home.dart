@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:jackket/login.dart';
 import 'register.dart';
 
-
 class home extends StatefulWidget {
   static String route = "home_SC";
   @override

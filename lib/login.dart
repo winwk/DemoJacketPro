@@ -69,7 +69,7 @@ class _signin_ScreenState extends State<signin_Screen> {
           child: Text(
             "เข้าสู่ระบบ",
             style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+                fontFamily: "Jasmine",
                 color: Color(0xFF707070),
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold),
@@ -87,7 +87,7 @@ class _signin_ScreenState extends State<signin_Screen> {
       home: Scaffold(
         backgroundColor: Color(0xFF557B83),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(90),
+          preferredSize: Size.fromHeight(70),
           child: AppBar(
             automaticallyImplyLeading: true,
             leading: IconButton(
@@ -106,18 +106,17 @@ class _signin_ScreenState extends State<signin_Screen> {
               "เข้าสู่ระบบ",
               style: TextStyle(
                   color: Color(0xFFFFFFFF),
-                  fontFamily: "MPLUSRounded1c",
-                  fontSize: 45.0,
+                  fontFamily: "Jasmine",
+                  fontSize: 55.0,
                   fontWeight: FontWeight.bold),
             ),
           ),
         ),
         body: Padding(
-          
           padding: const EdgeInsets.all(30.0),
           child: Column(
             children: [
-               SizedBox(
+              SizedBox(
                 height: 30.0,
               ),
               email(),

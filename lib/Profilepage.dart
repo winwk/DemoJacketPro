@@ -5,8 +5,14 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Widget box() {
+    return SizedBox(
+      height: 20,
+    );
+  }
+
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
@@ -16,14 +22,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   bottomRight: Radius.circular(25))),
           centerTitle: true,
           backgroundColor: Color(0xff39AEA9),
-          title: Text(
-            "โปรไฟล์",
-            style: TextStyle(
-                color: Color(0xFFFFFFFF),
-                fontFamily: "MPLUSRounded1c",
-                fontSize: 45.0,
-                fontWeight: FontWeight.bold),
-          ),
+          title: Column(children: [
+            box(),
+            Text(
+              "โปรไฟล์",
+              style: TextStyle(
+                  color: Color(0xFFFFFFFF),
+                  fontFamily: "Jasmine",
+                  fontSize: 60.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ]),
         ),
       ),
       backgroundColor: Color(0xFF557B83),

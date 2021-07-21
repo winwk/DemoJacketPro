@@ -5,6 +5,12 @@ class JacketPage extends StatefulWidget {
 }
 
 class _JacketPageState extends State<JacketPage> {
+  Widget box() {
+    return SizedBox(
+      height: 20,
+    );
+  }
+
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: PreferredSize(
@@ -16,14 +22,17 @@ class _JacketPageState extends State<JacketPage> {
                   bottomRight: Radius.circular(25))),
           centerTitle: true,
           backgroundColor: Color(0xff39AEA9),
-          title: Text(
-            "แจ็คเก็ต",
-            style: TextStyle(
-                color: Color(0xFFFFFFFF),
-                fontFamily: "MPLUSRounded1c",
-                fontSize: 45.0,
-                fontWeight: FontWeight.bold),
-          ),
+          title: Column(children: [
+            box(),
+            Text(
+              "แจ็คเก็ต",
+              style: TextStyle(
+                  color: Color(0xFFFFFFFF),
+                  fontFamily: "Jasmine",
+                  fontSize: 60.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ]),
         ),
       ),
       backgroundColor: Color(0xFF557B83),
