@@ -76,9 +76,9 @@ class _homeState extends State<home> {
         child: Text(
           "เข้าสู่ระบบ",
           style: TextStyle(
-            fontFamily: "MPLUSRounded1c",
+            fontFamily: "Jasmine",
             color: Color(0xFF707070),
-            fontSize: 20.0,
+            fontSize: 35.0,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -105,9 +105,9 @@ class _homeState extends State<home> {
           child: Text(
             "ลงทะเบียน",
             style: TextStyle(
-              fontFamily: "MPLUSRounded1c",
+              fontFamily: "Jasmine",
               color: Color(0xFF707070),
-              fontSize: 20.0,
+              fontSize: 35.0,
               fontWeight: FontWeight.bold,
             ),
           ),

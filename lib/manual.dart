@@ -109,37 +109,41 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 Text(
                                   'แอพพลิเคชั่นสำหรับระบุตำแหน่งของ',
                                   style: TextStyle(
-                                      fontSize: 15.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
+                                SizedBox(height: 5),
                                 Text(
                                   'ผู้พิการทางด้านสายตาตลอดเวลาเพื่อให้ผู้ใช้',
                                   style: TextStyle(
-                                      fontSize: 15.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
+                                SizedBox(height: 5),
                                 Text(
                                   'ไม่ต้องกังวลว่าคนที่คุณรักจะเดินทาง',
                                   style: TextStyle(
-                                      fontSize: 15.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
+                                SizedBox(height: 5),
                                 Text(
                                   'ไปไหนมาไหนแล้วจะเดินชนสิ่งกีดขวาง',
                                   style: TextStyle(
-                                      fontSize: 15.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
+                                SizedBox(height: 5),
                                 Text(
                                   'เพราะจะมีการแจ้งเตือนให้ผู้ใช้ทราบตลอดเวลา',
                                   style: TextStyle(
-                                      fontSize: 15.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
                               ])),
                       Padding(
@@ -160,23 +164,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 Text(
                                   'แสดงตำแหน่งของผู้ที่สวมใส่แจ็คเก็ต',
                                   style: TextStyle(
-                                      fontSize: 16.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
+                                SizedBox(height: 5),
                                 Text(
                                   'ได้แบบเรียลไทม์และยังสามารถดู',
                                   style: TextStyle(
-                                      fontSize: 16.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
+                                SizedBox(height: 5),
                                 Text(
                                   'สถานะการเชื่อมต่อของแจ็คเก็ตแต่ละตัวได้',
                                   style: TextStyle(
-                                      fontSize: 16.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
                               ])),
                       Padding(
@@ -197,16 +203,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 Text(
                                   'สามารถเพิ่มและจัดการแก้ไข',
                                   style: TextStyle(
-                                      fontSize: 16.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
+                                SizedBox(height: 5),
                                 Text(
                                   'โปรไฟล์ของแจ็คเก็ตแต่ละตัวได้',
                                   style: TextStyle(
-                                      fontSize: 16.0,
+                                      fontSize: 22.0,
                                       color: Colors.white,
-                                      fontFamily: "MPLUSRounded1c"),
+                                      fontFamily: "Jasmine"),
                                 ),
                               ])),
                       Padding(
@@ -227,16 +234,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               Text(
                                 'จัดการและแก้ไขข้อมูลบัญชีของผู้ดูแล',
                                 style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 22.0,
                                     color: Colors.white,
-                                    fontFamily: "MPLUSRounded1c"),
+                                    fontFamily: "Jasmine"),
                               ),
+                              SizedBox(height: 5),
                               Text(
                                 'และสามารถตั้งค่าการแจ้งเตือนได้',
                                 style: TextStyle(
-                                    fontSize: 16.0,
+                                    fontSize: 22.0,
                                     color: Colors.white,
-                                    fontFamily: "MPLUSRounded1c"),
+                                    fontFamily: "Jasmine"),
                               ),
                             ]),
                       ),
@@ -264,7 +272,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     "เริ่มต้นใช้งาน",
                     style: TextStyle(
                       color: Color(0xFF707070),
-                      fontSize: 20.0,
+                      fontSize: 30.0,
+                      fontFamily: "Jasmine",
                       fontWeight: FontWeight.bold,
                     ),
                   ),
