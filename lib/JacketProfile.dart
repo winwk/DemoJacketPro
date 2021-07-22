@@ -10,7 +10,7 @@ class JacketPro extends StatefulWidget {
 class _JacketProState extends State<JacketPro> {
   Widget test() {
     return SizedBox(
-      width: 300,
+      width: 350,
       height: 200,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -23,184 +23,196 @@ class _JacketProState extends State<JacketPro> {
 
   Widget EditProButton() {
     return SizedBox(
-      width: 300,
+      width: 350,
       height: 60,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: () {},
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 25),
-          child: Icon(
-            Icons.arrow_forward_ios_outlined,
-            color: Color(0xFF707070),
-          ),
-        ),
-        label: Text("แก้ไขโปรไฟล์",
-            style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" แก้ไขโปรไฟล์",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
                 color: Color(0xFF707070),
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold)),
+              ),
+            ]),
         style: ElevatedButton.styleFrom(
             primary: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)))),
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
       ),
     );
   }
 
   Widget EditToolButton() {
     return SizedBox(
-      width: 300,
+      width: 350,
       height: 60,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: () {},
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 25),
-          child: Icon(
-            Icons.arrow_forward_ios_outlined,
-            color: Color(0xFF707070),
-          ),
-        ),
-        label: Text("แก้ไขอุปกรณ์",
-            style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" แก้ไขอุปกรณ์",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
                 color: Color(0xFF707070),
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold)),
+              ),
+            ]),
         style: ElevatedButton.styleFrom(
             primary: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)))),
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
       ),
     );
   }
 
   Widget LocationButton() {
     return SizedBox(
-      width: 300,
+      width: 350,
       height: 60,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: () {},
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 25),
-          child: Icon(
-            Icons.arrow_forward_ios_outlined,
-            color: Color(0xFF707070),
-          ),
-        ),
-        label: Text("สถานที่ที่บันทึกไว้",
-            style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" สถานที่ที่บันทึกไว้",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
                 color: Color(0xFF707070),
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold)),
+              ),
+            ]),
         style: ElevatedButton.styleFrom(
             primary: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)))),
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
       ),
     );
   }
 
   Widget VideoButton() {
     return SizedBox(
-      width: 300,
+      width: 350,
       height: 60,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: () {},
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 45),
-          child: Icon(
-            Icons.arrow_forward_ios_outlined,
-            color: Color(0xFF707070),
-          ),
-        ),
-        label: Text("วิดีโอที่บันทึกไว้",
-            style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" วิดีโอที่บันทึกไว้",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
                 color: Color(0xFF707070),
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold)),
+              ),
+            ]),
         style: ElevatedButton.styleFrom(
             primary: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)))),
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
       ),
     );
   }
 
   Widget NotificationButton() {
     return SizedBox(
-      width: 300,
+      width: 350,
       height: 60,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: () {},
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 10),
-          child: Icon(
-            Icons.arrow_forward_ios_outlined,
-            color: Color(0xFF707070),
-          ),
-        ),
-        label: Text("ตั้งค่าระยะที่แจ้งเตือน",
-            style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" ตั้งค่าระยะที่แจ้งเตือน",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
                 color: Color(0xFF707070),
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold)),
+              ),
+            ]),
         style: ElevatedButton.styleFrom(
             primary: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)))),
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
       ),
     );
   }
 
   Widget StatusButton() {
     return SizedBox(
-      width: 300,
+      width: 350,
       height: 60,
-      child: ElevatedButton.icon(
+      child: ElevatedButton(
         onPressed: () {},
-        icon: Padding(
-          padding: const EdgeInsets.only(right: 25),
-          child: Icon(
-            Icons.arrow_forward_ios_outlined,
-            color: Color(0xFF707070),
-          ),
-        ),
-        label: Text("สถานะการทำงาน",
-            style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" สถานะการทำงาน",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
                 color: Color(0xFF707070),
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold)),
+              ),
+            ]),
         style: ElevatedButton.styleFrom(
             primary: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30)))),
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
       ),
     );
   }
 
   Widget LogoutButton() {
     return SizedBox(
-        width: 200,
-        height: 50,
+        width: 150,
+        height: 40,
         child: ElevatedButton(
           onPressed: () {},
           child: Text(
-            "ออกจากระบบ",
+            "ลบโปรไฟล์",
             style: TextStyle(
-                fontFamily: "MPLUSRounded1c",
+                fontFamily: "Jasmine",
                 color: Color(0xFF707070),
-                fontSize: 20.0,
+                fontSize: 30.0,
                 fontWeight: FontWeight.bold),
           ),
           style: ElevatedButton.styleFrom(
               primary: Color(0xFFFFAAAA),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(30)))),
+                  borderRadius: BorderRadius.all(Radius.circular(20)))),
         ));
   }
 
@@ -210,7 +222,7 @@ class _JacketProState extends State<JacketPro> {
       home: Scaffold(
         backgroundColor: Color(0xFF557B83),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(90),
+          preferredSize: Size.fromHeight(70),
           child: AppBar(
             automaticallyImplyLeading: true,
             leading: IconButton(
@@ -225,51 +237,62 @@ class _JacketProState extends State<JacketPro> {
                     bottomRight: Radius.circular(25))),
             centerTitle: true,
             backgroundColor: Color(0xff39AEA9),
-            title: Text(
-              "แจ็คเก็ต",
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontFamily: "MPLUSRounded1c",
-                  fontSize: 45.0,
-                  fontWeight: FontWeight.bold),
-            ),
+            title: Column(children: [
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "แจ็คเก็ต",
+                style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: "Jasmine",
+                    fontSize: 60.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(30.0),
+          padding: const EdgeInsets.all(0.0),
           child: SingleChildScrollView(
             child: Center(
               child: Column(
                 children: [
+                  SizedBox(
+                    height: 10.0,
+                  ),
                   test(),
                   SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
                   EditProButton(),
                   SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
                   EditToolButton(),
                   SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
                   LocationButton(),
                   SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
                   VideoButton(),
                   SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
                   NotificationButton(),
                   SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
                   StatusButton(),
                   SizedBox(
-                    height: 25.0,
+                    height: 15.0,
                   ),
-                  LogoutButton()
+                  LogoutButton(),
+                  SizedBox(
+                    height: 15.0,
+                  ),
                 ],
               ),
             ),

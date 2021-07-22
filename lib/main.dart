@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Changepass(),
+      home: JacketPro(),
       routes: {
         Register_Screen.route: (context) => Register_Screen(),
       },
