@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jackket/login.dart';
 import 'register.dart';
+import 'package:page_transition/page_transition.dart';
 
 class home extends StatefulWidget {
   static String route = "home_SC";
@@ -90,7 +91,8 @@ class _homeState extends State<home> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => signin_Screen()),
+            PageTransition(
+                type: PageTransitionType.rightToLeft, child: signin_Screen()),
           );
         },
       ),
