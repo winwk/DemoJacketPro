@@ -255,14 +255,12 @@ class _ManualState extends State<Manual> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _buildPageIndicator(),
                 ),
-                  
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: 
-      _currentPage == _numPages - 1
+      floatingActionButton: _currentPage == _numPages - 1
           ? Container(
               height: 60.0,
               margin: EdgeInsets.all(0),

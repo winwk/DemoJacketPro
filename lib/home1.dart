@@ -10,22 +10,60 @@ class home1 extends StatefulWidget {
 
 class _home1State extends State<home1> {
   int _currentIndex = 1;
-  final List<Widget> _children = [
-    JacketPage(),
-    HomePage(),
-    ProfilePage(),
+  PageController _pageController = PageController(initialPage: 1);
+  final _bottomNavigationBarItem = [
+    BottomNavigationBarItem(
+      icon: new Image.asset(
+        "assets/jacbutton.png",
+        scale: 2.5,
+      ),
+      activeIcon: new Image.asset(
+        "assets/jacbuttontap.png",
+        scale: 2.5,
+      ),
+      title: new Text(''),
+    ),
+    BottomNavigationBarItem(
+      icon: new Image.asset(
+        "assets/homebutton.png",
+        scale: 2.5,
+      ),
+      activeIcon: new Image.asset(
+        "assets/homebuttontap.png",
+        scale: 2.5,
+      ),
+      title: new Text(''),
+    ),
+    BottomNavigationBarItem(
+      icon: new Image.asset(
+        "assets/profilebutton.png",
+        scale: 2.5,
+      ),
+      activeIcon: new Image.asset(
+        "assets/profilebuttontap.png",
+        scale: 2.5,
+      ),
+      title: new Text(''),
+    ),
   ];
-
-  void onTappedBar(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
 
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: bottomNavigationBar,
-      body: _children[_currentIndex],
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (newIndex) {
+          setState(() {
+            _currentIndex = newIndex;
+          });
+        },
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          JacketPage(),
+          HomePage(),
+          ProfilePage(),
+        ],
+      ),
       backgroundColor: Color(0xFF557B83),
     );
   }
@@ -45,46 +83,15 @@ class _home1State extends State<home1> {
             topRight: Radius.circular(25.0),
           ),
           child: BottomNavigationBar(
-            onTap: onTappedBar,
+            onTap: (index) {
+              _pageController.animateToPage(index,
+                  duration: Duration(milliseconds: 500), curve: Curves.ease);
+            },
             currentIndex: _currentIndex,
             type: BottomNavigationBarType.fixed,
             showSelectedLabels: false,
             showUnselectedLabels: false,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: new Image.asset(
-                  "assets/jacbutton.png",
-                  scale: 2.5,
-                ),
-                activeIcon: new Image.asset(
-                  "assets/jacbuttontap.png",
-                  scale: 2.5,
-                ),
-                title: new Text(''),
-              ),
-              BottomNavigationBarItem(
-                icon: new Image.asset(
-                  "assets/homebutton.png",
-                  scale: 2.5,
-                ),
-                activeIcon: new Image.asset(
-                  "assets/homebuttontap.png",
-                  scale: 2.5,
-                ),
-                title: new Text(''),
-              ),
-              BottomNavigationBarItem(
-                icon: new Image.asset(
-                  "assets/profilebutton.png",
-                  scale: 2.5,
-                ),
-                activeIcon: new Image.asset(
-                  "assets/profilebuttontap.png",
-                  scale: 2.5,
-                ),
-                title: new Text(''),
-              ),
-            ],
+            items: _bottomNavigationBarItem,
           ),
         ));
   }
