@@ -10,7 +10,7 @@ class JacketPro extends StatefulWidget {
 class _JacketProState extends State<JacketPro> {
   Widget test() {
     return SizedBox(
-      width: 350,
+      width: 355,
       height: 200,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -225,11 +225,17 @@ class _JacketProState extends State<JacketPro> {
           preferredSize: Size.fromHeight(70),
           child: AppBar(
             automaticallyImplyLeading: true,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_sharp),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 15, top: 12),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Image.asset(
+                  'assets/backbutton.png',
+                  scale: 12,
+                ),
+              ),
             ),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(

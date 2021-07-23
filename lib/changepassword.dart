@@ -165,11 +165,17 @@ class _ChangepassState extends State<Changepass> {
           preferredSize: Size.fromHeight(70),
           child: AppBar(
             automaticallyImplyLeading: true,
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_sharp),
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 15, top: 12),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Image.asset(
+                  'assets/backbutton.png',
+                  scale: 12,
+                ),
+              ),
             ),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(

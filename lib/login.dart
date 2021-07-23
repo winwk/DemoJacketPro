@@ -97,12 +97,15 @@ class _signin_ScreenState extends State<signin_Screen> {
           child: AppBar(
             automaticallyImplyLeading: true,
             leading: Padding(
-              padding: const EdgeInsets.only(left: 20, top: 10),
-              child: IconButton(
-                icon: Icon(Icons.arrow_back_ios_sharp),
-                onPressed: () {
+              padding: const EdgeInsets.only(left: 15, top: 12),
+              child: GestureDetector(
+                onTap: () {
                   Navigator.pop(context);
                 },
+                child: Image.asset(
+                  'assets/backbutton.png',
+                  scale: 12,
+                ),
               ),
             ),
             shape: RoundedRectangleBorder(

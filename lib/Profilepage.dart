@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jackket/changepassword.dart';
 
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
@@ -9,6 +10,131 @@ class _ProfilePageState extends State<ProfilePage> {
     return SizedBox(
       height: 20,
     );
+  }
+
+  Widget test() {
+    return SizedBox(
+      width: 355,
+      height: 200,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+        child: Column(
+          children: [],
+        ),
+      ),
+    );
+  }
+
+  Widget EditProButton() {
+    return SizedBox(
+      width: 350,
+      height: 60,
+      child: ElevatedButton(
+        onPressed: () {},
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" แก้ไขโปรไฟล์",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Color(0xFF707070),
+              ),
+            ]),
+        style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
+      ),
+    );
+  }
+
+  Widget changepassButton() {
+    return SizedBox(
+      width: 350,
+      height: 60,
+      child: ElevatedButton(
+          child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(" เปลี่ยนรหัสผ่าน",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 35.0,
+                    )),
+                Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  color: Color(0xFF707070),
+                ),
+              ]),
+          style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)))),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => Changepass()),
+            );
+          }),
+    );
+  }
+
+  Widget notisetButton() {
+    return SizedBox(
+      width: 350,
+      height: 60,
+      child: ElevatedButton(
+        onPressed: () {},
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" ตั้งค่าการแจ้งเตือน",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Color(0xFF707070),
+              ),
+            ]),
+        style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
+      ),
+    );
+  }
+
+  Widget LogoutButton() {
+    return SizedBox(
+        width: 160,
+        height: 40,
+        child: ElevatedButton(
+          onPressed: () {},
+          child: Text(
+            "ออกจากระบบ",
+            style: TextStyle(
+                fontFamily: "Jasmine",
+                color: Color(0xFF707070),
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold),
+          ),
+          style: ElevatedButton.styleFrom(
+              primary: Color(0xFFFFAAAA),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)))),
+        ));
   }
 
   Widget build(BuildContext context) {
@@ -33,6 +159,40 @@ class _ProfilePageState extends State<ProfilePage> {
                   fontWeight: FontWeight.bold),
             ),
           ]),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(0.0),
+        child: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 10.0,
+                ),
+                test(),
+                SizedBox(
+                  height: 15.0,
+                ),
+                EditProButton(),
+                SizedBox(
+                  height: 15.0,
+                ),
+                changepassButton(),
+                SizedBox(
+                  height: 15.0,
+                ),
+                notisetButton(),
+                SizedBox(
+                  height: 15.0,
+                ),
+                LogoutButton(),
+                SizedBox(
+                  height: 15.0,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
       backgroundColor: Color(0xFF557B83),
