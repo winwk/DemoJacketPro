@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:jackket/AddDevice.dart';
+import 'package:page_transition/page_transition.dart';
 
 class JacketPage extends StatefulWidget {
   _JacketPageState createState() => _JacketPageState();
 }
 
 class _JacketPageState extends State<JacketPage> {
-  Widget box() {
-    return SizedBox(
-      height: 20,
-    );
-  }
-
-  Widget showBG() {
+  Widget showLogo() {
     return Image.asset(
       "assets/BG.png",
       width: 300,
@@ -19,7 +15,31 @@ class _JacketPageState extends State<JacketPage> {
     );
   }
 
-  Widget AddButton() {
+  Widget showText() {
+    return Text(
+      'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
+      style: TextStyle(
+        fontSize: 30.0,
+        color: Colors.white,
+        fontFamily: "Jasmine",
+      ),
+    );
+  }
+
+  Widget sixedbox() {
+    return SizedBox(
+      width: 150,
+      height: 30,
+    );
+  }
+
+  Widget box() {
+    return SizedBox(
+      height: 20,
+    );
+  }
+
+  Widget showButton() {
     return SizedBox(
       width: 130,
       height: 30,
@@ -38,7 +58,13 @@ class _JacketPageState extends State<JacketPage> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop, child: AddDevice()),
+          );
+        },
       ),
     );
   }
@@ -68,13 +94,17 @@ class _JacketPageState extends State<JacketPage> {
         ),
       ),
       backgroundColor: Color(0xFF557B83),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            showBG(),
-            AddButton()
-          ],
+      body: SafeArea(
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              showLogo(),
+              showText(),
+              sixedbox(),
+              showButton()
+            ],
+          ),
         ),
       ),
     );

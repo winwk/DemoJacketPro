@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jackket/AddDevice.dart';
+import 'package:page_transition/page_transition.dart';
 
 class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
@@ -56,7 +58,13 @@ class _HomePageState extends State<HomePage> {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(30))),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop, child: AddDevice()),
+          );
+        },
       ),
     );
   }
