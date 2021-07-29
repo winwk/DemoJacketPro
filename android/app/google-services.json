@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "91930866624",
+    "project_id": "demojacket-26204",
+    "storage_bucket": "demojacket-26204.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91930866624:android:e5b31bd389ee7fc4138e25",
+        "android_client_info": {
+          "package_name": "com.example.jackket"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91930866624-c1f8tmd1ep72jtknd00hf9cdb9us85kf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABuIZW7MUTnEuQk8cZlQmJFhkNlcEJ0yM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91930866624-c1f8tmd1ep72jtknd00hf9cdb9us85kf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
