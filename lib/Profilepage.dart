@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jackket/changepassword.dart';
-import 'package:jackket/setnoti.dart';
-import 'package:page_transition/page_transition.dart';
 
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
@@ -83,8 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
           onPressed: () {
             Navigator.push(
               context,
-              PageTransition(
-                  type: PageTransitionType.rightToLeft, child: Changepass()),
+              MaterialPageRoute(builder: (context) => Changepass()),
             );
           }),
     );
@@ -95,13 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
       width: 350,
       height: 60,
       child: ElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.rightToLeft, child: setnotiPage()),
-          );
-        },
+        onPressed: () {},
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
