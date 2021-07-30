@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: home1(),
+      home: home(),
       routes: {
         Register_Screen.route: (context) => Register_Screen(),
       },

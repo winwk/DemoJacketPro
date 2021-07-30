@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:jackket/home1.dart';
 import 'package:jackket/login.dart';
 import 'register.dart';
 import 'package:page_transition/page_transition.dart';
@@ -10,6 +12,8 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
+
+
   Widget showTextLogo() {
     return Container(
       margin: EdgeInsets.only(top: 50.0),
