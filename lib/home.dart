@@ -12,8 +12,6 @@ class home extends StatefulWidget {
 }
 
 class _homeState extends State<home> {
-
-
   Widget showTextLogo() {
     return Container(
       margin: EdgeInsets.only(top: 50.0),
@@ -93,7 +91,7 @@ class _homeState extends State<home> {
               borderRadius: BorderRadius.all(Radius.circular(30))),
         ),
         onPressed: () {
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             PageTransition(
                 type: PageTransitionType.rightToLeft, child: signin_Screen()),
@@ -123,9 +121,11 @@ class _homeState extends State<home> {
                 borderRadius: BorderRadius.all(Radius.circular(30))),
           ),
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => Register_Screen()),
+              PageTransition(
+                  type: PageTransitionType.rightToLeft,
+                  child: Register_Screen()),
             );
           }),
     );

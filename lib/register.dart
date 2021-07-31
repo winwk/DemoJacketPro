@@ -292,12 +292,15 @@ class _Register_ScreenState extends State<Register_Screen> {
                   ),
                 ),
                 body: Padding(
-                  padding: const EdgeInsets.all(30.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Form(
                     key: _formKey,
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
+                          SizedBox(
+                            height: 30.0,
+                          ),
                           buildUserName(),
                           SizedBox(
                             height: 20.0,

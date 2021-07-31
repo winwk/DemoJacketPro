@@ -74,6 +74,7 @@ class _JacketPageState extends State<JacketPage> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
+          automaticallyImplyLeading: false,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25),

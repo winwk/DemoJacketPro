@@ -74,6 +74,7 @@ class _HomePageState extends State<HomePage> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
+          automaticallyImplyLeading: false,
           actions: <Widget>[
             Padding(
               padding: EdgeInsets.only(right: 20, top: 10),
