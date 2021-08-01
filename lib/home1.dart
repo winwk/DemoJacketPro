@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jackket/Homepage.dart';
 import 'package:jackket/Jacketpage.dart';
 import 'package:jackket/Profilepage.dart';
@@ -11,6 +14,8 @@ class home1 extends StatefulWidget {
 class _home1State extends State<home1> {
   int _currentIndex = 1;
   PageController _pageController = PageController(initialPage: 1);
+  DateTime timeBackPressed = DateTime.now();
+
   final _bottomNavigationBarItem = [
     BottomNavigationBarItem(
       icon: new Image.asset(
@@ -47,24 +52,32 @@ class _home1State extends State<home1> {
     ),
   ];
 
+  
+
+
+
+  
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: bottomNavigationBar,
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (newIndex) {
-          setState(() {
-            _currentIndex = newIndex;
-          });
-        },
-        physics: NeverScrollableScrollPhysics(),
-        children: [
-          JacketPage(),
-          HomePage(),
-          ProfilePage(),
-        ],
+    return WillPopScope(
+      onWillPop:() => exit(0),
+      child: Scaffold(
+        bottomNavigationBar: bottomNavigationBar,
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (newIndex) {
+            setState(() {
+              _currentIndex = newIndex;
+            });
+          },
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            JacketPage(),
+            HomePage(),
+            ProfilePage(),
+          ],
+        ),
+        backgroundColor: Color(0xFF557B83),
       ),
-      backgroundColor: Color(0xFF557B83),
     );
   }
 
