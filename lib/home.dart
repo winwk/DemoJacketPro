@@ -91,7 +91,7 @@ class _homeState extends State<home> {
               borderRadius: BorderRadius.all(Radius.circular(30))),
         ),
         onPressed: () {
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             PageTransition(
                 type: PageTransitionType.rightToLeft, child: signin_Screen()),
