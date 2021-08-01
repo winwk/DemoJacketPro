@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:jackket/ChangeDistance.dart';
 import 'package:jackket/ChangeProJacket.dart';
+import 'package:jackket/EditDevice.dart';
 import 'package:jackket/Locationpage.dart';
 import 'package:jackket/Videopage.dart';
+import 'package:jackket/status.dart';
 import 'package:page_transition/page_transition.dart';
 
 class JacketPro extends StatefulWidget {
@@ -65,7 +68,13 @@ class _JacketProState extends State<JacketPro> {
       width: 350,
       height: 60,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft, child: EditDevice()),
+          );
+        },
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -164,7 +173,13 @@ class _JacketProState extends State<JacketPro> {
       width: 350,
       height: 60,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft, child: ChangeDistance()),
+          );
+        },
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,7 +208,13 @@ class _JacketProState extends State<JacketPro> {
       width: 350,
       height: 60,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft, child: Status()),
+          );
+        },
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

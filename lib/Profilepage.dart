@@ -8,6 +8,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  bool isBackButtonActivated = false;
   Widget box() {
     return SizedBox(
       height: 20,
