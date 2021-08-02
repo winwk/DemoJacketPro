@@ -26,7 +26,34 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Column(
-          children: [Text(auth.currentUser!.email!)],
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            CircleAvatar(
+              radius: 40.0,
+              backgroundImage: AssetImage("assets/person.png"),
+              backgroundColor: Colors.white,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Text('ดึงชื่อยังไงว่ะสู',
+                style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: 10,
+            ),
+            Text(auth.currentUser!.email!,
+                style: TextStyle(
+                  fontFamily: "Jasmine",
+                  color: Color(0xFF707070),
+                  fontSize: 30.0,
+                )),
+          ],
         ),
       ),
     );

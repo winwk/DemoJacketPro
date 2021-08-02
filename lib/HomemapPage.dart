@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -8,6 +11,24 @@ class HomemapPage extends StatefulWidget {
 }
 
 class _HomemapPageState extends State<HomemapPage> {
+  Completer<GoogleMapController> _controllerGoogleMap = Completer();
+  late GoogleMapController newGoogleMapController;
+
+  late Position currentPosition;
+  var geoLocator = Geolocator();
+  void locatePosition() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+    currentPosition = position;
+
+    LatLng latLatPosition = LatLng(position.latitude, position.longitude);
+
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLatPosition, zoom: 15);
+    newGoogleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
   Widget showLogo() {
     return Image.asset(
       "assets/BG.png",
@@ -144,10 +165,17 @@ class _HomemapPageState extends State<HomemapPage> {
                   padding: const EdgeInsets.only(bottom: 90),
                   child: GoogleMap(
                     mapType: MapType.normal,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
                     initialCameraPosition: CameraPosition(
-                        target: LatLng(14.0424397, 100.7387475), zoom: 50),
+                        target: LatLng(14.0424397, 100.7387475), zoom: 5),
                     zoomControlsEnabled: true,
-                    onMapCreated: (GoogleMapController controller) {},
+                    onMapCreated: (GoogleMapController controller) {
+                      _controllerGoogleMap.complete(controller);
+                      newGoogleMapController = controller;
+
+                      locatePosition();
+                    },
                   ),
                 ),
               )
