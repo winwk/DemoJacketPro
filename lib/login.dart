@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jackket/home1.dart';
 
 class signin_Screen extends StatefulWidget {
@@ -135,13 +134,59 @@ class _signin_ScreenState extends State<signin_Screen> {
                 print(e.code);
                 String message = "";
                 if (e.code == "user-not-found") {
-                  message = "ไม่พบผู้ใช้นี้ในระบบ โปรดกรอกใหม่อีกครั้ง";
+                  message = "ไม่พบผู้ใช้นี้ในระบบ";
                 }
                 if (e.code == "wrong-password") {
-                  message = "รหัสผิด โปรดกรอกใหม่อีกครั้ง";
+                  message = "รหัสผ่านไม่ถูกต้อง";
                 }
-                Fluttertoast.showToast(
-                    msg: message, gravity: ToastGravity.BOTTOM);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        title: Text(
+                          message,
+                          style: TextStyle(
+                            fontFamily: "Jasmine",
+                            color: Color(0xFF707070),
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        actions: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                child: Text(
+                                  "ตกลง",
+                                  style: TextStyle(
+                                    fontFamily: "Jasmine",
+                                    color: Color(0xFF707070),
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFE5EFC1),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(
+                                    context,
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    });
               }
             }
           },

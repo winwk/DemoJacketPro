@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/login.dart';
@@ -203,22 +202,115 @@ class _Register_ScreenState extends State<Register_Screen> {
                         email: emailString!, password: passwordString!)
                     .then((value) {
                   _formKey.currentState?.reset();
-                  Fluttertoast.showToast(
-                      msg: "ลงทะเบียนเรียบร้อยแล้ว",
-                      gravity: ToastGravity.BOTTOM);
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return home();
-                  }));
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          title: Text(
+                            'ลงทะเบียนเสร็จสิ้น',
+                            style: TextStyle(
+                              fontFamily: "Jasmine",
+                              color: Color(0xFF707070),
+                              fontSize: 30.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                          actions: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ElevatedButton(
+                                  child: Text(
+                                    "เข้าสู่ระบบ",
+                                    style: TextStyle(
+                                      fontFamily: "Jasmine",
+                                      color: Color(0xFF707070),
+                                      fontSize: 22.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Color(0xFFE5EFC1),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              signin_Screen()),
+                                    );
+                                  },
+                                ),
+                              ],
+                            )
+                          ],
+                        );
+                      });
                 });
               } on FirebaseAuthException catch (e) {
                 print(e.code);
                 String message = "";
                 if (e.code == "email-already-in-use") {
-                  message = "มีอีเมลนี้ในระบบแล้ว โปรดใช้อีเมลอื่นแทน";
+                  message = "มีอีเมลนี้ในระบบแล้ว";
                 }
-                Fluttertoast.showToast(
-                    msg: message, gravity: ToastGravity.BOTTOM);
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        title: Text(
+                          message,
+                          style: TextStyle(
+                            fontFamily: "Jasmine",
+                            color: Color(0xFF707070),
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        actions: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                child: Text(
+                                  "ตกลง",
+                                  style: TextStyle(
+                                    fontFamily: "Jasmine",
+                                    color: Color(0xFF707070),
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFE5EFC1),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(
+                                    context,
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    });
+
+                //Fluttertoast.showToast(
+                //msg: message, gravity: ToastGravity.BOTTOM);
               }
             }
           },

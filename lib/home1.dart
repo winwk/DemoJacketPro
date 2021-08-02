@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jackket/HomemapPage.dart';
 import 'package:jackket/Homepage.dart';
 import 'package:jackket/Jacketpage.dart';
