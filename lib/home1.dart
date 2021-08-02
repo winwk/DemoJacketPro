@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jackket/HomemapPage.dart';
 import 'package:jackket/Homepage.dart';
 import 'package:jackket/Jacketpage.dart';
 import 'package:jackket/Profilepage.dart';
@@ -52,14 +53,9 @@ class _home1State extends State<home1> {
     ),
   ];
 
-  
-
-
-
-  
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop:() => exit(0),
+      onWillPop: () => exit(0),
       child: Scaffold(
         bottomNavigationBar: bottomNavigationBar,
         body: PageView(
@@ -72,7 +68,7 @@ class _home1State extends State<home1> {
           physics: NeverScrollableScrollPhysics(),
           children: [
             JacketPage(),
-            HomePage(),
+            HomemapPage(),
             ProfilePage(),
           ],
         ),

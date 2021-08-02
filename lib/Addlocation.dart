@@ -59,7 +59,7 @@ class _AddLocationPageState extends State<AddLocationPage> {
             ]),
           ),
         ),
-        //body: ,
+        //body:
       ),
     );
   }

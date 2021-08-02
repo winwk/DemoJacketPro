@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:page_transition/page_transition.dart';
+//import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class HomePage extends StatefulWidget {
-  _HomePageState createState() => _HomePageState();
+class HomemapPage extends StatefulWidget {
+  _HomemapPageState createState() => _HomemapPageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomemapPageState extends State<HomemapPage> {
   Widget showLogo() {
     return Image.asset(
       "assets/BG.png",
@@ -134,20 +135,63 @@ class _HomePageState extends State<HomePage> {
           ]),
         ),
       ),
-      body: SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              showLogo(),
-              showText(),
-              sixedbox(),
-              showButton(),
-            ],
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[showLogo()],
+            ),
           ),
-        ),
+          DraggableScrollableSheet(
+            initialChildSize: 0.15,
+            maxChildSize: 0.5,
+            minChildSize: 0.15,
+            builder: (context, controller) {
+              return Container(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10))),
+                        width: 30,
+                        height: 5,
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: 13,
+                        controller: controller,
+                        itemBuilder: (BuildContext context, index) {
+                          return ListTile(
+                            title: Text('Item ${index + 1}'),
+                          );
+                        },
+                      ),
+                    )
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black38,
+                          spreadRadius: 0,
+                          blurRadius: 10),
+                    ],
+                    color: Color(0xFF557B83),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30))),
+              );
+            },
+          ),
+        ],
       ),
-      backgroundColor: Color(0xFF557B83),
+      backgroundColor: Colors.grey,
     );
   }
 }
