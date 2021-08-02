@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:page_transition/page_transition.dart';
-//import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomemapPage extends StatefulWidget {
   _HomemapPageState createState() => _HomemapPageState();
@@ -137,11 +137,21 @@ class _HomemapPageState extends State<HomemapPage> {
       ),
       body: Stack(
         children: <Widget>[
-          Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[showLogo()],
-            ),
+          Column(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 90),
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(14.0424397, 100.7387475), zoom: 50),
+                    zoomControlsEnabled: true,
+                    onMapCreated: (GoogleMapController controller) {},
+                  ),
+                ),
+              )
+            ],
           ),
           DraggableScrollableSheet(
             initialChildSize: 0.15,
@@ -191,7 +201,7 @@ class _HomemapPageState extends State<HomemapPage> {
           ),
         ],
       ),
-      backgroundColor: Colors.grey,
+      backgroundColor: Color(0xFFF8F9FA),
     );
   }
 }
