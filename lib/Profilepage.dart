@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:jackket/changepassword.dart';
+import 'package:jackket/home.dart';
 import 'package:jackket/setnoti.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -8,6 +11,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final auth = FirebaseAuth.instance;
   bool isBackButtonActivated = false;
   Widget box() {
     return SizedBox(
@@ -22,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Column(
-          children: [],
+          children: [Text(auth.currentUser!.email!)],
         ),
       ),
     );
@@ -131,7 +135,14 @@ class _ProfilePageState extends State<ProfilePage> {
         width: 160,
         height: 40,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            auth.signOut().then((value) {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) {
+                return home();
+              }));
+            });
+          },
           child: Text(
             "ออกจากระบบ",
             style: TextStyle(
