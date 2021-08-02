@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class AddLocationPage extends StatefulWidget {
   _AddLocationPageState createState() => _AddLocationPageState();
@@ -13,8 +14,7 @@ class _AddLocationPageState extends State<AddLocationPage> {
   }
 
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+    return Scaffold(
         backgroundColor: Color(0xFF557B83),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(70),
@@ -59,8 +59,17 @@ class _AddLocationPageState extends State<AddLocationPage> {
             ]),
           ),
         ),
-        //body:
-      ),
-    );
+        body: Column(
+          children: [
+            Expanded(
+              child: GoogleMap(
+                mapType: MapType.normal,
+                initialCameraPosition:
+                    CameraPosition(target: LatLng(28, 77), zoom: 100),
+                onMapCreated: (GoogleMapController controller) {},
+              ),
+            )
+          ],
+        ));
   }
 }

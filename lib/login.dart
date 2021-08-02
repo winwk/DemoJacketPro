@@ -125,10 +125,9 @@ class _signin_ScreenState extends State<signin_Screen> {
                         email: emailString!, password: passwordString!)
                     .then((value) {
                   _formKey.currentState?.reset();
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) {
-                    return home1();
-                  }));
+                  Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => home1()),
+                      (Route<dynamic> route) => false);
                 });
               } on FirebaseAuthException catch (e) {
                 print(e.code);

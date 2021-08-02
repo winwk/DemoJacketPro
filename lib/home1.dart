@@ -1,7 +1,5 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
-//import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jackket/HomemapPage.dart';
 import 'package:jackket/Homepage.dart';
 import 'package:jackket/Jacketpage.dart';
@@ -54,26 +52,23 @@ class _home1State extends State<home1> {
   ];
 
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => exit(0),
-      child: Scaffold(
-        bottomNavigationBar: bottomNavigationBar,
-        body: PageView(
-          controller: _pageController,
-          onPageChanged: (newIndex) {
-            setState(() {
-              _currentIndex = newIndex;
-            });
-          },
-          physics: NeverScrollableScrollPhysics(),
-          children: [
-            JacketPage(),
-            HomemapPage(),
-            ProfilePage(),
-          ],
-        ),
-        backgroundColor: Color(0xFF557B83),
+    return Scaffold(
+      bottomNavigationBar: bottomNavigationBar,
+      body: PageView(
+        controller: _pageController,
+        onPageChanged: (newIndex) {
+          setState(() {
+            _currentIndex = newIndex;
+          });
+        },
+        physics: NeverScrollableScrollPhysics(),
+        children: [
+          JacketPage(),
+          HomemapPage(),
+          ProfilePage(),
+        ],
       ),
+      backgroundColor: Color(0xFF557B83),
     );
   }
 

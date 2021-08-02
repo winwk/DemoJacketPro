@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:jackket/home.dart';
+import 'package:jackket/home1.dart';
 import 'package:jackket/register.dart';
+import 'package:jackket/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Manual extends StatefulWidget {
   static var route;
