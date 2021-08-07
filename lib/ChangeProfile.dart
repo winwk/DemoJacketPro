@@ -1,20 +1,20 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
-class ChangeProJacket extends StatefulWidget {
+import 'package:image_picker/image_picker.dart';
+import 'package:jackket/Profilepage.dart';
+
+class ChangeProfile extends StatefulWidget {
   @override
-  _ChangeProJacketState createState() => _ChangeProJacketState();
+  _ChangeProfileState createState() => _ChangeProfileState();
 }
 
-class _ChangeProJacketState extends State<ChangeProJacket> {
-  
+class _ChangeProfileState extends State<ChangeProfile> {
   final picker = ImagePicker();
-  
 
   XFile? _image;
+  set circular(bool circular) {}
   _imgFromGallery() async {
   XFile? image = await  picker.pickImage(
       source: ImageSource.gallery, imageQuality: 50

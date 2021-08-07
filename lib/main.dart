@@ -8,6 +8,7 @@ import 'package:jackket/JacketProfile.dart';
 import 'package:jackket/Jacketpage.dart';
 import 'package:jackket/Locationpage.dart';
 import 'package:jackket/Profilepage.dart';
+import 'package:jackket/changeProfile.dart';
 import 'package:jackket/changepassword.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/home1.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: routes,
-      initialRoute: initialRoute,
+     initialRoute: initialRoute,
     );
   }
 }
