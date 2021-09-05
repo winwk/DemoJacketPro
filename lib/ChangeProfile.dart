@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:image_picker/image_picker.dart';
 import 'package:jackket/Profilepage.dart';
@@ -11,82 +12,17 @@ class ChangeProfile extends StatefulWidget {
 }
 
 class _ChangeProfileState extends State<ChangeProfile> {
+  File? image;
+
   final picker = ImagePicker();
-
-  XFile? _image;
-  set circular(bool circular) {}
-  _imgFromGallery() async {
-  XFile? image = await  picker.pickImage(
-      source: ImageSource.gallery, imageQuality: 50
-  );
-  setState(() {
-    _image = image;
-  });
-}
-
-  Widget box() {
-    return SizedBox(
-      height: 20,
-    );
-  }
-
-Widget imageProfile() {
-    return Center(
-      child: Stack(children: <Widget>[
-        CircleAvatar(
-          radius: 70.0,
-          backgroundImage:  AssetImage("assets/user.png") ,
-          backgroundColor: Color(0xFF557B83),
-          
-        ),
-        Positioned(
-          bottom: 20.0,
-          right: 20.0,
-         child: InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: ((builder) => bottomSheet()),
-              );
-            },
-            child: Icon(Icons.add_a_photo, color: Colors.grey, size: 35.0),
-          ),
-          ),
-        
-      ]),
-    );
-  }
-  
-   Widget bottomSheet() {
-    return Container(
-      height: 100.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(children: <Widget>[
-        Text(
-          "เลือกรูปภาพ",
-          style: TextStyle(
-            fontSize: 22.0,
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.center, 
-            children: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.image),
-            onPressed: () {
-               _imgFromGallery();
-            },
-            label: Text("Gallery"),
-          )
-        ])
-      ]),
-    );
+  //generated_plugin_registrant.dart Implementing the image picker
+  Future<void> _openImagePicker() async {
+    final pickedImage = await picker.getImage(source: ImageSource.gallery);
+    if(pickedImage != null){
+      setState(() {
+        image = File(pickedImage.path);
+      });
+    }
   }
 
   Widget username() {
@@ -139,6 +75,7 @@ Widget imageProfile() {
         ));
   }
 
+
 @override
 Widget build(BuildContext context) {
   return MaterialApp(
@@ -179,38 +116,59 @@ Widget build(BuildContext context) {
             ]),
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Form(
-            child: SingleChildScrollView(
-              child: Column(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(children: [
+              SizedBox(height: 35),
+              Container(
+                width: 150,
+                height: 150,
+                color: Colors.grey,
+                child: image != null
+                    ? Image.file(image!, fit: BoxFit.cover)
+                    : Text(''),
+              ),
+              
+              Center(
+                child: ElevatedButton(
+          onPressed: () {
+            _openImagePicker();
+          },
+          child: Text(
+            "เลือกรูปภาพ",
+            style: TextStyle(
+                fontFamily: "Jasmine",
+                color: Color(0xFF707070),
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold),
+          ),
+          style: ElevatedButton.styleFrom(
+              primary: Color(0xFFE5EFC1),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10)))),
+        )
+              ),
+              Column(
                 children: [
-                 box(),
-                  imageProfile(),
                   SizedBox(
-                    height: 50,
+                    height: 20,
                   ),
                   username(),
                   SizedBox(
-                    height: 50,
+                    height: 20,
                   ),
                   Button(),
                   SizedBox(
-                    height: 50,
+                    height: 20,
                   ),
-                  
-                  
                 ],
               ),
-            ),
+            ]),
           ),
         ),
+        
       ),
     );
   }
-
-
 }
-  
-
-

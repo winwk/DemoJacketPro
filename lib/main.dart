@@ -18,16 +18,18 @@ import 'package:jackket/manual.dart';
 import 'package:jackket/Videopage.dart';
 import 'package:jackket/router.dart';
 
+
 String initialRoute = '/home';
 Future<Null> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp().then((value) async {
+ await Firebase.initializeApp().then((value) async {
     await FirebaseAuth.instance.authStateChanges().listen((event) {
       if (event != null) {
         initialRoute = '/home1';
       }
-      runApp(MyApp());
-    });
+ 
+         runApp(MyApp());
+  });
   });
 }
 
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: routes,
+     routes: routes,
      initialRoute: initialRoute,
     );
   }
