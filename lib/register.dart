@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ class Register_Screen extends StatefulWidget {
 
 class _Register_ScreenState extends State<Register_Screen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  CollectionReference _userCollection = FirebaseFirestore.instance.collection("users");
   String? nameString, emailString, passwordString, confirmpassString;
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmpassword = TextEditingController();
@@ -194,6 +196,11 @@ class _Register_ScreenState extends State<Register_Screen> {
             print("You Click upload");
             if (_formKey.currentState!.validate()) {
               _formKey.currentState?.save();
+              _userCollection.add({
+                "name":nameString,
+                "email":emailString,
+                "password":confirmpassString
+              });
               print(
                   "name = $nameString, email = $emailString, password = $passwordString , confirmpass = $confirmpassString");
               try {
