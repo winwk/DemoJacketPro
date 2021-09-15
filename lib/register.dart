@@ -145,7 +145,7 @@ class _Register_ScreenState extends State<Register_Screen> {
       ),
     );
   }
-
+  
   Widget ConfirmPassword() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -308,10 +308,10 @@ class _Register_ScreenState extends State<Register_Screen> {
                         ],
                       );
                     });
-
                 //Fluttertoast.showToast(
                 //msg: message, gravity: ToastGravity.BOTTOM);
               }
+              
             }
           },
           child: Text(

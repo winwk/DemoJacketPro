@@ -38,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 20,
             ),
-            Text('ดึงชื่อยังไงว่ะสู',
+            Text('',
                 style: TextStyle(
                     fontFamily: "Jasmine",
                     color: Color(0xFF707070),
