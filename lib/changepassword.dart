@@ -35,27 +35,106 @@ class _ChangepassState extends State<Changepass> {
   resetPassword() async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.orangeAccent,
-          content: Text(
-            'Password Reset Email has been sent !',
-            style: TextStyle(fontSize: 18.0),
-          ),
-        ),
-      );
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20))),
+              title: Text(
+                'ส่งอีเมลรีเซ็ตรหัสผ่านแล้ว !',
+                style: TextStyle(
+                  fontFamily: "Jasmine",
+                  color: Color(0xFF707070),
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      child: Text(
+                        "โอเค",
+                        style: TextStyle(
+                          fontFamily: "Jasmine",
+                          color: Color(0xFF707070),
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Color(0xFFE5EFC1),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                      ),
+                      onPressed: () {
+                        FirebaseAuth.instance.signOut();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => signin_Screen()),
+                        );
+                      },
+                    ),
+                  ],
+                )
+              ],
+            );
+          });
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.orangeAccent,
-            content: Text(
-              'No user found for that email.',
-              style: TextStyle(fontSize: 18.0),
-            ),
-          ),
-        );
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                title: Text(
+                  'ไม่พบผู้ใช้สำหรับอีเมลนี้ !',
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                actions: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        child: Text(
+                          "โอเค",
+                          style: TextStyle(
+                            fontFamily: "Jasmine",
+                            color: Color(0xFF707070),
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5EFC1),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(
+                            context,
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              );
+            });
       }
     }
   }
