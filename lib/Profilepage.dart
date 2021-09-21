@@ -1,18 +1,39 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jackket/changepassword.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/setnoti.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final auth = FirebaseAuth.instance;
   bool isBackButtonActivated = false;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  String? displayName;
+
+  
+  @override
+  void initState() {
+    super.initState();
+    findDisplayName();
+  }
+
+  Future<Null> findDisplayName() async {
+    await Firebase.initializeApp().then((value) async {
+      await FirebaseAuth.instance.authStateChanges().listen((event) {
+        displayName = event!.displayName;
+        print('##### displayName = $displayName#######');
+      });
+    });
+  }
+
   Widget box() {
     return SizedBox(
       height: 20,
@@ -36,16 +57,19 @@ class _ProfilePageState extends State<ProfilePage> {
               backgroundColor: Colors.white,
             ),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
-            Text('',
-                style: TextStyle(
-                    fontFamily: "Jasmine",
-                    color: Color(0xFF707070),
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.bold)),
+            Text(
+              '$displayName',
+              style: TextStyle(
+                fontFamily: "Jasmine",
+                color: Color(0xFF707070),
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold
+              ),
+            ),
             SizedBox(
-              height: 10,
+              height: 20,
             ),
             Text(auth.currentUser!.email!,
                 style: TextStyle(

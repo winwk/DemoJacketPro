@@ -16,10 +16,16 @@ class Register_Screen extends StatefulWidget {
 
 class _Register_ScreenState extends State<Register_Screen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  CollectionReference _userCollection = FirebaseFirestore.instance.collection("users");
+  CollectionReference _userCollection =
+      FirebaseFirestore.instance.collection("users");
   String? nameString, emailString, passwordString, confirmpassString;
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmpassword = TextEditingController();
+
+  
+ 
+
+
 
   validator() {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
@@ -62,6 +68,7 @@ class _Register_ScreenState extends State<Register_Screen> {
               onSaved: (String? value) {
                 nameString = value;
               },
+              
             )
           ],
         ),
@@ -147,7 +154,7 @@ class _Register_ScreenState extends State<Register_Screen> {
       ),
     );
   }
-  
+
   Widget ConfirmPassword() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -187,6 +194,21 @@ class _Register_ScreenState extends State<Register_Screen> {
     );
   }
 
+
+
+  Future<Null> regisFirebase() async{
+    await Firebase.initializeApp().then((value) async{
+        print('######success######');
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailString!, password: passwordString!)
+        .then((value) {
+          print('Regis success');
+          }).catchError((value){
+            
+          });
+        
+    });
+  }
+
   Widget regisButton2() {
     return SizedBox(
         width: 200,
@@ -197,18 +219,26 @@ class _Register_ScreenState extends State<Register_Screen> {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState?.save();
               _userCollection.add({
-                "name":nameString,
-                "email":emailString,
-                "password":confirmpassString
+                "name": nameString,
+                "email": emailString,
+                "password": confirmpassString
               });
               print(
                   "name = $nameString, email = $emailString, password = $passwordString , confirmpass = $confirmpassString");
+
               try {
+                
                 await FirebaseAuth.instance
                     .createUserWithEmailAndPassword(
-                        email: emailString!, password: passwordString!)
-                    .then((value) {
+                  email: emailString!,
+                  password: passwordString!,
+                )
+                    .then((value) async {
+                     
                   _formKey.currentState?.reset();
+                  print('Regis success');
+                  await value.user?.updateProfile(displayName: nameString);
+
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -318,7 +348,6 @@ class _Register_ScreenState extends State<Register_Screen> {
                 //Fluttertoast.showToast(
                 //msg: message, gravity: ToastGravity.BOTTOM);
               }
-              
             }
           },
           child: Text(
@@ -416,7 +445,9 @@ class _Register_ScreenState extends State<Register_Screen> {
                           SizedBox(
                             height: 50.0,
                           ),
+                          
                           regisButton2()
+                          
                         ],
                       ),
                     ),
