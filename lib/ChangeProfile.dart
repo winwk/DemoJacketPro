@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jackket/Profilepage.dart';
+import 'package:jackket/home1.dart';
 
 class ChangeProfile extends StatefulWidget {
   @override
@@ -182,9 +183,10 @@ class _ChangeProfileState extends State<ChangeProfile> {
                                 ),
                                 onPressed: () {
                                   _formKey.currentState?.reset();
-                                  Navigator.pop(
-                                    context,
-                                  );
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) => home1()),
+                                      (Route<dynamic> route) => false);
                                 },
                               ),
                             ],
