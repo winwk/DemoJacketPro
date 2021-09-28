@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jackket/ChangeProfile.dart';
 import 'package:jackket/changepassword.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/setnoti.dart';
@@ -88,7 +89,13 @@ class _ProfilePageState extends State<ProfilePage> {
       width: 350,
       height: 60,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.rightToLeft, child: ChangeProfile()),
+            );
+        },
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

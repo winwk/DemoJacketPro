@@ -1,7 +1,7 @@
-import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
 import 'package:image_picker/image_picker.dart';
 import 'package:jackket/Profilepage.dart';
 
@@ -11,18 +11,18 @@ class ChangeProfile extends StatefulWidget {
 }
 
 class _ChangeProfileState extends State<ChangeProfile> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
-
+  String? nameString;
   XFile? _image;
   set circular(bool circular) {}
   _imgFromGallery() async {
-  XFile? image = await  picker.pickImage(
-      source: ImageSource.gallery, imageQuality: 50
-  );
-  setState(() {
-    _image = image;
-  });
-}
+    XFile? image =
+        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
+    setState(() {
+      _image = image;
+    });
+  }
 
   Widget box() {
     return SizedBox(
@@ -30,19 +30,26 @@ class _ChangeProfileState extends State<ChangeProfile> {
     );
   }
 
-Widget imageProfile() {
+  validator() {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      print("validate");
+    } else {
+      print("not validate");
+    }
+  }
+
+  Widget imageProfile() {
     return Center(
       child: Stack(children: <Widget>[
         CircleAvatar(
           radius: 70.0,
-          backgroundImage:  AssetImage("assets/user.png") ,
+          backgroundImage: AssetImage("assets/user.png"),
           backgroundColor: Color(0xFF557B83),
-          
         ),
         Positioned(
           bottom: 20.0,
           right: 20.0,
-         child: InkWell(
+          child: InkWell(
             onTap: () {
               showModalBottomSheet(
                 context: context,
@@ -51,13 +58,12 @@ Widget imageProfile() {
             },
             child: Icon(Icons.add_a_photo, color: Colors.grey, size: 35.0),
           ),
-          ),
-        
+        ),
       ]),
     );
   }
-  
-   Widget bottomSheet() {
+
+  Widget bottomSheet() {
     return Container(
       height: 100.0,
       width: MediaQuery.of(context).size.width,
@@ -75,12 +81,11 @@ Widget imageProfile() {
         SizedBox(
           height: 20,
         ),
-        Row(mainAxisAlignment: MainAxisAlignment.center, 
-            children: <Widget>[
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           FlatButton.icon(
             icon: Icon(Icons.image),
             onPressed: () {
-               _imgFromGallery();
+              _imgFromGallery();
             },
             label: Text("Gallery"),
           )
@@ -99,6 +104,7 @@ Widget imageProfile() {
           children: [
             TextFormField(
               decoration: InputDecoration(
+                  icon: Icon(Icons.face),
                   labelText: "ชื่อผู้ใช้",
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
@@ -108,8 +114,12 @@ Widget imageProfile() {
               validator: (String? value) {
                 if (value == null || value.trim().length == 0) {
                   return "กรุณาระบุข้อมูล";
+                } else {
+                  return null;
                 }
-                return null;
+              },
+              onSaved: (String? value) {
+                nameString = value;
               },
             )
           ],
@@ -123,7 +133,68 @@ Widget imageProfile() {
         width: 200,
         height: 50,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () async {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState?.save();
+              print("###$nameString");
+              await Firebase.initializeApp().then((value) async {
+                await FirebaseAuth.instance
+                    .authStateChanges()
+                    .listen((event) async {
+                  event?.updateProfile(displayName: nameString);
+                });
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20))),
+                        title: Text(
+                          'แก้ไขโปรเสร็จสิ้น',
+                          style: TextStyle(
+                            fontFamily: "Jasmine",
+                            color: Color(0xFF707070),
+                            fontSize: 30.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        actions: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ElevatedButton(
+                                child: Text(
+                                  "ตกลง",
+                                  style: TextStyle(
+                                    fontFamily: "Jasmine",
+                                    color: Color(0xFF707070),
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Color(0xFFE5EFC1),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                ),
+                                onPressed: () {
+                                  _formKey.currentState?.reset();
+                                  Navigator.pop(
+                                    context,
+                                  );
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    });
+              });
+            }
+          },
           child: Text(
             "ยืนยัน",
             style: TextStyle(
@@ -139,9 +210,9 @@ Widget imageProfile() {
         ));
   }
 
-@override
-Widget build(BuildContext context) {
-  return MaterialApp(
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       home: Scaffold(
         backgroundColor: Color(0xFF557B83),
         appBar: PreferredSize(
@@ -167,7 +238,6 @@ Widget build(BuildContext context) {
             centerTitle: true,
             backgroundColor: Color(0xff39AEA9),
             title: Column(children: [
-             
               Text(
                 "แก้ไขโปรไฟล์",
                 style: TextStyle(
@@ -182,10 +252,11 @@ Widget build(BuildContext context) {
         body: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Form(
+            key: _formKey,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                 box(),
+                  box(),
                   imageProfile(),
                   SizedBox(
                     height: 50,
@@ -198,8 +269,6 @@ Widget build(BuildContext context) {
                   SizedBox(
                     height: 50,
                   ),
-                  
-                  
                 ],
               ),
             ),
@@ -208,9 +277,4 @@ Widget build(BuildContext context) {
       ),
     );
   }
-
-
 }
-  
-
-

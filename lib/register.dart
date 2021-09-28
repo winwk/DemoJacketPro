@@ -234,7 +234,6 @@ class _Register_ScreenState extends State<Register_Screen> {
                   password: passwordString!,
                 )
                     .then((value) async {
-                     
                   _formKey.currentState?.reset();
                   print('Regis success');
                   await value.user?.updateProfile(displayName: nameString);
