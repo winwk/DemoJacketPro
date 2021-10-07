@@ -1,12 +1,19 @@
+import 'dart:io';
+import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jackket/ChangeProfile.dart';
 import 'package:jackket/changepassword.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/setnoti.dart';
+import 'package:jackket/testChangeProfile.dart';
+import 'package:jackket/user/showListofUsers.dart';
+import 'package:jackket/user/testUser.dart';
+import 'package:jackket/user/user_model.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +25,26 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isBackButtonActivated = false;
   final FirebaseAuth auth = FirebaseAuth.instance;
   String? displayName;
+  var getPic;
 
-  
   @override
   void initState() {
     super.initState();
     findDisplayName();
+    checkPic();
+  }
+
+  void checkPic() {
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      print(value.data());
+      getPic = value.data()!["profileImage"];
+      print(getPic);
+    });
   }
 
   Future<Null> findDisplayName() async {
@@ -52,9 +73,13 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 20,
             ),
-            CircleAvatar(
+           getPic ==  null ? CircleAvatar(
               radius: 40.0,
-              backgroundImage: AssetImage("assets/person.png"),
+              backgroundImage:AssetImage("assets/person.png"),
+              backgroundColor: Colors.white,
+            ) : CircleAvatar(
+              radius: 40.0,
+              backgroundImage: NetworkImage(getPic), 
               backgroundColor: Colors.white,
             ),
             SizedBox(
@@ -63,11 +88,10 @@ class _ProfilePageState extends State<ProfilePage> {
             Text(
               '$displayName',
               style: TextStyle(
-                fontFamily: "Jasmine",
-                color: Color(0xFF707070),
-                fontSize: 30.0,
-                fontWeight: FontWeight.bold
-              ),
+                  fontFamily: "Jasmine",
+                  color: Color(0xFF707070),
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold),
             ),
             SizedBox(
               height: 20,
@@ -91,10 +115,11 @@ class _ProfilePageState extends State<ProfilePage> {
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.rightToLeft, child: ChangeProfile()),
-            );
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft,
+                child: ChangeProfile()),
+          );
         },
         child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,

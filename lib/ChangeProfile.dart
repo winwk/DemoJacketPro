@@ -1,10 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jackket/Profilepage.dart';
 import 'package:jackket/home1.dart';
+import 'dart:io';
+
+import 'package:path/path.dart' as p;
 
 class ChangeProfile extends StatefulWidget {
   @override
@@ -15,15 +19,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
   String? nameString;
-  XFile? _image;
-  set circular(bool circular) {}
-  _imgFromGallery() async {
-    XFile? image =
-        await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
-    setState(() {
-      _image = image;
-    });
-  }
+  File? file;
 
   Widget box() {
     return SizedBox(
@@ -40,59 +36,25 @@ class _ChangeProfileState extends State<ChangeProfile> {
   }
 
   Widget imageProfile() {
-    return Center(
-      child: Stack(children: <Widget>[
-        CircleAvatar(
-          radius: 70.0,
-          backgroundImage: AssetImage("assets/user.png"),
-          backgroundColor: Color(0xFF557B83),
-        ),
-        Positioned(
-          bottom: 20.0,
-          right: 20.0,
-          child: InkWell(
+    return file == null
+        ? InkWell(
             onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: ((builder) => bottomSheet()),
-              );
+              chooseImage();
             },
-            child: Icon(Icons.add_a_photo, color: Colors.grey, size: 35.0),
-          ),
-        ),
-      ]),
-    );
-  }
-
-  Widget bottomSheet() {
-    return Container(
-      height: 100.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(children: <Widget>[
-        Text(
-          "เลือกรูปภาพ",
-          style: TextStyle(
-            fontSize: 22.0,
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.image),
-            onPressed: () {
-              _imgFromGallery();
-            },
-            label: Text("Gallery"),
+            child: CircleAvatar(
+              radius: 55.0,
+              backgroundImage: AssetImage("assets/person.png"),
+              backgroundColor: Colors.white,
+            ),
           )
-        ])
-      ]),
-    );
+        : ClipOval(
+          child: Image.file(
+              file!,
+              width: 120,
+              height: 120,
+              fit: BoxFit.cover,
+            ),
+        );
   }
 
   Widget username() {
@@ -183,6 +145,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                                 ),
                                 onPressed: () {
                                   _formKey.currentState?.reset();
+                                  updateProfile(context);
                                   Navigator.of(context).pushAndRemoveUntil(
                                       MaterialPageRoute(
                                           builder: (context) => home1()),
@@ -278,5 +241,37 @@ class _ChangeProfileState extends State<ChangeProfile> {
         ),
       ),
     );
+  }
+
+  chooseImage() async {
+    XFile? xfile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    print("file" + xfile!.path);
+    file = File(xfile.path);
+    setState(() {});
+  }
+
+  updateProfile(BuildContext context) async {
+    Map<String, dynamic> map = Map();
+    if (file != null) {
+      String url = await uploadImage();
+      map['profileImage'] = url;
+    }
+
+    await FirebaseFirestore.instance
+        .collection("test")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .update(map);
+  }
+
+  Future<String> uploadImage() async {
+    TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+        .ref()
+        .child("profile")
+        .child(FirebaseAuth.instance.currentUser!.uid +
+            "_" +
+            p.basename(file!.path))
+        .putFile(file!);
+
+    return taskSnapshot.ref.getDownloadURL();
   }
 }

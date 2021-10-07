@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
+import 'package:jackket/Homepage.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/login.dart';
+import 'package:jackket/user/user_model.dart';
 
 class Register_Screen extends StatefulWidget {
   static String route = "register";
@@ -17,15 +19,10 @@ class Register_Screen extends StatefulWidget {
 class _Register_ScreenState extends State<Register_Screen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   CollectionReference _userCollection =
-      FirebaseFirestore.instance.collection("users");
+      FirebaseFirestore.instance.collection("test");
   String? nameString, emailString, passwordString, confirmpassString;
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmpassword = TextEditingController();
-
-  
- 
-
-
 
   validator() {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
@@ -68,7 +65,6 @@ class _Register_ScreenState extends State<Register_Screen> {
               onSaved: (String? value) {
                 nameString = value;
               },
-              
             )
           ],
         ),
@@ -194,18 +190,15 @@ class _Register_ScreenState extends State<Register_Screen> {
     );
   }
 
-
-
-  Future<Null> regisFirebase() async{
-    await Firebase.initializeApp().then((value) async{
-        print('######success######');
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(email: emailString!, password: passwordString!)
-        .then((value) {
-          print('Regis success');
-          }).catchError((value){
-            
-          });
-        
+  Future<Null> regisFirebase() async {
+    await Firebase.initializeApp().then((value) async {
+      print('######success######');
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailString!, password: passwordString!)
+          .then((value) {
+        print('Regis success');
+      }).catchError((value) {});
     });
   }
 
@@ -227,7 +220,6 @@ class _Register_ScreenState extends State<Register_Screen> {
                   "name = $nameString, email = $emailString, password = $passwordString , confirmpass = $confirmpassString");
 
               try {
-                
                 await FirebaseAuth.instance
                     .createUserWithEmailAndPassword(
                   email: emailString!,
@@ -237,6 +229,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                   _formKey.currentState?.reset();
                   print('Regis success');
                   await value.user?.updateProfile(displayName: nameString);
+                  postDetailsToFirestore();
 
                   showDialog(
                       context: context,
@@ -444,9 +437,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                           SizedBox(
                             height: 50.0,
                           ),
-                          
                           regisButton2()
-                          
                         ],
                       ),
                     ),
@@ -461,5 +452,25 @@ class _Register_ScreenState extends State<Register_Screen> {
             ),
           );
         });
+  }
+
+  postDetailsToFirestore() async {
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
+    User? user = FirebaseAuth.instance.currentUser;
+
+    UserModel userModel =
+        UserModel(email: '', name: '', profileImage: '', uid: '');
+    userModel.uid = user!.uid;
+    // narimetisaigopi@gmail.com
+    userModel.email = user.email!;
+    userModel.name = user.email!.split("@")[0];
+    
+    await firebaseFirestore
+        .collection("test")
+        .doc(user.uid)
+        .set(userModel.toMap());
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text("User account created")));
+   
   }
 }
