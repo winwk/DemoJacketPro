@@ -223,8 +223,16 @@ class _ChangeProfileState extends State<ChangeProfile> {
                 children: [
                   box(),
                   imageProfile(),
+                    SizedBox(
+                    height: 20,
+                  ),
+                  Text('เลือกรูปโปรไฟล์',style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: "Jasmine",
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold)),
                   SizedBox(
-                    height: 50,
+                    height: 40,
                   ),
                   username(),
                   SizedBox(

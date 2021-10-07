@@ -81,6 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
               radius: 40.0,
               backgroundImage: NetworkImage(getPic), 
               backgroundColor: Colors.white,
+              
             ),
             SizedBox(
               height: 15,
