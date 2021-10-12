@@ -5,12 +5,15 @@ class UserModel {
   String email;
   String name;
   String profileImage;
+  String JacketName;
 
   UserModel({
     required this.uid,
     required this.email,
     required this.name,
     required this.profileImage,
+    required this.JacketName,
+
   });
 
   // data from server parsing
@@ -20,6 +23,7 @@ class UserModel {
       email: map['email'],
       name: map['name'],
       profileImage: map['profileImage'],
+      JacketName: map['JacketName']
     );
   }
   // sending data to server
@@ -29,6 +33,7 @@ class UserModel {
       'email': email,
       'name': name,
       'profileImage': profileImage,
+      'JacketName': JacketName
     };
   }
 }
