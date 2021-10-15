@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:jackket/ChangeDistance.dart';
 import 'package:jackket/ChangeProJacket.dart';
@@ -15,14 +16,52 @@ class JacketPro extends StatefulWidget {
 }
 
 class _JacketProState extends State<JacketPro> {
-  Widget test() {
+  var getPic;
+  var JackUser;
+  final _database = FirebaseDatabase.instance.reference();
+
+  Widget getProfileJack() {
+    _database.child('Jacket01').onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final profileImage = data['imageProfile'];
+      final user = data['user'] as String;
+      final video = data['video'];
+      print(video);
+      print(profileImage);
+      getPic = profileImage;
+      JackUser = user;
+    });
     return SizedBox(
       width: 355,
       height: 200,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         child: Column(
-          children: [],
+          children: [
+            SizedBox(
+              height: 20,
+            ),
+            getPic == null
+                ? CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: AssetImage("assets/person.png"),
+                    backgroundColor: Colors.white,
+                  )
+                : CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: NetworkImage(getPic),
+                    backgroundColor: Colors.white,
+                  ),
+            SizedBox(
+              height: 32,
+            ),
+            Text("ชื่อโปรไฟล์ : $JackUser",
+                style: TextStyle(
+                  fontFamily: "Jasmine",
+                  color: Color(0xFF707070),
+                  fontSize: 35.0,
+                ))
+          ],
         ),
       ),
     );
@@ -79,7 +118,7 @@ class _JacketProState extends State<JacketPro> {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(" แก้ไขอุปกรณ์",
+              Text(" เปลี่ยนรหัสผ่านอุปกรณ์",
                   style: TextStyle(
                     fontFamily: "Jasmine",
                     color: Color(0xFF707070),
@@ -310,7 +349,7 @@ class _JacketProState extends State<JacketPro> {
                   SizedBox(
                     height: 10.0,
                   ),
-                  test(),
+                  getProfileJack(),
                   SizedBox(
                     height: 15.0,
                   ),

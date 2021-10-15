@@ -72,16 +72,17 @@ class _ProfilePageState extends State<ProfilePage> {
             SizedBox(
               height: 20,
             ),
-           getPic ==  null ? CircleAvatar(
-              radius: 40.0,
-              backgroundImage:AssetImage("assets/person.png"),
-              backgroundColor: Colors.white,
-            ) : CircleAvatar(
-              radius: 40.0,
-              backgroundImage: NetworkImage(getPic), 
-              backgroundColor: Colors.white,
-              
-            ),
+            getPic == null
+                ? CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: AssetImage("assets/person.png"),
+                    backgroundColor: Colors.white,
+                  )
+                : CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: NetworkImage(getPic),
+                    backgroundColor: Colors.white,
+                  ),
             SizedBox(
               height: 15,
             ),
@@ -117,8 +118,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Navigator.push(
             context,
             PageTransition(
-                type: PageTransitionType.rightToLeft,
-                child: ChangeProfile()),
+                type: PageTransitionType.rightToLeft, child: ChangeProfile()),
           );
         },
         child: Row(

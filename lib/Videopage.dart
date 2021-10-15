@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class VideoPage extends StatefulWidget {
@@ -5,12 +6,40 @@ class VideoPage extends StatefulWidget {
 }
 
 class _VideoPageState extends State<VideoPage> {
+  final _database = FirebaseDatabase.instance.reference();
+  var showVideo;
+
+  @override
+  void initState() {
+    super.initState();
+    checkVideo();
+  }
+
+
+  void checkVideo() {
+    _database.child('Jacket01').onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final video = data['video']as String;
+      print(video);
+      showVideo = video;
+    });
+  }
+
   Widget box() {
     return SizedBox(
       height: 20,
     );
   }
 
+  Widget show(){
+    return SizedBox(
+      child: Card(
+        
+        child: Text(showVideo)),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -47,6 +76,7 @@ class _VideoPageState extends State<VideoPage> {
                     fontSize: 60.0,
                     fontWeight: FontWeight.bold),
               ),
+              show()
             ]),
           ),
         ),

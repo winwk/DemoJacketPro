@@ -1,8 +1,13 @@
-
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jackket/home1.dart';
+import 'package:path/path.dart' as p;
 
 class ChangeProJacket extends StatefulWidget {
   @override
@@ -10,19 +15,13 @@ class ChangeProJacket extends StatefulWidget {
 }
 
 class _ChangeProJacketState extends State<ChangeProJacket> {
-  
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final picker = ImagePicker();
-  
-
-  XFile? _image;
-  _imgFromGallery() async {
-  XFile? image = await  picker.pickImage(
-      source: ImageSource.gallery, imageQuality: 50
-  );
-  setState(() {
-    _image = image;
-  });
-}
+  CollectionReference _jackCollection =
+      FirebaseFirestore.instance.collection("Jacket01");
+  String? nameString;
+  File? file;
+  final database = FirebaseDatabase.instance.reference();
 
   Widget box() {
     return SizedBox(
@@ -30,63 +29,43 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
     );
   }
 
-Widget imageProfile() {
-    return Center(
-      child: Stack(children: <Widget>[
-        CircleAvatar(
-          radius: 70.0,
-          backgroundImage:  AssetImage("assets/user.png") ,
-          backgroundColor: Color(0xFF557B83),
-          
-        ),
-        Positioned(
-          bottom: 20.0,
-          right: 20.0,
-         child: InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                context: context,
-                builder: ((builder) => bottomSheet()),
-              );
-            },
-            child: Icon(Icons.add_a_photo, color: Colors.grey, size: 35.0),
-          ),
-          ),
-        
-      ]),
-    );
+  validator() {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
+      print("validate");
+    } else {
+      print("not validate");
+    }
   }
-  
-   Widget bottomSheet() {
-    return Container(
-      height: 100.0,
-      width: MediaQuery.of(context).size.width,
-      margin: EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
-      child: Column(children: <Widget>[
-        Text(
-          "เลือกรูปภาพ",
-          style: TextStyle(
-            fontSize: 22.0,
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(mainAxisAlignment: MainAxisAlignment.center, 
-            children: <Widget>[
-          FlatButton.icon(
-            icon: Icon(Icons.image),
-            onPressed: () {
-               _imgFromGallery();
+
+  void updateNameJack() {
+    FirebaseFirestore.instance
+        .collection("Jacket01")
+        .doc(_jackCollection.id)
+        .update({"JacketName": nameString}).then((_) {
+      print("success!");
+    });
+  }
+
+  Widget imageProfile() {
+    return file == null
+        ? InkWell(
+            onTap: () {
+              chooseImage();
             },
-            label: Text("Gallery"),
+            child: CircleAvatar(
+              radius: 55.0,
+              backgroundImage: AssetImage("assets/person.png"),
+              backgroundColor: Colors.white,
+            ),
           )
-        ])
-      ]),
-    );
+        : ClipOval(
+            child: Image.file(
+              file!,
+              width: 120,
+              height: 120,
+              fit: BoxFit.cover,
+            ),
+          );
   }
 
   Widget username() {
@@ -99,7 +78,7 @@ Widget imageProfile() {
           children: [
             TextFormField(
               decoration: InputDecoration(
-                  labelText: "ชื่อผู้ใช้",
+                  labelText: "ชื่ออุปกรณ์",
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide(
@@ -111,6 +90,9 @@ Widget imageProfile() {
                 }
                 return null;
               },
+              onSaved: (String? value) {
+                nameString = value;
+              },
             )
           ],
         ),
@@ -119,11 +101,68 @@ Widget imageProfile() {
   }
 
   Widget Button() {
+    final Jacket01Ref = database.child('/Jacket01');
+
     return SizedBox(
         width: 200,
         height: 50,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            if (_formKey.currentState!.validate()) {
+              _formKey.currentState?.save();
+              Jacket01Ref.update({'user': nameString});
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      title: Text(
+                        'แก้ไขโปรไฟล์แจ็คเก็ตเสร็จสิ้น',
+                        style: TextStyle(
+                          fontFamily: "Jasmine",
+                          color: Color(0xFF707070),
+                          fontSize: 30.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      actions: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              child: Text(
+                                "ตกลง",
+                                style: TextStyle(
+                                  fontFamily: "Jasmine",
+                                  color: Color(0xFF707070),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFE5EFC1),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                              ),
+                              onPressed: () {
+                                _formKey.currentState?.reset();
+                                updateProfile(context);
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => home1()),
+                                    (Route<dynamic> route) => false);
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    );
+                  });
+            }
+          },
           child: Text(
             "ยืนยัน",
             style: TextStyle(
@@ -139,9 +178,9 @@ Widget imageProfile() {
         ));
   }
 
-@override
-Widget build(BuildContext context) {
-  return MaterialApp(
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       home: Scaffold(
         backgroundColor: Color(0xFF557B83),
         appBar: PreferredSize(
@@ -167,7 +206,6 @@ Widget build(BuildContext context) {
             centerTitle: true,
             backgroundColor: Color(0xff39AEA9),
             title: Column(children: [
-             
               Text(
                 "แก้ไขโปรไฟล์",
                 style: TextStyle(
@@ -182,10 +220,11 @@ Widget build(BuildContext context) {
         body: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Form(
+            key: _formKey,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                 box(),
+                  box(),
                   imageProfile(),
                   SizedBox(
                     height: 50,
@@ -198,8 +237,6 @@ Widget build(BuildContext context) {
                   SizedBox(
                     height: 50,
                   ),
-                  
-                  
                 ],
               ),
             ),
@@ -209,8 +246,31 @@ Widget build(BuildContext context) {
     );
   }
 
+  chooseImage() async {
+    XFile? xfile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    print("file" + xfile!.path);
+    file = File(xfile.path);
+    setState(() {});
+  }
 
+  updateProfile(BuildContext context) async {
+    final Jacket01Ref = database.child('/Jacket01');
+
+    if (file != null) {
+      String url = await uploadImage();
+      Jacket01Ref.update({'imageProfile': url});
+    }
+  }
+
+  Future<String> uploadImage() async {
+    TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+        .ref()
+        .child("profileJacket")
+        .child(FirebaseAuth.instance.currentUser!.uid +
+            "_" +
+            p.basename(file!.path))
+        .putFile(file!);
+
+    return taskSnapshot.ref.getDownloadURL();
+  }
 }
-  
-
-
