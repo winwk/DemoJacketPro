@@ -1,13 +1,8 @@
+
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:jackket/home1.dart';
-import 'package:path/path.dart' as p;
 
 class ChangeProJacket extends StatefulWidget {
   @override
@@ -15,13 +10,19 @@ class ChangeProJacket extends StatefulWidget {
 }
 
 class _ChangeProJacketState extends State<ChangeProJacket> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  
   final picker = ImagePicker();
-  CollectionReference _jackCollection =
-      FirebaseFirestore.instance.collection("Jacket01");
-  String? nameString;
-  File? file;
-  final database = FirebaseDatabase.instance.reference();
+  
+
+  XFile? _image;
+  _imgFromGallery() async {
+  XFile? image = await  picker.pickImage(
+      source: ImageSource.gallery, imageQuality: 50
+  );
+  setState(() {
+    _image = image;
+  });
+}
 
   Widget box() {
     return SizedBox(
@@ -29,43 +30,63 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
     );
   }
 
-  validator() {
-    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-      print("validate");
-    } else {
-      print("not validate");
-    }
-  }
-
-  void updateNameJack() {
-    FirebaseFirestore.instance
-        .collection("Jacket01")
-        .doc(_jackCollection.id)
-        .update({"JacketName": nameString}).then((_) {
-      print("success!");
-    });
-  }
-
-  Widget imageProfile() {
-    return file == null
-        ? InkWell(
+Widget imageProfile() {
+    return Center(
+      child: Stack(children: <Widget>[
+        CircleAvatar(
+          radius: 70.0,
+          backgroundImage:  AssetImage("assets/user.png") ,
+          backgroundColor: Color(0xFF557B83),
+          
+        ),
+        Positioned(
+          bottom: 20.0,
+          right: 20.0,
+         child: InkWell(
             onTap: () {
-              chooseImage();
+              showModalBottomSheet(
+                context: context,
+                builder: ((builder) => bottomSheet()),
+              );
             },
-            child: CircleAvatar(
-              radius: 55.0,
-              backgroundImage: AssetImage("assets/person.png"),
-              backgroundColor: Colors.white,
-            ),
+            child: Icon(Icons.add_a_photo, color: Colors.grey, size: 35.0),
+          ),
+          ),
+        
+      ]),
+    );
+  }
+  
+   Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(children: <Widget>[
+        Text(
+          "เลือกรูปภาพ",
+          style: TextStyle(
+            fontSize: 22.0,
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Row(mainAxisAlignment: MainAxisAlignment.center, 
+            children: <Widget>[
+          FlatButton.icon(
+            icon: Icon(Icons.image),
+            onPressed: () {
+               _imgFromGallery();
+            },
+            label: Text("Gallery"),
           )
-        : ClipOval(
-            child: Image.file(
-              file!,
-              width: 120,
-              height: 120,
-              fit: BoxFit.cover,
-            ),
-          );
+        ])
+      ]),
+    );
   }
 
   Widget username() {
@@ -78,7 +99,7 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
           children: [
             TextFormField(
               decoration: InputDecoration(
-                  labelText: "ชื่ออุปกรณ์",
+                  labelText: "ชื่อผู้ใช้",
                   enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide(
@@ -90,9 +111,6 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
                 }
                 return null;
               },
-              onSaved: (String? value) {
-                nameString = value;
-              },
             )
           ],
         ),
@@ -101,68 +119,11 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
   }
 
   Widget Button() {
-    final Jacket01Ref = database.child('/Jacket01');
-
     return SizedBox(
         width: 200,
         height: 50,
         child: ElevatedButton(
-          onPressed: () {
-            if (_formKey.currentState!.validate()) {
-              _formKey.currentState?.save();
-              Jacket01Ref.update({'user': nameString});
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
-                      title: Text(
-                        'แก้ไขโปรไฟล์แจ็คเก็ตเสร็จสิ้น',
-                        style: TextStyle(
-                          fontFamily: "Jasmine",
-                          color: Color(0xFF707070),
-                          fontSize: 30.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      actions: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              child: Text(
-                                "ตกลง",
-                                style: TextStyle(
-                                  fontFamily: "Jasmine",
-                                  color: Color(0xFF707070),
-                                  fontSize: 22.0,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color(0xFFE5EFC1),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20))),
-                              ),
-                              onPressed: () {
-                                _formKey.currentState?.reset();
-                                updateProfile(context);
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) => home1()),
-                                    (Route<dynamic> route) => false);
-                              },
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  });
-            }
-          },
+          onPressed: () {},
           child: Text(
             "ยืนยัน",
             style: TextStyle(
@@ -178,9 +139,9 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
         ));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+@override
+Widget build(BuildContext context) {
+  return MaterialApp(
       home: Scaffold(
         backgroundColor: Color(0xFF557B83),
         appBar: PreferredSize(
@@ -206,6 +167,7 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
             centerTitle: true,
             backgroundColor: Color(0xff39AEA9),
             title: Column(children: [
+             
               Text(
                 "แก้ไขโปรไฟล์",
                 style: TextStyle(
@@ -220,11 +182,10 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
         body: Padding(
           padding: const EdgeInsets.all(30.0),
           child: Form(
-            key: _formKey,
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  box(),
+                 box(),
                   imageProfile(),
                   SizedBox(
                     height: 50,
@@ -237,6 +198,8 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
                   SizedBox(
                     height: 50,
                   ),
+                  
+                  
                 ],
               ),
             ),
@@ -246,31 +209,8 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
     );
   }
 
-  chooseImage() async {
-    XFile? xfile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    print("file" + xfile!.path);
-    file = File(xfile.path);
-    setState(() {});
-  }
 
-  updateProfile(BuildContext context) async {
-    final Jacket01Ref = database.child('/Jacket01');
-
-    if (file != null) {
-      String url = await uploadImage();
-      Jacket01Ref.update({'imageProfile': url});
-    }
-  }
-
-  Future<String> uploadImage() async {
-    TaskSnapshot taskSnapshot = await FirebaseStorage.instance
-        .ref()
-        .child("profileJacket")
-        .child(FirebaseAuth.instance.currentUser!.uid +
-            "_" +
-            p.basename(file!.path))
-        .putFile(file!);
-
-    return taskSnapshot.ref.getDownloadURL();
-  }
 }
+  
+
+

@@ -114,7 +114,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
                             borderRadius:
                                 BorderRadius.all(Radius.circular(20))),
                         title: Text(
-                          'แก้ไขโปรไฟล์เสร็จสิ้น',
+                          'แก้ไขโปรเสร็จสิ้น',
                           style: TextStyle(
                             fontFamily: "Jasmine",
                             color: Color(0xFF707070),
