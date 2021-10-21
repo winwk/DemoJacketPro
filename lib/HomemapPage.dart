@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -34,12 +35,28 @@ class _HomemapPageState extends State<HomemapPage> {
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
+  Future _gotojacket() async {
+    LatLng LatLngJac = LatLng(dislat, dislng);
+    Marker(
+        markerId: MarkerId("2"),
+        position: LatLngJac,
+        infoWindow: InfoWindow(title: _displayName));
+    CameraPosition cameraPosition =
+        new CameraPosition(target: LatLngJac, zoom: 15);
+    newGoogleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  static final CameraPosition _jacket =
+      CameraPosition(target: LatLng(678, 678), zoom: 10);
   String _displayName = 'Results go here';
 
   var getPic;
   var jackName;
   var jackID;
   var jackUser;
+  var dislat;
+  var dislng;
   @override
   void initState() {
     super.initState();
@@ -57,6 +74,8 @@ class _HomemapPageState extends State<HomemapPage> {
       final profileImage = data['imageProfile'];
       _displayName = user;
       getPic = profileImage;
+      dislat = lat;
+      dislng = lng;
     });
     var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -107,6 +126,69 @@ class _HomemapPageState extends State<HomemapPage> {
         ),
       );
     }
+  }
+
+  Widget Profile() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 10, right: 10),
+      child: SizedBox(
+        width: 30,
+        height: 70,
+        child: ElevatedButton(
+          child: Row(
+            children: [
+              getPic == null
+                  ? CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: AssetImage("assets/person.png"),
+                      backgroundColor: Colors.white,
+                    )
+                  : CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: NetworkImage(getPic),
+                      backgroundColor: Colors.white,
+                    ),
+              SizedBox(
+                width: 30,
+              ),
+              Text(
+                _displayName,
+                style: TextStyle(
+                  fontFamily: "Jasmine",
+                  color: Color(0xFF707070),
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                _displayName,
+                style: TextStyle(
+                  fontFamily: "Jasmine",
+                  color: Color(0xFF707070),
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Text(
+                _displayName,
+                style: TextStyle(
+                  fontFamily: "Jasmine",
+                  color: Color(0xFF707070),
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          style: ElevatedButton.styleFrom(
+            primary: Color(0xFFE5EFC1),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(25))),
+          ),
+          onPressed: _gotojacket,
+        ),
+      ),
+    );
   }
 
   Widget showLogo() {
@@ -244,27 +326,39 @@ class _HomemapPageState extends State<HomemapPage> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 90),
                   child: GoogleMap(
-                    mapType: MapType.normal,
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    initialCameraPosition: CameraPosition(
-                        target: LatLng(14.0424397, 100.7387475), zoom: 5),
-                    zoomControlsEnabled: true,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controllerGoogleMap.complete(controller);
-                      newGoogleMapController = controller;
+                      mapType: MapType.normal,
+                      myLocationEnabled: true,
+                      myLocationButtonEnabled: true,
+                      initialCameraPosition: CameraPosition(
+                          target: LatLng(14.0424397, 100.7387475), zoom: 5),
+                      zoomControlsEnabled: true,
+                      onMapCreated: (GoogleMapController controller) {
+                        _controllerGoogleMap.complete(controller);
+                        newGoogleMapController = controller;
 
-                      locatePosition();
-                    },
-                  ),
+                        locatePosition();
+                      },
+                      markers: {
+                        dislat == null
+                            ? Marker(
+                                //icon: _markerIcon,
+                                markerId: MarkerId("1"),
+                                position: LatLng(40, 89),
+                                infoWindow: InfoWindow(title: "no"))
+                            : Marker(
+                                //icon: _markerIcon,
+                                markerId: MarkerId("1"),
+                                position: LatLng(dislat, dislng),
+                                infoWindow: InfoWindow(title: _displayName))
+                      }),
                 ),
               )
             ],
           ),
           DraggableScrollableSheet(
-            initialChildSize: 0.15,
+            initialChildSize: 0.16,
             maxChildSize: 0.5,
-            minChildSize: 0.15,
+            minChildSize: 0.16,
             builder: (context, controller) {
               return Container(
                 child: Column(
@@ -285,7 +379,8 @@ class _HomemapPageState extends State<HomemapPage> {
                         itemCount: 1,
                         controller: controller,
                         itemBuilder: (BuildContext context, index) {
-                          return _checkJacket();
+                          return Profile();
+                          //return _checkJacket();
                         },
                       ),
                     )

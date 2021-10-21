@@ -54,43 +54,44 @@ class _JacketPageState extends State<JacketPage> {
       return Card();
     } else {
       return SingleChildScrollView(
-      child: SizedBox(
-        width: 350,
-        height: 100,
-        child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            children: [
-              SizedBox(
-               width: 40,
-              ),
-              getPic == null
-                  ? CircleAvatar(
-                      radius: 35.0,
-                      backgroundImage: AssetImage("assets/person.png"),
-                      backgroundColor: Colors.white,
-                    )
-                  : CircleAvatar(
-                      radius: 35.0,
-                      backgroundImage: NetworkImage(getPic),
-                      backgroundColor: Colors.white,
-                    ),
-              SizedBox(
-               width: 40,
-              ),
-              Text(
-                _displayName,
-                style: TextStyle(
-                    fontSize: 45.0,
-                    color: Color(0xFF707070),
-                    fontFamily: "Jasmine",
-                    fontWeight: FontWeight.bold),
-              )
-            ],
+        child: SizedBox(
+          width: 350,
+          height: 100,
+          child: Card(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            child: Row(
+              children: [
+                SizedBox(
+                  width: 40,
+                ),
+                getPic == null
+                    ? CircleAvatar(
+                        radius: 35.0,
+                        backgroundImage: AssetImage("assets/person.png"),
+                        backgroundColor: Colors.white,
+                      )
+                    : CircleAvatar(
+                        radius: 35.0,
+                        backgroundImage: NetworkImage(getPic),
+                        backgroundColor: Colors.white,
+                      ),
+                SizedBox(
+                  width: 40,
+                ),
+                Text(
+                  _displayName,
+                  style: TextStyle(
+                      fontSize: 45.0,
+                      color: Color(0xFF707070),
+                      fontFamily: "Jasmine",
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
     }
   }
 
@@ -176,17 +177,17 @@ class _JacketPageState extends State<JacketPage> {
   // }
 
   Widget test() {
-    
     return SingleChildScrollView(
       child: SizedBox(
         width: 350,
         height: 100,
         child: Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           child: Row(
             children: [
               SizedBox(
-               width: 40,
+                width: 40,
               ),
               getPic == null
                   ? CircleAvatar(
@@ -200,7 +201,7 @@ class _JacketPageState extends State<JacketPage> {
                       backgroundColor: Colors.white,
                     ),
               SizedBox(
-               width: 40,
+                width: 40,
               ),
               Text(
                 _displayName,
@@ -252,14 +253,14 @@ class _JacketPageState extends State<JacketPage> {
     );
   }
 
-  Widget testButton(){
+  Widget testButton() {
     return ElevatedButton(
-      onPressed: (){
-         Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.rightToLeft, child: notitest()),
-            );
+      onPressed: () {
+        Navigator.push(
+          context,
+          PageTransition(
+              type: PageTransitionType.rightToLeft, child: notitest()),
+        );
       },
       child: Text('test'),
     );
@@ -268,7 +269,7 @@ class _JacketPageState extends State<JacketPage> {
   Widget showButton() {
     if (jackName != null) {
       return SizedBox(
-        width: 300  ,
+        width: 300,
         height: 60,
         child: ElevatedButton(
           child: Text(
@@ -357,7 +358,7 @@ class _JacketPageState extends State<JacketPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 sixedbox(),
-                _checkJacket() ,
+                _checkJacket(),
                 showLogo(),
                 showText(),
                 sixedbox(),
