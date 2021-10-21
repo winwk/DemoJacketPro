@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:jackket/ChangeProJacket.dart';
 import 'package:jackket/JacketProfile.dart';
+import 'package:jackket/notitest.dart';
 import 'package:jackket/read_examples.dart';
 import 'package:jackket/user/showListofUsers.dart';
 import 'package:jackket/write_examples.dart';
@@ -257,7 +258,7 @@ class _JacketPageState extends State<JacketPage> {
          Navigator.push(
               context,
               PageTransition(
-                  type: PageTransitionType.rightToLeft, child: ReadExamples()),
+                  type: PageTransitionType.rightToLeft, child: notitest()),
             );
       },
       child: Text('test'),

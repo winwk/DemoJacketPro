@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:jackket/AddDevice.dart';
@@ -11,6 +14,8 @@ class HomemapPage extends StatefulWidget {
 }
 
 class _HomemapPageState extends State<HomemapPage> {
+  final _database = FirebaseDatabase.instance.reference();
+
   Completer<GoogleMapController> _controllerGoogleMap = Completer();
   late GoogleMapController newGoogleMapController;
 
@@ -27,6 +32,81 @@ class _HomemapPageState extends State<HomemapPage> {
         new CameraPosition(target: latLatPosition, zoom: 15);
     newGoogleMapController
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  String _displayName = 'Results go here';
+
+  var getPic;
+  var jackName;
+  var jackID;
+  var jackUser;
+  @override
+  void initState() {
+    super.initState();
+    _checkJacket();
+  }
+
+  _checkJacket() {
+    _database.child('Jacket01').onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final user = data['user'] as String;
+      final lat = data['lat'];
+      print("lat : $lat");
+      final lng = data['lng'];
+      print("lng : $lng");
+      final profileImage = data['imageProfile'];
+      _displayName = user;
+      getPic = profileImage;
+    });
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      //print(value.data()!['JacketName']);
+      jackName = value.data()!['JacketName'];
+    });
+
+    if (jackName == null) {
+      return Card();
+    } else {
+      return SingleChildScrollView(
+        child: SizedBox(
+          width: 350,
+          height: 80,
+          child: Row(
+            children: [
+              SizedBox(
+                width: 50,
+              ),
+              getPic == null
+                  ? CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: AssetImage("assets/person.png"),
+                      backgroundColor: Colors.white,
+                    )
+                  : CircleAvatar(
+                      radius: 30.0,
+                      backgroundImage: NetworkImage(getPic),
+                      backgroundColor: Colors.white,
+                    ),
+              SizedBox(
+                width: 50,
+              ),
+              Text(
+                _displayName,
+                style: TextStyle(
+                    fontSize: 45.0,
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: "Jasmine",
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   Widget showLogo() {
@@ -202,12 +282,10 @@ class _HomemapPageState extends State<HomemapPage> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: 13,
+                        itemCount: 1,
                         controller: controller,
                         itemBuilder: (BuildContext context, index) {
-                          return ListTile(
-                            title: Text('Item ${index + 1}'),
-                          );
+                          return _checkJacket();
                         },
                       ),
                     )
