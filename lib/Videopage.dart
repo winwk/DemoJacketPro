@@ -14,25 +14,26 @@ class _VideoPageState extends State<VideoPage> {
   var showdate;
   final db = FirebaseDatabase.instance.reference().child("Jacket01/video");
 
-  @override
-  void initState() {
-    super.initState();
-    // checkVideo();
-    // db = FirebaseDatabase.instance.reference().child("Jacket01/video");
-    setState(() {
-      db.once().then((DataSnapshot snapshot) {
-      Map<dynamic, dynamic> values = snapshot.value;
-      values.forEach((key, values) {
-        // print(values["videoUrl"]);
-        values.forEach((key, values) {});
-        showVideo = values["videoUrl"];
-        showdate = values["datetime"];
-        print(showVideo);
-      });
-    });
-    });
-    
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // checkVideo();
+  //   // db = FirebaseDatabase.instance.reference().child("Jacket01/video");
+
+  //   db.once().then((DataSnapshot snapshot) {
+  //     Map<dynamic, dynamic> values = snapshot.value;
+  //     values.forEach((key, values) {
+  //       // print(values["videoUrl"]);
+  //       values.forEach((key, values) {});
+  //       setState(() {
+  //         showVideo = values["videoUrl"];
+  //         showdate = values["datetime"];
+  //       });
+
+  //       print(showVideo);
+  //     });
+  //   });
+  // }
 
   static Future<Query> queryUsers() async {
     return FirebaseDatabase.instance
@@ -116,8 +117,11 @@ class _VideoPageState extends State<VideoPage> {
                   values.forEach((key, values) {
                     // print(values["videoUrl"]);
                     values.forEach((key, values) {});
-                    showVideo = values["videoUrl"];
-                    showdate = values["datetime"];
+                    setState(() {
+                      showVideo = values["videoUrl"];
+                      showdate = values["datetime"];
+                    });
+
                     print(showVideo);
                   });
                 });
@@ -130,10 +134,8 @@ class _VideoPageState extends State<VideoPage> {
                     child: ListTile(
                         title: Text(showdate.toString() + '\n'),
                         subtitle: Linkify(
-                          
                           text: showVideo,
                           onOpen: _onOpen,
-                        
                         )),
                   ),
                 );

@@ -40,8 +40,11 @@ class _ProfilePageState extends State<ProfilePage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      print(value.data());
-      getPic = value.data()!["profileImage"];
+      // print(value.data());
+      setState(() {
+        getPic = value.data()!["profileImage"];
+      });
+
       print(getPic);
     });
   }
@@ -49,7 +52,10 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<Null> findDisplayName() async {
     await Firebase.initializeApp().then((value) async {
       await FirebaseAuth.instance.authStateChanges().listen((event) {
-        displayName = event!.displayName;
+        setState(() {
+          displayName = event!.displayName;
+        });
+
         print('##### displayName = $displayName#######');
       });
     });

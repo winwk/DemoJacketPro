@@ -72,10 +72,12 @@ class _HomemapPageState extends State<HomemapPage> {
       final lng = data['lng'];
       print("lng : $lng");
       final profileImage = data['imageProfile'];
-      _displayName = user;
-      getPic = profileImage;
-      dislat = lat;
-      dislng = lng;
+      setState(() {
+        _displayName = user;
+        getPic = profileImage;
+        dislat = lat;
+        dislng = lng;
+      });
     });
     var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -84,7 +86,9 @@ class _HomemapPageState extends State<HomemapPage> {
         .get()
         .then((value) {
       //print(value.data()!['JacketName']);
-      jackName = value.data()!['JacketName'];
+      setState(() {
+        jackName = value.data()!['JacketName'];
+      });
     });
 
     if (jackName == null) {
@@ -150,24 +154,6 @@ class _HomemapPageState extends State<HomemapPage> {
                     ),
               SizedBox(
                 width: 30,
-              ),
-              Text(
-                _displayName,
-                style: TextStyle(
-                  fontFamily: "Jasmine",
-                  color: Color(0xFF707070),
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                _displayName,
-                style: TextStyle(
-                  fontFamily: "Jasmine",
-                  color: Color(0xFF707070),
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
-                ),
               ),
               Text(
                 _displayName,

@@ -36,8 +36,11 @@ class _JacketPageState extends State<JacketPage> {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final user = data['user'] as String;
       final profileImage = data['imageProfile'];
-      _displayName = user;
-      getPic = profileImage;
+      setState(() {
+        _displayName = user;
+        getPic = profileImage;
+      });
+
       print(_displayName);
     });
     var firebaseUser = FirebaseAuth.instance.currentUser;
@@ -363,7 +366,6 @@ class _JacketPageState extends State<JacketPage> {
                 showText(),
                 sixedbox(),
                 showButton(),
-                testButton(),
                 sixedbox(),
               ],
             ),
