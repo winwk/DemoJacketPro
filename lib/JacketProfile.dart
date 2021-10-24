@@ -19,17 +19,29 @@ class _JacketProState extends State<JacketPro> {
   var getPic;
   var JackUser;
   final _database = FirebaseDatabase.instance.reference();
+  
+
+  @override
+  void initState() {
+    super.initState();
+    _database.child('Jacket01').onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final profileImage = data['imageProfile'];
+      print(profileImage);
+      final user = data['user'] as String;
+      JackUser = user;
+      getPic = profileImage;
+    });
+  }
 
   Widget getProfileJack() {
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final profileImage = data['imageProfile'];
-      final user = data['user'] as String;
-      final video = data['video'];
-      print(video);
       print(profileImage);
-      getPic = profileImage;
+      final user = data['user'] as String;
       JackUser = user;
+      getPic = profileImage;
     });
     return SizedBox(
       width: 355,
@@ -241,6 +253,9 @@ class _JacketProState extends State<JacketPro> {
       ),
     );
   }
+
+
+  
 
   Widget StatusButton() {
     return SizedBox(
