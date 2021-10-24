@@ -14,38 +14,33 @@ class _VideoPageState extends State<VideoPage> {
   var showdate;
   final db = FirebaseDatabase.instance.reference().child("Jacket01/video");
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // checkVideo();
-  //   // db = FirebaseDatabase.instance.reference().child("Jacket01/video");
+  @override
+  void initState() {
+    super.initState();
+    // checkVideo();
+    // db = FirebaseDatabase.instance.reference().child("Jacket01/video");
 
-  //   db.once().then((DataSnapshot snapshot) {
-  //     Map<dynamic, dynamic> values = snapshot.value;
-  //     values.forEach((key, values) {
-  //       // print(values["videoUrl"]);
-  //       values.forEach((key, values) {});
-  //       setState(() {
-  //         showVideo = values["videoUrl"];
-  //         showdate = values["datetime"];
-  //       });
+    db.once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((key, values) {
+        // print(values["videoUrl"]);
+        setState(() {
+          showVideo = values["videoUrl"];
+          showdate = values["datetime"];
+        });
+      });
+      print(showVideo);
+    });
+  }
 
-  //       print(showVideo);
-  //     });
-  //   });
+  // static Future<Query> queryUsers() async {
+  //   return FirebaseDatabase.instance
+  //       .reference()
+  //       .child("Jacket01")
+  //       .child('video')
+  //       .orderByChild('name');
   // }
 
-  static Future<Query> queryUsers() async {
-    return FirebaseDatabase.instance
-        .reference()
-        .child("Jacket01")
-        .child('video')
-        .orderByChild('name');
-  }
-
-  Widget get() {
-    return Text("$showVideo");
-  }
 
   void checkVideo() {
     _database.child('Jacket01').child("video").onValue.listen((event) {
@@ -54,18 +49,15 @@ class _VideoPageState extends State<VideoPage> {
       print(video);
     });
   }
-
-  Widget box() {
+    Widget box() {
     return SizedBox(
       height: 20,
     );
   }
 
-  Widget show() {
-    return SizedBox(
-      child: Card(child: Text(showVideo.toString())),
-    );
-  }
+
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -112,19 +104,6 @@ class _VideoPageState extends State<VideoPage> {
               query: db,
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
-                db.once().then((DataSnapshot snapshot) {
-                  Map<dynamic, dynamic> values = snapshot.value;
-                  values.forEach((key, values) {
-                    // print(values["videoUrl"]);
-                    values.forEach((key, values) {});
-                    setState(() {
-                      showVideo = values["videoUrl"];
-                      showdate = values["datetime"];
-                    });
-
-                    print(showVideo);
-                  });
-                });
                 return SizedBox(
                   width: 355,
                   height: 130,
@@ -132,7 +111,7 @@ class _VideoPageState extends State<VideoPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
-                        title: Text(showdate.toString() + '\n'),
+                        title: Text(showdate),
                         subtitle: Linkify(
                           text: showVideo,
                           onOpen: _onOpen,

@@ -50,7 +50,9 @@ class _JacketPageState extends State<JacketPage> {
         .get()
         .then((value) {
       //print(value.data()!['JacketName']);
-      jackName = value.data()!['JacketName'];
+      setState(() {
+        jackName = value.data()!['JacketName'];
+      });
     });
 
     if (jackName == null) {
@@ -262,7 +264,7 @@ class _JacketPageState extends State<JacketPage> {
         Navigator.push(
           context,
           PageTransition(
-              type: PageTransitionType.rightToLeft, child: notitest()),
+              type: PageTransitionType.rightToLeft, child: read()),
         );
       },
       child: Text('test'),
