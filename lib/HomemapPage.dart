@@ -60,6 +60,7 @@ class _HomemapPageState extends State<HomemapPage> {
   @override
   void initState() {
     super.initState();
+    
     _checkJacket();
   }
 
@@ -321,7 +322,10 @@ class _HomemapPageState extends State<HomemapPage> {
 
                         locatePosition();
                       },
+                      
+                      
                       markers: {
+                        
                         dislat == null
                             ? Marker(
                                 //icon: _markerIcon,

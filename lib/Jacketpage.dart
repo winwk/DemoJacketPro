@@ -69,7 +69,54 @@ class _JacketPageState extends State<JacketPage> {
       print("jacketName = $jackName");
     });
     if (jackName == null) {
-      return Text("ไม่พบอุปปกรณ์");
+      return Padding(
+        padding: const EdgeInsets.only(top: 100),
+        child: Column(
+          children: [
+            SizedBox(
+              child: Text(
+                'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
+                style: TextStyle(
+                  fontSize: 30.0,
+                  color: Colors.white,
+                  fontFamily: "Jasmine",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  child: Text(
+                    "เพิ่มอุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AddDevice()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      );;
     }
     if (jackName == 'Jacket01') {
       return Padding(
@@ -281,47 +328,47 @@ class _JacketPageState extends State<JacketPage> {
   //   );
   // }
 
-  Widget test() {
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: 350,
-        height: 100,
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 40,
-              ),
-              getPic == null
-                  ? CircleAvatar(
-                      radius: 35.0,
-                      backgroundImage: AssetImage("assets/person.png"),
-                      backgroundColor: Colors.white,
-                    )
-                  : CircleAvatar(
-                      radius: 35.0,
-                      backgroundImage: NetworkImage(getPic),
-                      backgroundColor: Colors.white,
-                    ),
-              SizedBox(
-                width: 40,
-              ),
-              Text(
-                _displayName,
-                style: TextStyle(
-                    fontSize: 45.0,
-                    color: Color(0xFF707070),
-                    fontFamily: "Jasmine",
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget test() {
+  //   return SingleChildScrollView(
+  //     child: SizedBox(
+  //       width: 350,
+  //       height: 100,
+  //       child: Card(
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  //         child: Row(
+  //           children: [
+  //             SizedBox(
+  //               width: 40,
+  //             ),
+  //             getPic == null
+  //                 ? CircleAvatar(
+  //                     radius: 35.0,
+  //                     backgroundImage: AssetImage("assets/person.png"),
+  //                     backgroundColor: Colors.white,
+  //                   )
+  //                 : CircleAvatar(
+  //                     radius: 35.0,
+  //                     backgroundImage: NetworkImage(getPic),
+  //                     backgroundColor: Colors.white,
+  //                   ),
+  //             SizedBox(
+  //               width: 40,
+  //             ),
+  //             Text(
+  //               _displayName,
+  //               style: TextStyle(
+  //                   fontSize: 45.0,
+  //                   color: Color(0xFF707070),
+  //                   fontFamily: "Jasmine",
+  //                   fontWeight: FontWeight.bold),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget showLogo() {
     return Image.asset(
