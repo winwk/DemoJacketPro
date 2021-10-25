@@ -29,6 +29,7 @@ class _JacketPageState extends State<JacketPage> {
   void initState() {
     super.initState();
     // _checkJacket();
+    _checkJacket();
   }
 
   _checkJacket() {
@@ -49,11 +50,10 @@ class _JacketPageState extends State<JacketPage> {
       setState(() {
         jackName = value.data()!['JacketName'];
       });
-      print(jackName);
     });
 
     if (jackName == null) {
-      return Card();
+      return Text('');
     } else {
       return SingleChildScrollView(
         child: SizedBox(
@@ -359,7 +359,9 @@ class _JacketPageState extends State<JacketPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+                
                 sixedbox(),
+                _checkJacket(),
                 showLogo(),
                 showText(),
                 sixedbox(),
