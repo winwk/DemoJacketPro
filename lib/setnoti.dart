@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class setnotiPage extends StatefulWidget {
@@ -5,6 +6,8 @@ class setnotiPage extends StatefulWidget {
 }
 
 class _setnotiPageState extends State<setnotiPage> {
+    String? Token;
+
   Widget box() {
     return SizedBox(
       height: 20,
@@ -47,10 +50,25 @@ class _setnotiPageState extends State<setnotiPage> {
                     fontSize: 50.0,
                     fontWeight: FontWeight.bold),
               ),
+             
             ]),
           ),
         ),
-        //body: ,
+        body: Column(
+          children: [
+             ElevatedButton(
+              onPressed: () async {
+                String? token = await FirebaseMessaging.instance.getToken();
+                
+                Token = token;
+                print(Token);
+              },
+              child: Text('getToken'),
+            ),
+
+            Text('$Token')
+          ],
+        )
       ),
     );
   }

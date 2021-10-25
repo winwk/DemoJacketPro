@@ -19,7 +19,7 @@ class _JacketPageState extends State<JacketPage> {
   CollectionReference _jackCollection =
       FirebaseFirestore.instance.collection("Jacket01");
   final _database = FirebaseDatabase.instance.reference();
-  String _displayName = 'Results go here';
+  String _displayName = '';
   var getPic;
   var jackName;
   var jackID;
@@ -28,7 +28,7 @@ class _JacketPageState extends State<JacketPage> {
   @override
   void initState() {
     super.initState();
-    _checkJacket();
+    // _checkJacket();
   }
 
   _checkJacket() {
@@ -36,12 +36,9 @@ class _JacketPageState extends State<JacketPage> {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final user = data['user'] as String;
       final profileImage = data['imageProfile'];
-      setState(() {
-        _displayName = user;
-        getPic = profileImage;
-      });
 
-      print(_displayName);
+      _displayName = user;
+      getPic = profileImage;
     });
     var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -49,10 +46,10 @@ class _JacketPageState extends State<JacketPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      //print(value.data()!['JacketName']);
       setState(() {
         jackName = value.data()!['JacketName'];
       });
+      print(jackName);
     });
 
     if (jackName == null) {
@@ -181,47 +178,47 @@ class _JacketPageState extends State<JacketPage> {
   //   );
   // }
 
-  Widget test() {
-    return SingleChildScrollView(
-      child: SizedBox(
-        width: 350,
-        height: 100,
-        child: Card(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 40,
-              ),
-              getPic == null
-                  ? CircleAvatar(
-                      radius: 35.0,
-                      backgroundImage: AssetImage("assets/person.png"),
-                      backgroundColor: Colors.white,
-                    )
-                  : CircleAvatar(
-                      radius: 35.0,
-                      backgroundImage: NetworkImage(getPic),
-                      backgroundColor: Colors.white,
-                    ),
-              SizedBox(
-                width: 40,
-              ),
-              Text(
-                _displayName,
-                style: TextStyle(
-                    fontSize: 45.0,
-                    color: Color(0xFF707070),
-                    fontFamily: "Jasmine",
-                    fontWeight: FontWeight.bold),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget test() {
+  //   return SingleChildScrollView(
+  //     child: SizedBox(
+  //       width: 350,
+  //       height: 100,
+  //       child: Card(
+  //         shape:
+  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+  //         child: Row(
+  //           children: [
+  //             SizedBox(
+  //               width: 40,
+  //             ),
+  //             getPic == null
+  //                 ? CircleAvatar(
+  //                     radius: 35.0,
+  //                     backgroundImage: AssetImage("assets/person.png"),
+  //                     backgroundColor: Colors.white,
+  //                   )
+  //                 : CircleAvatar(
+  //                     radius: 35.0,
+  //                     backgroundImage: NetworkImage(getPic),
+  //                     backgroundColor: Colors.white,
+  //                   ),
+  //             SizedBox(
+  //               width: 40,
+  //             ),
+  //             Text(
+  //               _displayName,
+  //               style: TextStyle(
+  //                   fontSize: 45.0,
+  //                   color: Color(0xFF707070),
+  //                   fontFamily: "Jasmine",
+  //                   fontWeight: FontWeight.bold),
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget showLogo() {
     return Image.asset(
@@ -232,17 +229,18 @@ class _JacketPageState extends State<JacketPage> {
   }
 
   Widget showText() {
-    if (jackName != null) {
+    if (jackName == null) {
+      return Text(
+        'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
+        style: TextStyle(
+          fontSize: 30.0,
+          color: Colors.white,
+          fontFamily: "Jasmine",
+        ),
+      );
+    } else {
       return Text('');
     }
-    return Text(
-      'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
-      style: TextStyle(
-        fontSize: 30.0,
-        color: Colors.white,
-        fontFamily: "Jasmine",
-      ),
-    );
   }
 
   Widget sixedbox() {
@@ -263,8 +261,7 @@ class _JacketPageState extends State<JacketPage> {
       onPressed: () {
         Navigator.push(
           context,
-          PageTransition(
-              type: PageTransitionType.rightToLeft, child: read()),
+          PageTransition(type: PageTransitionType.rightToLeft, child: read()),
         );
       },
       child: Text('test'),
@@ -363,7 +360,6 @@ class _JacketPageState extends State<JacketPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 sixedbox(),
-                _checkJacket(),
                 showLogo(),
                 showText(),
                 sixedbox(),

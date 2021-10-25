@@ -10,6 +10,8 @@ class notitest extends StatefulWidget {
 }
 
 class _notitestState extends State<notitest> {
+
+  var Token;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,8 +25,9 @@ class _notitestState extends State<notitest> {
               onPressed: () async {
                 String? token = await FirebaseMessaging.instance.getToken();
                 print(token);
+                Token = token;
               },
-              child: Text('get_token'),
+              child: Text(Token),
             )
           ],
         ),

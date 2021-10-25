@@ -63,7 +63,7 @@ class _HomemapPageState extends State<HomemapPage> {
     _checkJacket();
   }
 
-  _checkJacket() {
+  Widget _checkJacket() {
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final user = data['user'] as String;
@@ -85,14 +85,12 @@ class _HomemapPageState extends State<HomemapPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
+      jackName = value.data()!['JacketName'];
       //print(value.data()!['JacketName']);
-      setState(() {
-        jackName = value.data()!['JacketName'];
-      });
     });
 
     if (jackName == null) {
-      return Card();
+      return Text("ไม่พบอุปกรณ์ที่เชื่อมต่อ");
     } else {
       return SingleChildScrollView(
         child: SizedBox(
@@ -133,48 +131,70 @@ class _HomemapPageState extends State<HomemapPage> {
   }
 
   Widget Profile() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10),
-      child: SizedBox(
-        width: 30,
-        height: 70,
-        child: ElevatedButton(
-          child: Row(
-            children: [
-              getPic == null
-                  ? CircleAvatar(
-                      radius: 30.0,
-                      backgroundImage: AssetImage("assets/person.png"),
-                      backgroundColor: Colors.white,
-                    )
-                  : CircleAvatar(
-                      radius: 30.0,
-                      backgroundImage: NetworkImage(getPic),
-                      backgroundColor: Colors.white,
-                    ),
-              SizedBox(
-                width: 30,
-              ),
-              Text(
-                _displayName,
-                style: TextStyle(
-                  fontFamily: "Jasmine",
-                  color: Color(0xFF707070),
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ],
-          ),
-          style: ElevatedButton.styleFrom(
-            primary: Color(0xFFE5EFC1),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(25))),
-          ),
-          onPressed: _gotojacket,
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        jackName = value.data()!['JacketName'];
+      });
+      //print(value.data()!['JacketName']);
+    });
+    if (jackName == null) {
+      return Text(
+        'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
+        style: TextStyle(
+          fontSize: 30.0,
+          color: Colors.white,
+          fontFamily: "Jasmine",
         ),
-      ),
-    );
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: SizedBox(
+          width: 30,
+          height: 70,
+          child: ElevatedButton(
+            child: Row(
+              children: [
+                getPic == null
+                    ? CircleAvatar(
+                        radius: 30.0,
+                        backgroundImage: AssetImage("assets/person.png"),
+                        backgroundColor: Colors.white,
+                      )
+                    : CircleAvatar(
+                        radius: 30.0,
+                        backgroundImage: NetworkImage(getPic),
+                        backgroundColor: Colors.white,
+                      ),
+                SizedBox(
+                  width: 30,
+                ),
+                Text(
+                  _displayName,
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 40.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            style: ElevatedButton.styleFrom(
+              primary: Color(0xFFE5EFC1),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25))),
+            ),
+            onPressed: _gotojacket,
+          ),
+        ),
+      );
+    }
   }
 
   Widget showLogo() {
@@ -362,11 +382,10 @@ class _HomemapPageState extends State<HomemapPage> {
                     ),
                     Expanded(
                       child: ListView.builder(
-                        itemCount: 1,
+                        itemCount: 2,
                         controller: controller,
                         itemBuilder: (BuildContext context, index) {
                           return Profile();
-                          //return _checkJacket();
                         },
                       ),
                     )
