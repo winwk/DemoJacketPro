@@ -24,12 +24,8 @@ class _VideoPageState extends State<VideoPage> {
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((key, values) {
         // print(values["videoUrl"]);
-        setState(() {
-          showVideo = values["videoUrl"];
-          showdate = values["datetime"];
-        });
       });
-      print(showVideo);
+      //print(showVideo);
     });
   }
 
@@ -41,7 +37,6 @@ class _VideoPageState extends State<VideoPage> {
   //       .orderByChild('name');
   // }
 
-
   void checkVideo() {
     _database.child('Jacket01').child("video").onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
@@ -49,15 +44,12 @@ class _VideoPageState extends State<VideoPage> {
       print(video);
     });
   }
-    Widget box() {
+
+  Widget box() {
     return SizedBox(
       height: 20,
     );
   }
-
-
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -111,9 +103,9 @@ class _VideoPageState extends State<VideoPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
-                        title: Text(showdate),
+                        title: new Text(snapshot.value['datetime']),
                         subtitle: Linkify(
-                          text: showVideo,
+                          text: snapshot.value['videoUrl'],
                           onOpen: _onOpen,
                         )),
                   ),
