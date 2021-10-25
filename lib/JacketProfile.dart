@@ -313,7 +313,7 @@ class _JacketProState extends State<JacketPro> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20))),
                     title: Text(
-                      'ลบโปรไฟล์เสร็จสิ้น',
+                      'ลบโปรไฟล์',
                       style: TextStyle(
                         fontFamily: "Jasmine",
                         color: Color(0xFF707070),

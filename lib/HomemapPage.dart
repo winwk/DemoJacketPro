@@ -79,7 +79,7 @@ class _HomemapPageState extends State<HomemapPage> {
         dislng = lng;
       });
     });
-     var firebaseUser = FirebaseAuth.instance.currentUser;
+    var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
         .collection("test")
         .doc(firebaseUser!.uid)
@@ -321,15 +321,12 @@ class _HomemapPageState extends State<HomemapPage> {
 
                         locatePosition();
                       },
-                      
-                      
                       markers: {
-                        
-                        dislat == null
+                        jackName != 'Jacket01'
                             ? Marker(
                                 //icon: _markerIcon,
                                 markerId: MarkerId("1"),
-                                position: LatLng(40, 89),
+                                position: LatLng(-85.961937, -89.259939),
                                 infoWindow: InfoWindow(title: "no"))
                             : Marker(
                                 //icon: _markerIcon,
