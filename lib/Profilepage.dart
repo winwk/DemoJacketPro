@@ -79,7 +79,8 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 20,
             ),
             getPic == null
-                ? CircleAvatar(
+                ?  CircleAvatar(
+                  
                     radius: 40.0,
                     backgroundImage: AssetImage("assets/person.png"),
                     backgroundColor: Colors.white,

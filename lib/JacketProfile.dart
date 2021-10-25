@@ -306,88 +306,85 @@ class _JacketProState extends State<JacketPro> {
         height: 40,
         child: ElevatedButton(
           onPressed: () {
-            var firebaseUser = FirebaseAuth.instance.currentUser;
-            FirebaseFirestore.instance
-                .collection("test")
-                .doc(firebaseUser!.uid)
-                .update({"JacketName": ""}).then((_) {
-              print("success!");
-            });
-           showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        title: Text(
-                          'ลบโปรไฟล์เสร็จสิ้น',
-                          style: TextStyle(
-                            fontFamily: "Jasmine",
-                            color: Color(0xFF707070),
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    title: Text(
+                      'ลบโปรไฟล์เสร็จสิ้น',
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    actions: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: ElevatedButton(
+                              child: Text(
+                                "ตกลง",
+                                style: TextStyle(
+                                  fontFamily: "Jasmine",
+                                  color: Color(0xFF707070),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFE5EFC1),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                              ),
+                              onPressed: () {
+                                var firebaseUser =
+                                    FirebaseAuth.instance.currentUser;
+                                FirebaseFirestore.instance
+                                    .collection("test")
+                                    .doc(firebaseUser!.uid)
+                                    .update({"JacketName": ""}).then((_) {
+                                  print("success!");
+                                });
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => home1()),
+                                    (Route<dynamic> route) => false);
+                              },
+                            ),
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(right: 15),
-                                child: ElevatedButton(
-                                  child: Text(
-                                    "ตกลง",
-                                    style: TextStyle(
-                                      fontFamily: "Jasmine",
-                                      color: Color(0xFF707070),
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Color(0xFFE5EFC1),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
-                                  ),
-                                  onPressed: () {
-                                   
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) => home1()),
-                                        (Route<dynamic> route) => false);
-                                  },
-                                ),
+                          ElevatedButton(
+                            child: Text(
+                              "ยกเลิก",
+                              style: TextStyle(
+                                fontFamily: "Jasmine",
+                                color: Color(0xFF707070),
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold,
                               ),
-                             
-                              ElevatedButton(
-                                child: Text(
-                                  "ยกเลิก",
-                                  style: TextStyle(
-                                    fontFamily: "Jasmine",
-                                    color: Color(0xFF707070),
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFFE5EFC1),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                ),
-                                onPressed: () {
-                                 
-                                  Navigator.pop(context);
-                                },
-                              ),
-                            ],
-                          )
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFE5EFC1),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
                         ],
-                      );
-                    });
+                      )
+                    ],
+                  );
+                });
           },
           child: Text(
             "ลบโปรไฟล์",

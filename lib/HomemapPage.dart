@@ -60,7 +60,6 @@ class _HomemapPageState extends State<HomemapPage> {
   @override
   void initState() {
     super.initState();
-    
     _checkJacket();
   }
 
