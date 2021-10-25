@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:jackket/ChangeDistance.dart';
 import 'package:jackket/ChangeProJacket.dart';
 import 'package:jackket/EditDevice.dart';
@@ -16,14 +19,13 @@ class JacketPro extends StatefulWidget {
 }
 
 class _JacketProState extends State<JacketPro> {
+  final firestoreRef = FirebaseFirestore.instance;
   var getPic;
   var JackUser;
   final _database = FirebaseDatabase.instance.reference();
-  
 
   @override
   void initState() {
-  
     super.initState();
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
@@ -31,12 +33,10 @@ class _JacketProState extends State<JacketPro> {
       print(profileImage);
       final user = data['user'] as String;
       setState(() {
-      JackUser = user;
-      getPic = profileImage;
+        JackUser = user;
+        getPic = profileImage;
       });
-      
     });
-      
   }
 
   Widget getProfileJack() {
@@ -47,9 +47,8 @@ class _JacketProState extends State<JacketPro> {
       final user = data['user'] as String;
       setState(() {
         JackUser = user;
-      getPic = profileImage;
+        getPic = profileImage;
       });
-      
     });
     return SizedBox(
       width: 355,
@@ -262,9 +261,6 @@ class _JacketProState extends State<JacketPro> {
     );
   }
 
-
-  
-
   Widget StatusButton() {
     return SizedBox(
       width: 350,
@@ -305,7 +301,9 @@ class _JacketProState extends State<JacketPro> {
         width: 150,
         height: 40,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            
+          },
           child: Text(
             "ลบโปรไฟล์",
             style: TextStyle(
@@ -411,5 +409,9 @@ class _JacketProState extends State<JacketPro> {
         ),
       ),
     );
+  }
+
+  Future<void> deleteRecord(String id) async {
+    print(id);
   }
 }

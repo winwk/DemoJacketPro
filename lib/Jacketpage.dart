@@ -63,7 +63,9 @@ class _JacketPageState extends State<JacketPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      jackName = value.data()!['JacketName'];
+      setState(() {
+        jackName = value.data()!['JacketName'];
+      });
       print("jacketName = $jackName");
     });
     if (jackName == null) {
@@ -137,7 +139,8 @@ class _JacketPageState extends State<JacketPage> {
                     Navigator.push(
                       context,
                       PageTransition(
-                          type: PageTransitionType.rightToLeft, child: JacketPro()),
+                          type: PageTransitionType.rightToLeft,
+                          child: JacketPro()),
                     );
                   },
                 ),
@@ -185,7 +188,8 @@ class _JacketPageState extends State<JacketPage> {
                     Navigator.push(
                       context,
                       PageTransition(
-                          type: PageTransitionType.rightToLeft, child: AddDevice()),
+                          type: PageTransitionType.rightToLeft,
+                          child: AddDevice()),
                     );
                   },
                 ),

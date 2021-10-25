@@ -56,6 +56,7 @@ class _HomemapPageState extends State<HomemapPage> {
   var jackUser;
   var dislat;
   var dislng;
+
   @override
   void initState() {
     super.initState();
@@ -78,6 +79,17 @@ class _HomemapPageState extends State<HomemapPage> {
         dislng = lng;
       });
     });
+     var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        jackName = value.data()!['JacketName'];
+      });
+      print("jacketName = $jackName");
+    });
   }
 
   Profile() {
@@ -90,7 +102,6 @@ class _HomemapPageState extends State<HomemapPage> {
       setState(() {
         jackName = value.data()!['JacketName'];
       });
-
       print("jacketName = $jackName");
     });
     if (jackName == null) {
