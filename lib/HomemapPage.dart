@@ -313,10 +313,21 @@ class _HomemapPageState extends State<HomemapPage> {
                         itemCount: 1,
                         controller: controller,
                         itemBuilder: (BuildContext context, index) {
+                          var firebaseUser = FirebaseAuth.instance.currentUser;
+                          FirebaseFirestore.instance
+                              .collection("test")
+                              .doc(firebaseUser!.uid)
+                              .get()
+                              .then((value) {
+                           
+                              jackName = value.data()!['JacketName'];
+                            
+                          });
+
                           if (jackName == null) {
                             return Padding(
-                               padding:
-                                  const EdgeInsets.only(left: 90, right: 10,top: 25),
+                              padding: const EdgeInsets.only(
+                                  left: 90, right: 10, top: 25),
                               child: Text(
                                 'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
                                 style: TextStyle(

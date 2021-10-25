@@ -25,12 +25,12 @@ class _JacketPageState extends State<JacketPage> {
   var jackID;
   var jackUser;
 
-  @override
-  void initState() {
-    super.initState();
-    // _checkJacket();
-    _checkJacket();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   // _checkJacket();
+  //   _checkJacket();
+  // }
 
   _checkJacket() {
     _database.child('Jacket01').onValue.listen((event) {
@@ -328,6 +328,24 @@ class _JacketPageState extends State<JacketPage> {
   }
 
   Widget build(BuildContext context) {
+     _database.child('Jacket01').onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final user = data['user'] as String;
+      final profileImage = data['imageProfile'];
+
+      _displayName = user;
+      getPic = profileImage;
+    });
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        jackName = value.data()!['JacketName'];
+      });
+    });
     return new Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
