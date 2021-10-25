@@ -66,7 +66,7 @@ class _setnotiPageState extends State<setnotiPage> {
               child: Text('getToken'),
             ),
 
-            Text('$Token')
+            Text(Token!)
           ],
         )
       ),
