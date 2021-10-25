@@ -29,72 +29,171 @@ class _JacketPageState extends State<JacketPage> {
   // void initState() {
   //   super.initState();
   //   // _checkJacket();
-  //   _checkJacket();
+  //   _database.child('Jacket01').onValue.listen((event) {
+  //     final data = new Map<String, dynamic>.from(event.snapshot.value);
+  //     final user = data['user'] as String;
+  //     final profileImage = data['imageProfile'];
+
+  //     _displayName = user;
+  //     getPic = profileImage;
+  //   });
+  //   var firebaseUser = FirebaseAuth.instance.currentUser;
+  //   FirebaseFirestore.instance
+  //       .collection("test")
+  //       .doc(firebaseUser!.uid)
+  //       .get()
+  //       .then((value) {
+  //     jackName = value.data()!['JacketName'];
+  //   });
+  //   // setState(() {
+  //   //   print("jackName = $jackName");
+  //   // });
+
   // }
+  @override
+  void initState() {
+    super.initState();
+    _checkJacket();
+  }
 
   _checkJacket() {
-    _database.child('Jacket01').onValue.listen((event) {
-      final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final user = data['user'] as String;
-      final profileImage = data['imageProfile'];
-
-      _displayName = user;
-      getPic = profileImage;
-    });
     var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
         .collection("test")
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      setState(() {
-        jackName = value.data()!['JacketName'];
-      });
+      jackName = value.data()!['JacketName'];
+      print("jacketName = $jackName");
     });
-
     if (jackName == null) {
-      return Text('');
-    } else {
-      return SingleChildScrollView(
-        child: SizedBox(
-          width: 350,
-          height: 100,
-          child: Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 40,
-                ),
-                getPic == null
-                    ? CircleAvatar(
-                        radius: 35.0,
-                        backgroundImage: AssetImage("assets/person.png"),
-                        backgroundColor: Colors.white,
-                      )
-                    : CircleAvatar(
-                        radius: 35.0,
-                        backgroundImage: NetworkImage(getPic),
-                        backgroundColor: Colors.white,
+      return Text("ไม่พบอุปปกรณ์");
+    }
+    if (jackName == 'Jacket01') {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    children: [
+                      SizedBox(
+                        width: 40,
                       ),
-                SizedBox(
-                  width: 40,
+                      getPic == null
+                          ? CircleAvatar(
+                              radius: 35.0,
+                              backgroundImage: AssetImage("assets/person.png"),
+                              backgroundColor: Colors.white,
+                            )
+                          : CircleAvatar(
+                              radius: 35.0,
+                              backgroundImage: NetworkImage(getPic),
+                              backgroundColor: Colors.white,
+                            ),
+                      SizedBox(
+                        width: 40,
+                      ),
+                      Text(
+                        _displayName,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      )
+                    ],
+                  ),
                 ),
-                Text(
-                  _displayName,
-                  style: TextStyle(
-                      fontSize: 45.0,
-                      color: Color(0xFF707070),
-                      fontFamily: "Jasmine",
-                      fontWeight: FontWeight.bold),
-                )
-              ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 300,
+                height: 60,
+                child: ElevatedButton(
+                  child: Text(
+                    "ตั้งค่าอุปกรณ์อุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 30.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft, child: JacketPro()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
         ),
       );
-    }
+    } else
+      return Padding(
+        padding: const EdgeInsets.only(top: 100),
+        child: Column(
+          children: [
+            SizedBox(
+              child: Text(
+                'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
+                style: TextStyle(
+                  fontSize: 30.0,
+                  color: Colors.white,
+                  fontFamily: "Jasmine",
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  child: Text(
+                    "เพิ่มอุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft, child: AddDevice()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      );
   }
 
   // getUid() {
@@ -178,47 +277,47 @@ class _JacketPageState extends State<JacketPage> {
   //   );
   // }
 
-  // Widget test() {
-  //   return SingleChildScrollView(
-  //     child: SizedBox(
-  //       width: 350,
-  //       height: 100,
-  //       child: Card(
-  //         shape:
-  //             RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-  //         child: Row(
-  //           children: [
-  //             SizedBox(
-  //               width: 40,
-  //             ),
-  //             getPic == null
-  //                 ? CircleAvatar(
-  //                     radius: 35.0,
-  //                     backgroundImage: AssetImage("assets/person.png"),
-  //                     backgroundColor: Colors.white,
-  //                   )
-  //                 : CircleAvatar(
-  //                     radius: 35.0,
-  //                     backgroundImage: NetworkImage(getPic),
-  //                     backgroundColor: Colors.white,
-  //                   ),
-  //             SizedBox(
-  //               width: 40,
-  //             ),
-  //             Text(
-  //               _displayName,
-  //               style: TextStyle(
-  //                   fontSize: 45.0,
-  //                   color: Color(0xFF707070),
-  //                   fontFamily: "Jasmine",
-  //                   fontWeight: FontWeight.bold),
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  Widget test() {
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: 350,
+        height: 100,
+        child: Card(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Row(
+            children: [
+              SizedBox(
+                width: 40,
+              ),
+              getPic == null
+                  ? CircleAvatar(
+                      radius: 35.0,
+                      backgroundImage: AssetImage("assets/person.png"),
+                      backgroundColor: Colors.white,
+                    )
+                  : CircleAvatar(
+                      radius: 35.0,
+                      backgroundImage: NetworkImage(getPic),
+                      backgroundColor: Colors.white,
+                    ),
+              SizedBox(
+                width: 40,
+              ),
+              Text(
+                _displayName,
+                style: TextStyle(
+                    fontSize: 45.0,
+                    color: Color(0xFF707070),
+                    fontFamily: "Jasmine",
+                    fontWeight: FontWeight.bold),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget showLogo() {
     return Image.asset(
@@ -297,38 +396,39 @@ class _JacketPageState extends State<JacketPage> {
           },
         ),
       );
-    }
-    return SizedBox(
-      width: 150,
-      height: 50,
-      child: ElevatedButton(
-        child: Text(
-          "เพิ่มอุปกรณ์",
-          style: TextStyle(
-            fontFamily: "Jasmine",
-            color: Color(0xFF707070),
-            fontSize: 25.0,
-            fontWeight: FontWeight.bold,
+    } else {
+      return SizedBox(
+        width: 150,
+        height: 50,
+        child: ElevatedButton(
+          child: Text(
+            "เพิ่มอุปกรณ์",
+            style: TextStyle(
+              fontFamily: "Jasmine",
+              color: Color(0xFF707070),
+              fontSize: 25.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
+          style: ElevatedButton.styleFrom(
+            primary: Color(0xFFE5EFC1),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(30))),
+          ),
+          onPressed: () {
+            Navigator.push(
+              context,
+              PageTransition(
+                  type: PageTransitionType.rightToLeft, child: AddDevice()),
+            );
+          },
         ),
-        style: ElevatedButton.styleFrom(
-          primary: Color(0xFFE5EFC1),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.rightToLeft, child: AddDevice()),
-          );
-        },
-      ),
-    );
+      );
+    }
   }
 
   Widget build(BuildContext context) {
-     _database.child('Jacket01').onValue.listen((event) {
+    _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final user = data['user'] as String;
       final profileImage = data['imageProfile'];
@@ -377,13 +477,11 @@ class _JacketPageState extends State<JacketPage> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                
-                sixedbox(),
                 _checkJacket(),
+                sixedbox(),
                 showLogo(),
                 showText(),
                 sixedbox(),
-                showButton(),
                 sixedbox(),
               ],
             ),
