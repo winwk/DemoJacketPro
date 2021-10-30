@@ -116,7 +116,8 @@ class _JacketPageState extends State<JacketPage> {
             )
           ],
         ),
-      );;
+      );
+      ;
     }
     if (jackName == 'Jacket01') {
       return Padding(
@@ -131,23 +132,22 @@ class _JacketPageState extends State<JacketPage> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SizedBox(
-                        width: 40,
-                      ),
-                      getPic == null
-                          ? CircleAvatar(
-                              radius: 35.0,
-                              backgroundImage: AssetImage("assets/person.png"),
-                              backgroundColor: Colors.white,
-                            )
-                          : CircleAvatar(
-                              radius: 35.0,
-                              backgroundImage: NetworkImage(getPic),
-                              backgroundColor: Colors.white,
-                            ),
-                      SizedBox(
-                        width: 40,
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic),
+                                backgroundColor: Colors.white,
+                              ),
                       ),
                       Text(
                         _displayName,
@@ -156,43 +156,29 @@ class _JacketPageState extends State<JacketPage> {
                             color: Color(0xFF707070),
                             fontFamily: "Jasmine",
                             fontWeight: FontWeight.bold),
-                      )
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 300,
-                height: 60,
-                child: ElevatedButton(
-                  child: Text(
-                    "ตั้งค่าอุปกรณ์อุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: JacketPro()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
