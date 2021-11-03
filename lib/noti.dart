@@ -36,18 +36,18 @@ class _notiState extends State<noti> {
             preferredSize: Size.fromHeight(70),
             child: AppBar(
               automaticallyImplyLeading: true,
-              leading: Padding(
-                padding: const EdgeInsets.only(left: 15, top: 12),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Image.asset(
-                    'assets/backbutton.png',
-                    scale: 12,
+              actions: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(right: 20, top: 10),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(Icons.cancel_rounded,
+                        size: 42, color: Colors.white),
                   ),
-                ),
-              ),
+                )
+              ],
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),

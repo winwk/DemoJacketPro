@@ -24,6 +24,8 @@ class _HomemapPageState extends State<HomemapPage> {
 
   late Position currentPosition;
   var geoLocator = Geolocator();
+
+  var statusnow;
   void locatePosition() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -64,6 +66,7 @@ class _HomemapPageState extends State<HomemapPage> {
   void initState() {
     super.initState();
     _checkJacket();
+    Timer.run(() => _database.child('Jacket01/').update({'status': 'off'}));
     db.once().then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((key, values) {
@@ -82,11 +85,13 @@ class _HomemapPageState extends State<HomemapPage> {
       final lng = data['lng'];
       print("lng : $lng");
       final profileImage = data['imageProfile'];
+      final status = data['status'];
       setState(() {
         _displayName = user;
         getPic = profileImage;
         dislat = lat;
         dislng = lng;
+        statusnow = status;
       });
     });
     var firebaseUser = FirebaseAuth.instance.currentUser;
@@ -100,6 +105,36 @@ class _HomemapPageState extends State<HomemapPage> {
       });
       print("jacketName = $jackName");
     });
+  }
+
+  status() {
+    if (statusnow == 'off') {
+      return Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Text(
+          'ออฟไลน์',
+          style: TextStyle(
+            fontFamily: "Jasmine",
+            color: Colors.red[300],
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Text(
+          'ออนไลน์',
+          style: TextStyle(
+            fontFamily: "Jasmine",
+            color: Colors.green[300],
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
   }
 
   Profile() {
@@ -127,6 +162,8 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
     if (jackName == 'Jacket01') {
+      //Timer.periodic(Duration(seconds: 15),
+      //  (Timer t) => _database.child('Jacket01/').update({'status': 'off'}));
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: SizedBox(
@@ -134,6 +171,7 @@ class _HomemapPageState extends State<HomemapPage> {
           height: 70,
           child: ElevatedButton(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 getPic == null
                     ? CircleAvatar(
@@ -146,9 +184,6 @@ class _HomemapPageState extends State<HomemapPage> {
                         backgroundImage: NetworkImage(getPic),
                         backgroundColor: Colors.white,
                       ),
-                SizedBox(
-                  width: 30,
-                ),
                 Text(
                   _displayName,
                   style: TextStyle(
@@ -158,6 +193,10 @@ class _HomemapPageState extends State<HomemapPage> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                SizedBox(
+                  width: 20,
+                ),
+                status(),
               ],
             ),
             style: ElevatedButton.styleFrom(
@@ -270,13 +309,12 @@ class _HomemapPageState extends State<HomemapPage> {
                 onPressed: () {
                   if (jackName == null || jackName == "") {
                     return null;
-                  }
-                  else {
-                  Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.bottomToTop, child: noti()),
-                  );
+                  } else {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.topToBottom, child: noti()),
+                    );
                   }
                 },
               ),
