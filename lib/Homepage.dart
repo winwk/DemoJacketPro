@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:page_transition/page_transition.dart';
@@ -7,6 +8,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+ 
+
   Widget showLogo() {
     return Image.asset(
       "assets/BG.png",
@@ -74,7 +77,7 @@ class _HomePageState extends State<HomePage> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
-          automaticallyImplyLeading: false,
+          automaticallyImplyLeading: true,
           actions: <Widget>[
             Padding(
                 padding: EdgeInsets.only(right: 23, top: 7),
@@ -106,6 +109,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       value: 1,
                     ),
+                    
                     PopupMenuItem(
                       child: SizedBox(
                         height: 5,

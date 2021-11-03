@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:jackket/AddDevice.dart';
+import 'package:jackket/noti.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -15,6 +17,7 @@ class HomemapPage extends StatefulWidget {
 
 class _HomemapPageState extends State<HomemapPage> {
   final _database = FirebaseDatabase.instance.reference();
+  final db = FirebaseDatabase.instance.reference().child("Jacket01/noti");
 
   Completer<GoogleMapController> _controllerGoogleMap = Completer();
   late GoogleMapController newGoogleMapController;
@@ -49,7 +52,7 @@ class _HomemapPageState extends State<HomemapPage> {
   static final CameraPosition _jacket =
       CameraPosition(target: LatLng(678, 678), zoom: 10);
   String _displayName = 'Results go here';
-
+  List? date;
   var getPic;
   var jackName;
   var jackID;
@@ -61,6 +64,13 @@ class _HomemapPageState extends State<HomemapPage> {
   void initState() {
     super.initState();
     _checkJacket();
+    db.once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((key, values) {
+        print(values['datetime']);
+        date = values['datetime'];
+      });
+    });
   }
 
   _checkJacket() {
@@ -99,9 +109,8 @@ class _HomemapPageState extends State<HomemapPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      setState(() {
-        jackName = value.data()!['JacketName'];
-      });
+      jackName = value.data()!['JacketName'];
+
       print("jacketName = $jackName");
     });
     if (jackName == null) {
@@ -237,6 +246,16 @@ class _HomemapPageState extends State<HomemapPage> {
   }
 
   Widget build(BuildContext context) {
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      jackName = value.data()!['JacketName'];
+
+      print("jacketName = $jackName");
+    });
     return new Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
@@ -244,43 +263,24 @@ class _HomemapPageState extends State<HomemapPage> {
           automaticallyImplyLeading: false,
           actions: <Widget>[
             Padding(
-                padding: EdgeInsets.only(right: 23, top: 7),
-                child: PopupMenuButton<int>(
-                  offset: const Offset(-35, 70),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(20))),
-                  icon: Icon(Icons.notifications,
-                      size: 40, color: Color(0xffE5EFC1)),
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      child: Center(
-                        child: Text(
-                          "การแจ้งเตือน",
-                          style: TextStyle(
-                            fontFamily: "Jasmine",
-                            color: Color(0xFF707070),
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      height: 25,
-                    ),
-                    PopupMenuDivider(),
-                    PopupMenuItem(
-                      child: Center(
-                        child: Text("ไม่มีการแจ้งเตือน"),
-                      ),
-                      value: 1,
-                    ),
-                    PopupMenuItem(
-                      child: SizedBox(
-                        height: 5,
-                        width: 300,
-                      ),
-                    ),
-                  ],
-                ))
+              padding: const EdgeInsets.only(right: 20, top: 10),
+              child: IconButton(
+                icon: Icon(Icons.notifications,
+                    size: 40, color: Color(0xffE5EFC1)),
+                onPressed: () {
+                  if (jackName == null || jackName == "") {
+                    return null;
+                  }
+                  else {
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.bottomToTop, child: noti()),
+                  );
+                  }
+                },
+              ),
+            )
           ],
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -318,7 +318,6 @@ class _HomemapPageState extends State<HomemapPage> {
                       onMapCreated: (GoogleMapController controller) {
                         _controllerGoogleMap.complete(controller);
                         newGoogleMapController = controller;
-
                         locatePosition();
                       },
                       markers: {

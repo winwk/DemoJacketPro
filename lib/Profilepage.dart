@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   String? displayName;
   var getPic;
-
+  
   @override
   void initState() {
     super.initState();
@@ -44,7 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         getPic = value.data()!["profileImage"];
       });
-
       print(getPic);
     });
   }
