@@ -102,12 +102,97 @@ class _VideoPageState extends State<VideoPage> {
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
-                    child: ListTile(
+                    child: Center(
+                      child: ListTile(
                         title: new Text(snapshot.value['datetime']),
                         subtitle: Linkify(
                           text: snapshot.value['videoUrl'],
                           onOpen: _onOpen,
-                        )),
+                        ),
+                        trailing: IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      title: Text(
+                                        'ลบวิดีโอ',
+                                        style: TextStyle(
+                                          fontFamily: "Jasmine",
+                                          color: Color(0xFF707070),
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      actions: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 15),
+                                              child: ElevatedButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: TextStyle(
+                                                    fontFamily: "Jasmine",
+                                                    color: Color(0xFF707070),
+                                                    fontSize: 22.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFE5EFC1),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                ),
+                                                onPressed: () {
+                                                  var key = snapshot.key;
+                                                  print(key);
+                                                  _delete(key);
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              child: Text(
+                                                "ยกเลิก",
+                                                style: TextStyle(
+                                                  fontFamily: "Jasmine",
+                                                  color: Color(0xFF707070),
+                                                  fontSize: 22.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Color(0xFFE5EFC1),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: Icon(Icons.delete)),
+                      ),
+                    ),
                   ),
                 );
               },
@@ -123,4 +208,9 @@ class _VideoPageState extends State<VideoPage> {
       throw ('cannot open link $link');
     }
   }
+}
+
+_delete(var key) async {
+  final db = FirebaseDatabase.instance.reference().child("Jacket01/video");
+  await db.child(key).remove();
 }

@@ -387,7 +387,7 @@ class _JacketProState extends State<JacketPro> {
                 });
           },
           child: Text(
-            "ลบโปรไฟล์",
+            "ลบอุปกรณ์",
             style: TextStyle(
                 fontFamily: "Jasmine",
                 color: Color(0xFF707070),
