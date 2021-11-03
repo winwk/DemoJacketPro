@@ -66,7 +66,7 @@ class _JacketPageState extends State<JacketPage> {
       setState(() {
         jackName = value.data()!['JacketName'];
       });
-      print("jacketName = $jackName");
+      //print("jacketName = $jackName");
     });
     if (jackName == null) {
       return Padding(

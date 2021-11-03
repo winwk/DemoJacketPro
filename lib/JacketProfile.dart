@@ -34,7 +34,7 @@ class _JacketProState extends State<JacketPro> {
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final profileImage = data['imageProfile'];
-      print(profileImage);
+      //print(profileImage);
       final user = data['user'] as String;
       setState(() {
         JackUser = user;
@@ -47,7 +47,7 @@ class _JacketProState extends State<JacketPro> {
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final profileImage = data['imageProfile'];
-      print(profileImage);
+      //print(profileImage);
       final user = data['user'] as String;
       setState(() {
         JackUser = user;
@@ -351,7 +351,7 @@ class _JacketProState extends State<JacketPro> {
                                     .collection("test")
                                     .doc(firebaseUser!.uid)
                                     .update({"JacketName": ""}).then((_) {
-                                  print("success!");
+                                  //print("success!");
                                 });
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
