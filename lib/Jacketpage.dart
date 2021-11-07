@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -5,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:jackket/ChangeProJacket.dart';
 import 'package:jackket/JacketProfile.dart';
+import 'package:jackket/LocalNotifyManager.dart';
 import 'package:jackket/notitest.dart';
 import 'package:jackket/read_examples.dart';
 import 'package:jackket/user/showListofUsers.dart';
@@ -54,6 +57,12 @@ class _JacketPageState extends State<JacketPage> {
   void initState() {
     super.initState();
     _checkJacket();
+    localNotifyManager.showNotification();
+    Timer.run(() => _database.child('Jacket01/notinow').remove());
+    
+
+   
+    
   }
 
   _checkJacket() {
@@ -527,4 +536,5 @@ class _JacketPageState extends State<JacketPage> {
       ),
     );
   }
+  
 }

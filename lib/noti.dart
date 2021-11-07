@@ -79,13 +79,11 @@ class _notiState extends State<noti> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15)),
                     child: ListTile(
-                      title: new Text("" + snapshot.value['datetime']),
+                      title: new Text(snapshot.value['data']),
                       subtitle: Text("\n" +
-                          "lat : " +
-                          snapshot.value['lat'] +
-                          '\n' +
-                          "lng : " +
-                          snapshot.value['lng']),
+                          "วันเวลา : " +
+                          snapshot.value['datetime'] 
+                         ),
                     ),
                   ),
                 );

@@ -1,21 +1,26 @@
+import 'dart:async';
+import 'dart:ffi';
 import 'dart:io';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jackket/ChangeProfile.dart';
 import 'package:jackket/changepassword.dart';
 import 'package:jackket/home.dart';
+import 'package:jackket/main.dart';
 import 'package:jackket/setnoti.dart';
 import 'package:jackket/testChangeProfile.dart';
 import 'package:jackket/user/showListofUsers.dart';
 import 'package:jackket/user/user_model.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-
+import 'LocalNotifyManager.dart';
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
@@ -25,14 +30,21 @@ class _ProfilePageState extends State<ProfilePage> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   String? displayName;
   var getPic;
-  
+
+  final _database = FirebaseDatabase.instance.reference();
+
   @override
   void initState() {
     super.initState();
     findDisplayName();
     checkPic();
+   localNotifyManager.showNotification();
+    Timer.run(() => _database.child('Jacket01/notinow').remove());
+    
+    
   }
 
+ 
   void checkPic() {
     var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -66,6 +78,15 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+ testButton() {
+    return ElevatedButton(
+      onPressed: () async{
+       await localNotifyManager.showNotification();
+      },
+      child: Text('test'),
+    );
+  }
+
   Widget test() {
     return SizedBox(
       width: 355,
@@ -78,8 +99,7 @@ class _ProfilePageState extends State<ProfilePage> {
               height: 20,
             ),
             getPic == null
-                ?  CircleAvatar(
-                  
+                ? CircleAvatar(
                     radius: 40.0,
                     backgroundImage: AssetImage("assets/person.png"),
                     backgroundColor: Colors.white,
@@ -301,6 +321,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 15.0,
                 ),
+                testButton()
+                
               ],
             ),
           ),
@@ -309,4 +331,5 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: Color(0xFF557B83),
     );
   }
+
 }

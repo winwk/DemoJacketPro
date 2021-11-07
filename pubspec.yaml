@@ -42,10 +42,11 @@ dependencies:
   path: ^1.8.0
   firebase_database: ^8.0.0
   firebase_messaging: ^10.0.8
-  flutter_local_notifications: ^5.0.0+4
+  flutter_local_notifications: ^7.0.0
   http: ^0.13.0
   flutter_linkify: ^5.0.2
   url_launcher: ^6.0.0
+  rxdart: ^0.27.2
   
 
   
