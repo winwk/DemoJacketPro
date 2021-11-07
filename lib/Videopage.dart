@@ -12,7 +12,10 @@ class _VideoPageState extends State<VideoPage> {
   final _database = FirebaseDatabase.instance.reference();
   var showVideo;
   var showdate;
-  final db = FirebaseDatabase.instance.reference().child("Jacket01/video");
+  final db = FirebaseDatabase.instance
+      .reference()
+      .child("Jacket01/video")
+      .orderByChild("timestamp");
 
   @override
   void initState() {
@@ -93,6 +96,8 @@ class _VideoPageState extends State<VideoPage> {
           ),
           body: SafeArea(
             child: FirebaseAnimatedList(
+              //shrinkWrap: true,
+              //reverse: true,
               query: db,
               itemBuilder: (BuildContext context, DataSnapshot snapshot,
                   Animation<double> animation, int index) {
@@ -108,6 +113,11 @@ class _VideoPageState extends State<VideoPage> {
                         subtitle: Linkify(
                           text: snapshot.value['videoUrl'],
                           onOpen: _onOpen,
+                        ),
+                        leading: Icon(
+                          Icons.slideshow,
+                          color: Colors.green[200],
+                          size: 40,
                         ),
                         trailing: IconButton(
                             onPressed: () {

@@ -10,8 +10,11 @@ class noti extends StatefulWidget {
 }
 
 class _notiState extends State<noti> {
-  final db = FirebaseDatabase.instance.reference().child("Jacket01/noti");
-
+  final db = FirebaseDatabase.instance
+      .reference()
+      .child("Jacket01/noti")
+      .orderByChild("timestamp");
+  late final bool reverse;
   @override
   void initState() {
     super.initState();
@@ -68,26 +71,52 @@ class _notiState extends State<noti> {
             ),
           ),
           body: SafeArea(
-            child: FirebaseAnimatedList(
-              query: db,
-              itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                  Animation<double> animation, int index) {
-                return SizedBox(
-                  width: 355,
-                  height: 90,
-                  child: Card(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)),
-                    child: ListTile(
-                      title: new Text(snapshot.value['data']),
-                      subtitle: Text("\n" +
-                          "วันเวลา : " +
-                          snapshot.value['datetime'] 
-                         ),
-                    ),
-                  ),
-                );
-              },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FirebaseAnimatedList(
+                //shrinkWrap: true,
+                //reverse: true,
+                physics: BouncingScrollPhysics(),
+                query: db,
+                itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                    Animation<double> animation, int index) {
+                  return SizedBox(
+                      width: 355,
+                      height: 90,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                          child: ListTile(
+                            title: new Text(snapshot.value['title']),
+                            subtitle: snapshot.value['data'] == null
+                                ? Text("Latitude : " +
+                                    snapshot.value['lat'] +
+                                    "  Longtitude : " +
+                                    snapshot.value['lng'] +
+                                    "\n" +
+                                    "วันเวลา : " +
+                                    snapshot.value['datetime'])
+                                : Text(snapshot.value['data'] +
+                                    "\n" +
+                                    "วันเวลา : " +
+                                    snapshot.value['datetime']),
+                            leading: snapshot.value['title'] == "SOS!!!"
+                                ? Icon(
+                                    Icons.warning_amber_rounded,
+                                    color: Colors.red[200],
+                                    size: 40,
+                                  )
+                                : Icon(
+                                    Icons.location_pin,
+                                    color: Colors.green[200],
+                                    size: 40,
+                                  ),
+                          ),
+                        ),
+                      ));
+                },
+              ),
             ),
           )),
     );
