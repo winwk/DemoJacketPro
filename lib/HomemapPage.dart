@@ -64,11 +64,6 @@ class _HomemapPageState extends State<HomemapPage> {
   var dislat;
   var dislng;
 
-
-  
-
-
-
   @override
   void initState() {
     super.initState();
@@ -154,7 +149,6 @@ class _HomemapPageState extends State<HomemapPage> {
         .get()
         .then((value) {
       jackName = value.data()!['JacketName'];
-
       print("jacketName = $jackName");
     });
     if (jackName == null) {

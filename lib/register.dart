@@ -105,7 +105,8 @@ class _Register_ScreenState extends State<Register_Screen> {
                 },
                 onSaved: (String? value) {
                   emailString = value;
-                })
+                }
+            )
           ],
         ),
       ),
@@ -230,7 +231,6 @@ class _Register_ScreenState extends State<Register_Screen> {
                   print('Regis success');
                   await value.user?.updateProfile(displayName: nameString);
                   postDetailsToFirestore();
-
                   showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -459,7 +459,7 @@ class _Register_ScreenState extends State<Register_Screen> {
     User? user = FirebaseAuth.instance.currentUser;
 
     UserModel userModel =
-        UserModel(email: '', name: '', profileImage: '', uid: '', JacketName: '');
+        UserModel(email: '', name: '', profileImage: '', uid: '',JacketName: []);
     userModel.uid = user!.uid;
     // narimetisaigopi@gmail.com
     userModel.email = user.email!;

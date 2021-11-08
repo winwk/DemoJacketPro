@@ -5,7 +5,7 @@ class UserModel {
   String email;
   String name;
   String profileImage;
-  String JacketName;
+  List JacketName;
 
   UserModel({
     required this.uid,

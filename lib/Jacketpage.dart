@@ -60,9 +60,6 @@ class _JacketPageState extends State<JacketPage> {
     localNotifyManager.showNotification();
     Timer.run(() => _database.child('Jacket01/notinow').remove());
     
-
-   
-    
   }
 
   _checkJacket() {

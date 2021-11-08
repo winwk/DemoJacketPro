@@ -11,7 +11,8 @@ class LocalNotifyManager {
   late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
   var initSetting;
   var noti;
-  final db = FirebaseDatabase.instance.reference().child("Jacket01/noti");
+  var date;
+  final db = FirebaseDatabase.instance.reference().child("Jacket01/notinow");
   final _database = FirebaseDatabase.instance.reference();
 
   BehaviorSubject<ReceiveNotification> get didReceiveLocalNotificationSubject =>
@@ -71,22 +72,20 @@ class LocalNotifyManager {
     var iosChannel = IOSNotificationDetails();
     var platformChannel =
         NotificationDetails(android: androidChannel, iOS: iosChannel);
-    _database.child('Jacket01/notinow').onValue.listen((event) async {
-      noti = event.snapshot.value;
-      print("noti = $noti");
-       if (noti == null || noti == "") {
-      return null;
-    } else {
-      await flutterLocalNotificationsPlugin
-          .show(0, '$noti', '', platformChannel, payload: 'NEW payload');
-    }
+    db.once().then((DataSnapshot snapshot) {
+      Map<dynamic, dynamic> values = snapshot.value;
+      values.forEach((key, values) async{
+        noti = values['title'];
+        date = values['datetime'];
+        print("noti = $noti");
+        if (noti == null || noti == "") {
+        return null;
+      } else {
+        await flutterLocalNotificationsPlugin
+            .show(0, '$noti', '$date', platformChannel, payload: 'NEW payload');
+      }
+      });
     });
-   
-    
-    
-
-    
-
     // var androidChannel = AndroidNotificationDetails(
     //     'Channel_ID', 'Channel_NAME', 'Channel_DESCRIPTION',
     //     importance: Importance.max, priority: Priority.high, playSound: true);

@@ -21,15 +21,20 @@ import 'package:jackket/user/user_model.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'LocalNotifyManager.dart';
+
 class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
   bool isBackButtonActivated = false;
+  final db = FirebaseDatabase.instance.reference().child("Jacket01/noti");
+
   final FirebaseAuth auth = FirebaseAuth.instance;
   String? displayName;
   var getPic;
+  var noti;
+
 
   final _database = FirebaseDatabase.instance.reference();
 
@@ -38,13 +43,11 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     findDisplayName();
     checkPic();
-   localNotifyManager.showNotification();
+    localNotifyManager.showNotification();
     Timer.run(() => _database.child('Jacket01/notinow').remove());
-    
     
   }
 
- 
   void checkPic() {
     var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -78,10 +81,10 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
- testButton() {
+  testButton() {
     return ElevatedButton(
-      onPressed: () async{
-       await localNotifyManager.showNotification();
+      onPressed: () async {
+        await localNotifyManager.showNotification();
       },
       child: Text('test'),
     );
@@ -321,8 +324,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 15.0,
                 ),
-                testButton()
-                
               ],
             ),
           ),
@@ -331,5 +332,4 @@ class _ProfilePageState extends State<ProfilePage> {
       backgroundColor: Color(0xFF557B83),
     );
   }
-
 }
