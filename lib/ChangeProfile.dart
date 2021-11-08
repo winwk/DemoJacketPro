@@ -56,7 +56,7 @@ class _ChangeProfileState extends State<ChangeProfile> {
             ),
         );
   }
-
+  
   Widget username() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),

@@ -18,11 +18,14 @@ class _AddDeviceState extends State<AddDevice> {
       FirebaseFirestore.instance.collection("test");
   CollectionReference _jackCollection =
       FirebaseFirestore.instance.collection("Jacket01");
-  var deviceName01 = "Jacket01";
+  String deviceName01 = "Jacket01";
+  String deviceName02 = "Jacket02";
+    TextEditingController _device = TextEditingController();
+
   TextEditingController _password = TextEditingController();
   String? passwordString;
   String? password;
-
+  String? password02;
 
   String? nameString;
 
@@ -30,9 +33,11 @@ class _AddDeviceState extends State<AddDevice> {
   void initState() {
     super.initState();
     check();
+   
+  
   }
 
-   void check(){
+  void check() {
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final pass = data['pass'] as String;
@@ -41,6 +46,7 @@ class _AddDeviceState extends State<AddDevice> {
     });
   }
 
+   
 
   // void onPressed() {
   //   _jackCollection.get().then((querySnapshot) {
@@ -102,6 +108,7 @@ class _AddDeviceState extends State<AddDevice> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
+              controller:_device ,
               decoration: InputDecoration(
                   icon: Icon(Icons.face),
                   labelText: "ชื่ออุปกรณ์",
@@ -115,7 +122,9 @@ class _AddDeviceState extends State<AddDevice> {
                   return "กรุณาระบุข้อมูล";
                 }
                 if (value != deviceName01) {
-                  return "ชื่ออุปกรณ์ไม่ถูกต้อง";
+                  if (value != deviceName02) {
+                    return "ชื่ออุปกรณ์ไม่ถูกต้อง";
+                  }
                 } else {
                   return null;
                 }
@@ -123,6 +132,7 @@ class _AddDeviceState extends State<AddDevice> {
               onSaved: (String? value) {
                 nameString = value;
               },
+              
             )
           ],
         ),
@@ -131,6 +141,14 @@ class _AddDeviceState extends State<AddDevice> {
   }
 
   Widget Password() {
+    
+    _database.child('Jacket02').onValue.listen((event) {
+      final data02 = new Map<String, dynamic>.from(event.snapshot.value);
+      final pass02 = data02['pass'] as String;
+      password02 = pass02;
+      print("+++++++++++++++++++++");
+      print(password02);
+    });
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
@@ -155,11 +173,13 @@ class _AddDeviceState extends State<AddDevice> {
                   if (value == null || value.trim().length == 0) {
                     return "กรุณาระบุข้อมูล";
                   }
-
+                  
                   if (value != password) {
                     return "รหัสผ่านผิด กรุณากรอกใหม่";
-                  } else
-                  return null;
+                    
+                  }
+                  else
+                    return null;
                 },
                 onSaved: (String? value) {
                   passwordString = value;
@@ -179,6 +199,7 @@ class _AddDeviceState extends State<AddDevice> {
           print('####you click addDevice###');
           if (_formKey.currentState!.validate()) {
             _formKey.currentState?.save();
+           
             updateProfile(context);
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {
@@ -266,14 +287,26 @@ class _AddDeviceState extends State<AddDevice> {
   }
 
   updateProfile(BuildContext context) async {
+     var val=[];
     Map<String, dynamic> map = Map();
     if (nameString != null) {
-      map['JacketName'] = nameString;
+      
+      val.add(nameString);
+      
     }
-
+   
+    
     await FirebaseFirestore.instance
         .collection("test")
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update(map);
+        .update({
+          "JacketName":FieldValue.arrayUnion(val)
+        });
+
+  //  await FirebaseFirestore.instance
+  //       .doc(FirebaseAuth.instance.currentUser!.uid)
+  //       .collection("test")
+  //       .add(map);
+
   }
 }

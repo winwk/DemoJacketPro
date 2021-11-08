@@ -26,6 +26,7 @@ class _JacketProState extends State<JacketPro> {
   final firestoreRef = FirebaseFirestore.instance;
   var getPic;
   var JackUser;
+  var jackId;
   final _database = FirebaseDatabase.instance.reference();
 
   @override
@@ -33,18 +34,16 @@ class _JacketProState extends State<JacketPro> {
     super.initState();
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final profileImage = data['imageProfile'];
+      final sendJackID = data['sendJackID'];
       //print(profileImage);
-      final user = data['user'] as String;
       setState(() {
-        JackUser = user;
-        getPic = profileImage;
+        jackId = sendJackID;
       });
     });
   }
 
   Widget getProfileJack() {
-    _database.child('Jacket01').onValue.listen((event) {
+    _database.child('$jackId').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final profileImage = data['imageProfile'];
       //print(profileImage);
@@ -345,14 +344,17 @@ class _JacketProState extends State<JacketPro> {
                                         BorderRadius.all(Radius.circular(20))),
                               ),
                               onPressed: () {
-                                var firebaseUser =
-                                    FirebaseAuth.instance.currentUser;
+                                var val = [];
+                                if (jackId != null) {
+                                  val.add(jackId);
+                                }
                                 FirebaseFirestore.instance
                                     .collection("test")
-                                    .doc(firebaseUser!.uid)
-                                    .update({"JacketName": ""}).then((_) {
-                                  //print("success!");
+                                    .doc(FirebaseAuth.instance.currentUser!.uid)
+                                    .update({
+                                  "JacketName": FieldValue.arrayRemove(val)
                                 });
+
                                 Navigator.of(context).pushAndRemoveUntil(
                                     MaterialPageRoute(
                                         builder: (context) => home1()),

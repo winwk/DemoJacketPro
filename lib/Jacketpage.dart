@@ -22,12 +22,15 @@ class _JacketPageState extends State<JacketPage> {
   CollectionReference _jackCollection =
       FirebaseFirestore.instance.collection("Jacket01");
   final _database = FirebaseDatabase.instance.reference();
+
   String _displayName = '';
+  String _displayName02 = '';
+
   var getPic;
   var jackName;
-  var jackID;
-  var jackUser;
-
+  var jackName02;
+  var getPic02;
+  var checkJackName;
   // @override
   // void initState() {
   //   super.initState();
@@ -59,10 +62,10 @@ class _JacketPageState extends State<JacketPage> {
     _checkJacket();
     localNotifyManager.showNotification();
     Timer.run(() => _database.child('Jacket01/notinow').remove());
-    
   }
 
   _checkJacket() {
+    final Jacket01Ref = _database.child('/Jacket01');
     var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
         .collection("test")
@@ -70,11 +73,721 @@ class _JacketPageState extends State<JacketPage> {
         .get()
         .then((value) {
       setState(() {
-        jackName = value.data()!['JacketName'];
+        jackName = value.data()!['JacketName'][0];
+        jackName02 = value.data()!['JacketName'][1];
+        checkJackName = value.data()!['JacketName'];
       });
-      //print("jacketName = $jackName");
+      print("jacketName = $jackName");
+      print("jacketName02 =$jackName02");
+      print("chckJacketName =$checkJackName");
     });
-    if (jackName == null) {
+    _database.child("Jacket01").onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final user = data['user'] as String;
+      final profileImage = data['imageProfile'];
+
+      _displayName = user;
+      getPic = profileImage;
+    });
+    _database.child("Jacket02").onValue.listen((event) {
+      final data02 = new Map<String, dynamic>.from(event.snapshot.value);
+      final user02 = data02['user'] as String;
+      final profileImage02 = data02['imageProfile'];
+      _displayName02 = user02;
+      getPic02 = profileImage02;
+    });
+
+    if (jackName == "Jacket01" && jackName02 == "Jacket02") {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic),
+                                backgroundColor: Colors.white,
+                              ),
+                      ),
+                      Text(
+                        _displayName,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Jacket01Ref.update({'sendJackID': "Jacket01"});
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic02 == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic02),
+                                backgroundColor: Colors.white,
+                              ),
+                      ),
+                      Text(
+                        _displayName02,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Jacket01Ref.update({'sendJackID': "Jacket02"});
+
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  child: Text(
+                    "เพิ่มอุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AddDevice()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    if (jackName02 == "Jacket01" && jackName == "Jacket02") {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic),
+                                backgroundColor: Colors.white,
+                              ),
+                      ),
+                      Text(
+                        _displayName,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Jacket01Ref.update({'sendJackID': "Jacket01"});
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic02 == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic02),
+                                backgroundColor: Colors.white,
+                              ),
+                      ),
+                      Text(
+                        _displayName02,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Jacket01Ref.update({'sendJackID': "Jacket02"});
+
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  child: Text(
+                    "เพิ่มอุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AddDevice()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    if (jackName == "Jacket01" && jackName02 == null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic),
+                                backgroundColor: Colors.white,
+                              ),
+                      ),
+                      Text(
+                        _displayName,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Jacket01Ref.update({'sendJackID': "Jacket01"});
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  child: Text(
+                    "เพิ่มอุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AddDevice()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    if (jackName == "Jacket02" && jackName02 == null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic02 == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic02),
+                                backgroundColor: Colors.white,
+                              ),
+                      ),
+                      Text(
+                        _displayName02,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Jacket01Ref.update({'sendJackID': "Jacket02"});
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  child: Text(
+                    "เพิ่มอุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AddDevice()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    if (jackName == null && jackName02 == "Jacket01") {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic),
+                                backgroundColor: Colors.white,
+                              ),
+                      ),
+                      Text(
+                        _displayName,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Jacket01Ref.update({'sendJackID': "Jacket01"});
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  child: Text(
+                    "เพิ่มอุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AddDevice()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    if (jackName == null && jackName02 == "Jacket02") {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              child: SizedBox(
+                width: 350,
+                height: 100,
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: getPic02 == null
+                            ? CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage:
+                                    AssetImage("assets/person.png"),
+                                backgroundColor: Colors.white,
+                              )
+                            : CircleAvatar(
+                                radius: 35.0,
+                                backgroundImage: NetworkImage(getPic02),
+                                backgroundColor: Colors.white,
+                              ),
+                      ),
+                      Text(
+                        _displayName02,
+                        style: TextStyle(
+                            fontSize: 45.0,
+                            color: Color(0xFF707070),
+                            fontFamily: "Jasmine",
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 20, bottom: 5),
+                        child: IconButton(
+                            onPressed: () {
+                              Jacket01Ref.update({'sendJackID': "Jacket02"});
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: JacketPro()),
+                              );
+                            },
+                            icon: Icon(
+                              Icons.settings,
+                              size: 40,
+                              color: Color(0xff39AEA9),
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50),
+              child: SizedBox(
+                width: 150,
+                height: 50,
+                child: ElevatedButton(
+                  child: Text(
+                    "เพิ่มอุปกรณ์",
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color(0xFFE5EFC1),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(30))),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: AddDevice()),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    if (checkJackName == null || checkJackName == "") {
       return Padding(
         padding: const EdgeInsets.only(top: 100),
         child: Column(
@@ -120,71 +833,6 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             )
-          ],
-        ),
-      );
-      ;
-    }
-    if (jackName == 'Jacket01') {
-      return Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: Column(
-          children: [
-            SingleChildScrollView(
-              child: SizedBox(
-                width: 350,
-                height: 100,
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: getPic == null
-                            ? CircleAvatar(
-                                radius: 35.0,
-                                backgroundImage:
-                                    AssetImage("assets/person.png"),
-                                backgroundColor: Colors.white,
-                              )
-                            : CircleAvatar(
-                                radius: 35.0,
-                                backgroundImage: NetworkImage(getPic),
-                                backgroundColor: Colors.white,
-                              ),
-                      ),
-                      Text(
-                        _displayName,
-                        style: TextStyle(
-                            fontSize: 45.0,
-                            color: Color(0xFF707070),
-                            fontFamily: "Jasmine",
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20, bottom: 5),
-                        child: IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
-                              );
-                            },
-                            icon: Icon(
-                              Icons.settings,
-                              size: 40,
-                              color: Color(0xff39AEA9),
-                            )),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
           ],
         ),
       );
@@ -411,84 +1059,36 @@ class _JacketPageState extends State<JacketPage> {
   }
 
   Widget showButton() {
-    if (jackName != null) {
-      return SizedBox(
-        width: 300,
-        height: 60,
-        child: ElevatedButton(
-          child: Text(
-            "ตั้งค่าอุปกรณ์อุปกรณ์",
-            style: TextStyle(
-              fontFamily: "Jasmine",
-              color: Color(0xFF707070),
-              fontSize: 30.0,
-              fontWeight: FontWeight.bold,
-            ),
+    return SizedBox(
+      width: 150,
+      height: 50,
+      child: ElevatedButton(
+        child: Text(
+          "เพิ่มอุปกรณ์",
+          style: TextStyle(
+            fontFamily: "Jasmine",
+            color: Color(0xFF707070),
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
           ),
-          style: ElevatedButton.styleFrom(
-            primary: Color(0xFFE5EFC1),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.rightToLeft, child: JacketPro()),
-            );
-          },
         ),
-      );
-    } else {
-      return SizedBox(
-        width: 150,
-        height: 50,
-        child: ElevatedButton(
-          child: Text(
-            "เพิ่มอุปกรณ์",
-            style: TextStyle(
-              fontFamily: "Jasmine",
-              color: Color(0xFF707070),
-              fontSize: 25.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          style: ElevatedButton.styleFrom(
-            primary: Color(0xFFE5EFC1),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(30))),
-          ),
-          onPressed: () {
-            Navigator.push(
-              context,
-              PageTransition(
-                  type: PageTransitionType.rightToLeft, child: AddDevice()),
-            );
-          },
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xFFE5EFC1),
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
         ),
-      );
-    }
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft, child: AddDevice()),
+          );
+        },
+      ),
+    );
   }
 
   Widget build(BuildContext context) {
-    _database.child('Jacket01').onValue.listen((event) {
-      final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final user = data['user'] as String;
-      final profileImage = data['imageProfile'];
-
-      _displayName = user;
-      getPic = profileImage;
-    });
-    var firebaseUser = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection("test")
-        .doc(firebaseUser!.uid)
-        .get()
-        .then((value) {
-      setState(() {
-        jackName = value.data()!['JacketName'];
-      });
-    });
     return new Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
@@ -523,7 +1123,7 @@ class _JacketPageState extends State<JacketPage> {
                 _checkJacket(),
                 sixedbox(),
                 showLogo(),
-                showText(),
+                // showText(),
                 sixedbox(),
                 sixedbox(),
               ],
@@ -533,5 +1133,4 @@ class _JacketPageState extends State<JacketPage> {
       ),
     );
   }
-  
 }

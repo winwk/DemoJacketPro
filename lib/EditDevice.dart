@@ -19,20 +19,24 @@ class _EditDeviceState extends State<EditDevice> {
   String? currentpassword;
   String? newPassword;
   String? confirmPassword;
-  @override
+  var jackId;
 
+  @override
   void initState() {
     super.initState();
     _checkJacket();
   }
 
-   _checkJacket() {
+  _checkJacket() {
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final pass = data['pass'];
-      print(pass);
-      currentpasswordJack = pass;
+      final sendJackID = data['sendJackID'];
+      setState(() {
+        jackId = sendJackID;
+      });
+      
     });
+    
   }
 
   validator() {
@@ -50,11 +54,12 @@ class _EditDeviceState extends State<EditDevice> {
   }
 
   Widget buildPassword() {
-    _database.child('Jacket01').onValue.listen((event) {
-      final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final pass = data['pass'];
-      print(pass);
+    _database.child('$jackId').onValue.listen((event) {
+      final data02 = new Map<String, dynamic>.from(event.snapshot.value);
+      final pass = data02['pass'];
+      // print(pass);
       currentpasswordJack = pass;
+      print(currentpasswordJack);
     });
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -137,7 +142,6 @@ class _EditDeviceState extends State<EditDevice> {
               obscureText: true,
               controller: _confirmPasswordController,
               validator: (String? value) {
-
                 if (value != _passwordController.text) {
                   return 'รหัสผ่านไม่ตรงกัน!';
                 }
@@ -161,7 +165,7 @@ class _EditDeviceState extends State<EditDevice> {
   }
 
   Widget Button() {
-    final Jacket01Ref = database.child('/Jacket01');
+    final Jacket01Ref = database.child('/$jackId');
     return SizedBox(
         width: 200,
         height: 50,
@@ -171,58 +175,56 @@ class _EditDeviceState extends State<EditDevice> {
               _formKey.currentState?.save();
               Jacket01Ref.update({'pass': confirmPassword});
               showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        title: Text(
-                          'เปลี่ยนรหัสผ่านอุปกรณ์เสร็จสิ้น',
-                          style: TextStyle(
-                            fontFamily: "Jasmine",
-                            color: Color(0xFF707070),
-                            fontSize: 27.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      title: Text(
+                        'เปลี่ยนรหัสผ่านอุปกรณ์เสร็จสิ้น',
+                        style: TextStyle(
+                          fontFamily: "Jasmine",
+                          color: Color(0xFF707070),
+                          fontSize: 27.0,
+                          fontWeight: FontWeight.bold,
                         ),
-                        actions: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                child: Text(
-                                  "ตกลง",
-                                  style: TextStyle(
-                                    fontFamily: "Jasmine",
-                                    color: Color(0xFF707070),
-                                    fontSize: 22.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                        textAlign: TextAlign.center,
+                      ),
+                      actions: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            ElevatedButton(
+                              child: Text(
+                                "ตกลง",
+                                style: TextStyle(
+                                  fontFamily: "Jasmine",
+                                  color: Color(0xFF707070),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                style: ElevatedButton.styleFrom(
-                                  primary: Color(0xFFE5EFC1),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                ),
-                                onPressed: () {
-                                  _formKey.currentState?.reset();
-                                  
-                                  Navigator.of(context).pushAndRemoveUntil(
-                                      MaterialPageRoute(
-                                          builder: (context) => home1()),
-                                      (Route<dynamic> route) => false);
-                                },
                               ),
-                            ],
-                          )
-                        ],
-                      );
-                    });
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFE5EFC1),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                              ),
+                              onPressed: () {
+                                _formKey.currentState?.reset();
+
+                                Navigator.of(context).pushAndRemoveUntil(
+                                    MaterialPageRoute(
+                                        builder: (context) => home1()),
+                                    (Route<dynamic> route) => false);
+                              },
+                            ),
+                          ],
+                        )
+                      ],
+                    );
+                  });
             }
-            
           },
           child: Text(
             "ยืนยัน",

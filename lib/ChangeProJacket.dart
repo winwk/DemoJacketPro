@@ -21,12 +21,28 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
       FirebaseFirestore.instance.collection("Jacket01");
   String? nameString;
   File? file;
+    var jackId;
+
   final database = FirebaseDatabase.instance.reference();
 
   Widget box() {
     return SizedBox(
       height: 20,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    database.child('Jacket01').onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final sendJackID = data['sendJackID'];
+      //print(profileImage);
+      setState(() {
+        jackId = sendJackID;
+      });
+    });
+
   }
 
   validator() {
@@ -37,14 +53,14 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
     }
   }
 
-  void updateNameJack() {
-    FirebaseFirestore.instance
-        .collection("Jacket01")
-        .doc(_jackCollection.id)
-        .update({"JacketName": nameString}).then((_) {
-      print("success!");
-    });
-  }
+  // void updateNameJack() {
+  //   FirebaseFirestore.instance
+  //       .collection("Jacket01")
+  //       .doc(_jackCollection.id)
+  //       .update({"JacketName": nameString}).then((_) {
+  //     print("success!");
+  //   });
+  // }
 
   Widget imageProfile() {
     return file == null
@@ -101,7 +117,7 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
   }
 
   Widget Button() {
-    final Jacket01Ref = database.child('/Jacket01');
+    final Jacket01Ref = database.child('/$jackId');
 
     return SizedBox(
         width: 200,
@@ -110,7 +126,8 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               _formKey.currentState?.save();
-              Jacket01Ref.update({'user': nameString});
+              database.child('$jackId').update({'user': nameString});
+              // Jacket01Ref.update({'user': nameString});
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -254,11 +271,11 @@ class _ChangeProJacketState extends State<ChangeProJacket> {
   }
 
   updateProfile(BuildContext context) async {
-    final Jacket01Ref = database.child('/Jacket01');
+    final Jacket01Ref = database.child('/$jackId');
 
     if (file != null) {
       String url = await uploadImage();
-      Jacket01Ref.update({'imageProfile': url});
+      database.child('$jackId').update({'imageProfile': url});
     }
   }
 

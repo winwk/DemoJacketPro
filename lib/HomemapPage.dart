@@ -13,6 +13,7 @@ import 'package:jackket/LocalNotifyManager.dart';
 import 'package:jackket/noti.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 class HomemapPage extends StatefulWidget {
   _HomemapPageState createState() => _HomemapPageState();
 }
@@ -20,7 +21,7 @@ class HomemapPage extends StatefulWidget {
 class _HomemapPageState extends State<HomemapPage> {
   final _database = FirebaseDatabase.instance.reference();
   final db = FirebaseDatabase.instance.reference().child("Jacket01/noti");
-  
+
   Completer<GoogleMapController> _controllerGoogleMap = Completer();
   late GoogleMapController newGoogleMapController;
 
@@ -55,10 +56,15 @@ class _HomemapPageState extends State<HomemapPage> {
 
   static final CameraPosition _jacket =
       CameraPosition(target: LatLng(678, 678), zoom: 10);
-  String _displayName = 'Results go here';
+
+  String _displayName = '';
+  String _displayName02 = '';
   List? date;
   var getPic;
+  var getPic02;
   var jackName;
+  var jackName02;
+  var checkJackName;
   var jackID;
   var jackUser;
   var dislat;
@@ -67,7 +73,9 @@ class _HomemapPageState extends State<HomemapPage> {
   @override
   void initState() {
     super.initState();
+    Profile();
     _checkJacket();
+
     Timer.run(() => _database.child('Jacket01/').update({'status': 'off'}));
     db.once().then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
@@ -83,16 +91,12 @@ class _HomemapPageState extends State<HomemapPage> {
   _checkJacket() {
     _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final user = data['user'] as String;
       final lat = data['lat'];
       print("lat : $lat");
       final lng = data['lng'];
       print("lng : $lng");
-      final profileImage = data['imageProfile'];
       final status = data['status'];
       setState(() {
-        _displayName = user;
-        getPic = profileImage;
         dislat = lat;
         dislng = lng;
         statusnow = status;
@@ -148,10 +152,426 @@ class _HomemapPageState extends State<HomemapPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      jackName = value.data()!['JacketName'];
-      print("jacketName = $jackName");
+      jackName = value.data()!['JacketName'][0];
+      jackName02 = value.data()!['JacketName'][1];
+      checkJackName = value.data()!['JacketName'];
     });
-    if (jackName == null) {
+    print("jacketName = $jackName");
+    print("jacketName02 =$jackName02");
+    print("chckJacketName =$checkJackName");
+
+    _database.child("Jacket01").onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final user = data['user'] as String;
+      final profileImage = data['imageProfile'];
+
+      _displayName = user;
+      getPic = profileImage;
+    });
+    _database.child("Jacket02").onValue.listen((event) {
+      final data02 = new Map<String, dynamic>.from(event.snapshot.value);
+      final user02 = data02['user'] as String;
+      final profileImage02 = data02['imageProfile'];
+
+      _displayName02 = user02;
+      getPic02 = profileImage02;
+    });
+
+    if (jackName == "Jacket01" && jackName02 == "Jacket02") {
+      return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: SizedBox(
+          width: 30,
+          height: 70,
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (jackName02 == "Jacket01" && jackName == "Jacket02") {
+      return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: SizedBox(
+          width: 30,
+          height: 70,
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (jackName == "Jacket01" && jackName02 == null) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: SizedBox(
+          width: 30,
+          height: 70,
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (jackName == "Jacket02" && jackName02 == null) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: SizedBox(
+          width: 30,
+          height: 70,
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (jackName == null && jackName02 == "Jacket01") {
+      return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: SizedBox(
+          width: 30,
+          height: 70,
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+    if (jackName == null && jackName02 == "Jacket02") {
+      return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: SizedBox(
+          width: 30,
+          height: 70,
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (checkJackName == null || checkJackName == "") {
       return Padding(
         padding: const EdgeInsets.only(top: 20, left: 90),
         child: Text(
@@ -164,65 +584,78 @@ class _HomemapPageState extends State<HomemapPage> {
         ),
       );
     }
-    if (jackName == 'Jacket01') {
-      //Timer.periodic(Duration(seconds: 15),
-      //  (Timer t) => _database.child('Jacket01/').update({'status': 'off'}));
-      return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: SizedBox(
-          width: 30,
-          height: 70,
-          child: ElevatedButton(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                getPic == null
-                    ? CircleAvatar(
-                        radius: 30.0,
-                        backgroundImage: AssetImage("assets/person.png"),
-                        backgroundColor: Colors.white,
-                      )
-                    : CircleAvatar(
-                        radius: 30.0,
-                        backgroundImage: NetworkImage(getPic),
-                        backgroundColor: Colors.white,
-                      ),
-                Text(
-                  _displayName,
-                  style: TextStyle(
-                    fontFamily: "Jasmine",
-                    color: Color(0xFF707070),
-                    fontSize: 40.0,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                status(),
-              ],
-            ),
-            style: ElevatedButton.styleFrom(
-              primary: Color(0xFFE5EFC1),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25))),
-            ),
-            onPressed: _gotojacket,
-          ),
-        ),
-      );
-    } else
-      return Padding(
-        padding: const EdgeInsets.only(top: 20, left: 90),
-        child: Text(
-          'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
-          style: TextStyle(
-            fontSize: 30.0,
-            color: Colors.white,
-            fontFamily: "Jasmine",
-          ),
-        ),
-      );
+
+    // if (jackName == null) {
+    // return Padding(
+    //   padding: const EdgeInsets.only(top: 20, left: 90),
+    //   child: Text(
+    //     'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
+    //     style: TextStyle(
+    //       fontSize: 30.0,
+    //       color: Colors.white,
+    //       fontFamily: "Jasmine",
+    //     ),
+    //   ),
+    // );
+    // }
+    // if (jackName == 'Jacket01') {
+
+    // return Padding(
+    //   padding: const EdgeInsets.only(left: 10, right: 10),
+    //   child: SizedBox(
+    //     width: 30,
+    //     height: 70,
+    //     child: ElevatedButton(
+    //       child: Row(
+    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //         children: [
+    //           getPic == null
+    //               ? CircleAvatar(
+    //                   radius: 30.0,
+    //                   backgroundImage: AssetImage("assets/person.png"),
+    //                   backgroundColor: Colors.white,
+    //                 )
+    //               : CircleAvatar(
+    //                   radius: 30.0,
+    //                   backgroundImage: NetworkImage(getPic),
+    //                   backgroundColor: Colors.white,
+    //                 ),
+    //           Text(
+    //             _displayName,
+    //             style: TextStyle(
+    //               fontFamily: "Jasmine",
+    //               color: Color(0xFF707070),
+    //               fontSize: 40.0,
+    //               fontWeight: FontWeight.bold,
+    //             ),
+    //           ),
+    //           SizedBox(
+    //             width: 20,
+    //           ),
+    //           status(),
+    //         ],
+    //       ),
+    //       style: ElevatedButton.styleFrom(
+    //         primary: Color(0xFFE5EFC1),
+    //         shape: RoundedRectangleBorder(
+    //             borderRadius: BorderRadius.all(Radius.circular(25))),
+    //       ),
+    //       onPressed: _gotojacket,
+    //     ),
+    //   ),
+    // );
+    // } else
+    //   return Padding(
+    //     padding: const EdgeInsets.only(top: 20, left: 90),
+    //     child: Text(
+    //       'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
+    //       style: TextStyle(
+    //         fontSize: 30.0,
+    //         color: Colors.white,
+    //         fontFamily: "Jasmine",
+    //       ),
+    //     ),
+    //   );
   }
 
   Widget showLogo() {
@@ -230,17 +663,6 @@ class _HomemapPageState extends State<HomemapPage> {
       "assets/BG.png",
       width: 300,
       height: 300,
-    );
-  }
-
-  Widget showText() {
-    return Text(
-      'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
-      style: TextStyle(
-        fontSize: 30.0,
-        color: Colors.white,
-        fontFamily: "Jasmine",
-      ),
     );
   }
 
@@ -257,47 +679,8 @@ class _HomemapPageState extends State<HomemapPage> {
     );
   }
 
-  Widget showButton() {
-    return SizedBox(
-      width: 130,
-      height: 30,
-      child: ElevatedButton(
-        child: Text(
-          "เพิ่มอุปกรณ์",
-          style: TextStyle(
-            fontFamily: "Jasmine",
-            color: Color(0xFF707070),
-            fontSize: 22.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: Color(0xFFE5EFC1),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.bottomToTop, child: AddDevice()),
-          );
-        },
-      ),
-    );
-  }
-
   Widget build(BuildContext context) {
-    var firebaseUser = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection("test")
-        .doc(firebaseUser!.uid)
-        .get()
-        .then((value) {
-      jackName = value.data()!['JacketName'];
-
-      print("jacketName = $jackName");
-    });
+  
     return new Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
