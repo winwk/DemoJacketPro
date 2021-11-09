@@ -41,22 +41,7 @@ class _notiState extends State<noti> {
       .child("Jacket02/noti")
       .orderByChild("timestamp");
 
-  final dbvideo = FirebaseDatabase.instance.reference().child("Jacket01/video");
   late final bool reverse;
-
-  _checkvideo() {
-    dbvideo.once().then((DataSnapshot snapshotvideo) {
-      Map<dynamic, dynamic> values = snapshotvideo.value;
-      values.forEach((key, values) {
-        //video = snapshotvideo.value['videoUrl'];
-        // datevideo = snapshotvideo.value['datetime'];
-        datevideo = values['datetime'];
-        //video = values['videoUrl'];
-        //snapshotvideo.value.toList()[datevideo]["datetime"];
-      });
-      //print(snapshotvideo.value);
-    });
-  }
 
   @override
   void initState() {
@@ -123,6 +108,88 @@ class _notiState extends State<noti> {
                                 color: Colors.green[200],
                                 size: 40,
                               ),
+                        trailing: IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      title: Text(
+                                        'ลบการแจ้งเตือน',
+                                        style: TextStyle(
+                                          fontFamily: "Jasmine",
+                                          color: Color(0xFF707070),
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      actions: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 15),
+                                              child: ElevatedButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: TextStyle(
+                                                    fontFamily: "Jasmine",
+                                                    color: Color(0xFF707070),
+                                                    fontSize: 22.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFE5EFC1),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                ),
+                                                onPressed: () {
+                                                  var key = snapshot.key;
+                                                  print(key);
+                                                  _delete(key);
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              child: Text(
+                                                "ยกเลิก",
+                                                style: TextStyle(
+                                                  fontFamily: "Jasmine",
+                                                  color: Color(0xFF707070),
+                                                  fontSize: 22.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Color(0xFFE5EFC1),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: Icon(Icons.delete)),
                         onTap: snapshot.value['video'] != null
                             ? () {
                                 _launchInApp(snapshot.value['video']);
@@ -224,6 +291,88 @@ class _notiState extends State<noti> {
                                 color: Colors.green[200],
                                 size: 40,
                               ),
+                        trailing: IconButton(
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      title: Text(
+                                        'ลบการแจ้งเตือน',
+                                        style: TextStyle(
+                                          fontFamily: "Jasmine",
+                                          color: Color(0xFF707070),
+                                          fontSize: 30.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      actions: <Widget>[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 15),
+                                              child: ElevatedButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: TextStyle(
+                                                    fontFamily: "Jasmine",
+                                                    color: Color(0xFF707070),
+                                                    fontSize: 22.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFE5EFC1),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                ),
+                                                onPressed: () {
+                                                  var key = snapshot.key;
+                                                  print(key);
+                                                  _delete(key);
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ),
+                                            ElevatedButton(
+                                              child: Text(
+                                                "ยกเลิก",
+                                                style: TextStyle(
+                                                  fontFamily: "Jasmine",
+                                                  color: Color(0xFF707070),
+                                                  fontSize: 22.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                primary: Color(0xFFE5EFC1),
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                              ),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    );
+                                  });
+                            },
+                            icon: Icon(Icons.delete)),
                         onTap: snapshot.value['video'] != null
                             ? () {
                                 _launchInApp(snapshot.value['video']);
@@ -298,18 +447,18 @@ class _notiState extends State<noti> {
             preferredSize: Size.fromHeight(70),
             child: AppBar(
               automaticallyImplyLeading: true,
-              actions: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(right: 20, top: 10),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Icon(Icons.cancel_rounded,
-                        size: 42, color: Colors.white),
+              leading: Padding(
+                padding: const EdgeInsets.only(left: 15, top: 12),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Image.asset(
+                    'assets/backbutton.png',
+                    scale: 12,
                   ),
-                )
-              ],
+                ),
+              ),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(25),
@@ -331,5 +480,10 @@ class _notiState extends State<noti> {
           ),
           body: checknoti()),
     );
+  }
+
+  _delete(var key) async {
+    final db = FirebaseDatabase.instance.reference().child("$jackId/noti");
+    await db.child(key).remove();
   }
 }

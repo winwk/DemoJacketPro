@@ -612,7 +612,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
     );
   }
 
-   Widget showLogo() {
+  Widget showLogo() {
     return Image.asset(
       "assets/BG.png",
       width: 300,
@@ -626,38 +626,38 @@ class _jacketProNotiState extends State<jacketProNoti> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
-         automaticallyImplyLeading: true,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 15, top: 12),
+          actions: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: 20, top: 10),
               child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Image.asset(
-                  'assets/backbutton.png',
-                  scale: 12,
-                ),
+                child:
+                    Icon(Icons.cancel_rounded, size: 42, color: Colors.white),
               ),
+            )
+          ],
+          automaticallyImplyLeading: false,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(25),
+                  bottomRight: Radius.circular(25))),
+          centerTitle: true,
+          backgroundColor: Color(0xff39AEA9),
+          title: Column(children: [
+            SizedBox(
+              height: 20,
             ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(25),
-                    bottomRight: Radius.circular(25))),
-            centerTitle: true,
-            backgroundColor: Color(0xff39AEA9),
-            title: Column(children: [
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                "แจ้งเตือนแจ็คเก็ต",
-                style: TextStyle(
-                    color: Color(0xFFFFFFFF),
-                    fontFamily: "Jasmine",
-                    fontSize: 60.0,
-                    fontWeight: FontWeight.bold),
-              ),
-            ]),
+            Text(
+              "การแจ้งเตือน",
+              style: TextStyle(
+                  color: Color(0xFFFFFFFF),
+                  fontFamily: "Jasmine",
+                  fontSize: 55.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ]),
         ),
       ),
       backgroundColor: Color(0xFF557B83),
@@ -666,7 +666,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[_checkJacket(),showLogo()],
+              children: <Widget>[_checkJacket(), showLogo()],
             ),
           ),
         ),
