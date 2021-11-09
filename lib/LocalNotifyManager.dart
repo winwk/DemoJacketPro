@@ -12,8 +12,8 @@ class LocalNotifyManager {
   var initSetting;
   var noti;
   var date;
-  final db = FirebaseDatabase.instance.reference().child("Jacket01/notinow");
-  final _database = FirebaseDatabase.instance.reference();
+  var noti02;
+  var date02;
 
   BehaviorSubject<ReceiveNotification> get didReceiveLocalNotificationSubject =>
       BehaviorSubject<ReceiveNotification>();
@@ -66,24 +66,185 @@ class LocalNotifyManager {
   }
 
   Future<void> showNotification() async {
+    final db = FirebaseDatabase.instance.reference().child("Jacket01/notinow");
+    final db02 =
+        FirebaseDatabase.instance.reference().child("Jacket02/notinow");
+
+    var jackName;
+    var jackName02;
+    var checkJackName;
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      jackName = value.data()!['JacketName'][0];
+      jackName02 = value.data()!['JacketName'][1];
+      checkJackName = value.data()!['JacketName'];
+    });
+    print("jacketName = $jackName");
+    print("jacketName02 =$jackName02");
+    print("chckJacketName =$checkJackName");
     var androidChannel = AndroidNotificationDetails(
         'Channel_ID', 'Channel_NAME', 'Channel_DESCRIPTION',
         importance: Importance.max, priority: Priority.high, playSound: true);
     var iosChannel = IOSNotificationDetails();
     var platformChannel =
         NotificationDetails(android: androidChannel, iOS: iosChannel);
+        
+    // if (jackName == "Jacket01" && jackName02 == "Jacket02") {
+    //   db.once().then((DataSnapshot snapshot) {
+    //     Map<dynamic, dynamic> values = snapshot.value;
+    //     values.forEach((key, values) async {
+    //       noti = values['title'];
+    //       date = values['datetime'];
+    //       print("noti = $noti");
+    //       if (noti == null || noti == "") {
+    //         return null;
+    //       } else {
+    //         await flutterLocalNotificationsPlugin.show(
+    //             0, '$noti', '$date', platformChannel,
+    //             payload: 'NEW payload');
+    //       }
+    //     });
+    //   });
+
+    //   db02.once().then((DataSnapshot snapshot) {
+    //     Map<dynamic, dynamic> values = snapshot.value;
+    //     values.forEach((key, values) async {
+    //       noti02 = values['title'];
+    //       date02 = values['datetime'];
+    //       print("noti = $noti02");
+    //       if (noti02 == null || noti02 == "") {
+    //         return null;
+    //       } else {
+    //         await flutterLocalNotificationsPlugin.show(
+    //             0, '$noti02', '$date02', platformChannel,
+    //             payload: 'NEW payload');
+    //       }
+    //     });
+    //   });
+    // }
+
+    // if (jackName02 == "Jacket01" && jackName == "Jacket02") {
+    //   db.once().then((DataSnapshot snapshot) {
+    //     Map<dynamic, dynamic> values = snapshot.value;
+    //     values.forEach((key, values) async {
+    //       noti = values['title'];
+    //       date = values['datetime'];
+    //       print("noti = $noti");
+    //       if (noti == null || noti == "") {
+    //         return null;
+    //       } else {
+    //         await flutterLocalNotificationsPlugin.show(
+    //             0, '$noti', '$date', platformChannel,
+    //             payload: 'NEW payload');
+    //       }
+    //     });
+    //   });
+
+    //   db02.once().then((DataSnapshot snapshot) {
+    //     Map<dynamic, dynamic> values = snapshot.value;
+    //     values.forEach((key, values) async {
+    //       noti02 = values['title'];
+    //       date02 = values['datetime'];
+    //       print("noti = $noti02");
+    //       if (noti02 == null || noti02 == "") {
+    //         return null;
+    //       } else {
+    //         await flutterLocalNotificationsPlugin.show(
+    //             0, '$noti02', '$date02', platformChannel,
+    //             payload: 'NEW payload');
+    //       }
+    //     });
+    //   });
+    // }
+
+    // if (jackName == "Jacket01" && jackName02 == null) {
+    //   db.once().then((DataSnapshot snapshot) {
+    //     Map<dynamic, dynamic> values = snapshot.value;
+    //     values.forEach((key, values) async {
+    //       noti = values['title'];
+    //       date = values['datetime'];
+    //       print("noti = $noti");
+    //       if (noti == null || noti == "") {
+    //         return null;
+    //       } else {
+    //         await flutterLocalNotificationsPlugin.show(
+    //             0, '$noti', '$date', platformChannel,
+    //             payload: 'NEW payload');
+    //       }
+    //     });
+    //   });
+    // }
+
+    // if (jackName == "Jacket02" && jackName02 == null) {
+    //   db02.once().then((DataSnapshot snapshot) {
+    //     Map<dynamic, dynamic> values = snapshot.value;
+    //     values.forEach((key, values) async {
+    //       noti02 = values['title'];
+    //       date02 = values['datetime'];
+    //       print("noti = $noti02");
+    //       if (noti02 == null || noti02 == "") {
+    //         return null;
+    //       } else {
+    //         await flutterLocalNotificationsPlugin.show(
+    //             0, '$noti02', '$date02', platformChannel,
+    //             payload: 'NEW payload');
+    //       }
+    //     });
+    //   });
+    // }
+    // if (jackName == null && jackName02 == "Jacket01") {
+    //   db.once().then((DataSnapshot snapshot) {
+    //     Map<dynamic, dynamic> values = snapshot.value;
+    //     values.forEach((key, values) async {
+    //       noti = values['title'];
+    //       date = values['datetime'];
+    //       print("noti = $noti");
+    //       if (noti == null || noti == "") {
+    //         return null;
+    //       } else {
+    //         await flutterLocalNotificationsPlugin.show(
+    //             0, '$noti', '$date', platformChannel,
+    //             payload: 'NEW payload');
+    //       }
+    //     });
+    //   });
+    // }
+
+    // if (jackName == null && jackName02 == "Jacket02") {
+    //   db02.once().then((DataSnapshot snapshot) {
+    //     Map<dynamic, dynamic> values = snapshot.value;
+    //     values.forEach((key, values) async {
+    //       noti02 = values['title'];
+    //       date02 = values['datetime'];
+    //       print("noti = $noti02");
+    //       if (noti02 == null || noti02 == "") {
+    //         return null;
+    //       } else {
+    //         await flutterLocalNotificationsPlugin.show(
+    //             0, '$noti02', '$date02', platformChannel,
+    //             payload: 'NEW payload');
+    //       }
+    //     });
+    //   });
+    // }
+
     db.once().then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
-      values.forEach((key, values) async{
+      values.forEach((key, values) async {
         noti = values['title'];
         date = values['datetime'];
         print("noti = $noti");
         if (noti == null || noti == "") {
-        return null;
-      } else {
-        await flutterLocalNotificationsPlugin
-            .show(0, '$noti', '$date', platformChannel, payload: 'NEW payload');
-      }
+          return null;
+        } else {
+          await flutterLocalNotificationsPlugin.show(
+              0, '$noti', '$date', platformChannel,
+              payload: 'NEW payload');
+        }
       });
     });
     // var androidChannel = AndroidNotificationDetails(

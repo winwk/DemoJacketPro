@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:jackket/AddDevice.dart';
+import 'package:jackket/JacketProfileNoti.dart';
 import 'package:jackket/LocalNotifyManager.dart';
 import 'package:jackket/noti.dart';
 import 'package:page_transition/page_transition.dart';
@@ -74,6 +75,7 @@ class _HomemapPageState extends State<HomemapPage> {
   void initState() {
     super.initState();
     Profile();
+
     _checkJacket();
 
     Timer.run(() => _database.child('Jacket01/').update({'status': 'off'}));
@@ -85,6 +87,7 @@ class _HomemapPageState extends State<HomemapPage> {
       });
     });
     localNotifyManager.showNotification();
+
     Timer.run(() => _database.child('Jacket01/notinow').remove());
   }
 
@@ -682,15 +685,12 @@ class _HomemapPageState extends State<HomemapPage> {
                 icon: Icon(Icons.notifications,
                     size: 40, color: Color(0xffE5EFC1)),
                 onPressed: () {
-                  if (jackName == null || jackName == "") {
-                    return null;
-                  } else {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.topToBottom, child: noti()),
-                    );
-                  }
+                  Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.topToBottom,
+                        child: jacketProNoti()),
+                  );
                 },
               ),
             )

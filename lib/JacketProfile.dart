@@ -474,6 +474,10 @@ class _JacketProState extends State<JacketPro> {
                   SizedBox(
                     height: 15.0,
                   ),
+                  NotificationButton(),
+                  SizedBox(
+                    height: 15.0,
+                  ),
                   LogoutButton(),
                   SizedBox(
                     height: 15.0,

@@ -1,26 +1,19 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:jackket/AddDevice.dart';
-import 'package:jackket/ChangeProJacket.dart';
 import 'package:jackket/JacketProfile.dart';
-import 'package:jackket/LocalNotifyManager.dart';
-import 'package:jackket/notitest.dart';
-import 'package:jackket/read_examples.dart';
-import 'package:jackket/user/showListofUsers.dart';
-import 'package:jackket/write_examples.dart';
+import 'package:jackket/noti.dart';
 import 'package:page_transition/page_transition.dart';
 
-class JacketPage extends StatefulWidget {
-  _JacketPageState createState() => _JacketPageState();
+class jacketProNoti extends StatefulWidget {
+  jacketProNoti({Key? key}) : super(key: key);
+
+  @override
+  _jacketProNotiState createState() => _jacketProNotiState();
 }
 
-class _JacketPageState extends State<JacketPage> {
-  CollectionReference _jackCollection =
-      FirebaseFirestore.instance.collection("Jacket01");
+class _jacketProNotiState extends State<jacketProNoti> {
   final _database = FirebaseDatabase.instance.reference();
 
   String _displayName = '';
@@ -31,37 +24,11 @@ class _JacketPageState extends State<JacketPage> {
   var jackName02;
   var getPic02;
   var checkJackName;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // _checkJacket();
-  //   _database.child('Jacket01').onValue.listen((event) {
-  //     final data = new Map<String, dynamic>.from(event.snapshot.value);
-  //     final user = data['user'] as String;
-  //     final profileImage = data['imageProfile'];
 
-  //     _displayName = user;
-  //     getPic = profileImage;
-  //   });
-  //   var firebaseUser = FirebaseAuth.instance.currentUser;
-  //   FirebaseFirestore.instance
-  //       .collection("test")
-  //       .doc(firebaseUser!.uid)
-  //       .get()
-  //       .then((value) {
-  //     jackName = value.data()!['JacketName'];
-  //   });
-  //   // setState(() {
-  //   //   print("jackName = $jackName");
-  //   // });
-
-  // }
   @override
   void initState() {
     super.initState();
     _checkJacket();
-    localNotifyManager.showNotification();
-    Timer.run(() => _database.child('Jacket01/notinow').remove());
   }
 
   _checkJacket() {
@@ -144,13 +111,13 @@ class _JacketPageState extends State<JacketPage> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
+                                    child: noti()),
                               );
                             },
                             icon: Icon(
-                              Icons.settings,
+                              Icons.notifications,
                               size: 40,
-                              color: Color(0xff39AEA9),
+                              color: Color(0xffEAE126),
                             )),
                       ),
                     ],
@@ -201,13 +168,13 @@ class _JacketPageState extends State<JacketPage> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
+                                    child: noti()),
                               );
                             },
                             icon: Icon(
-                              Icons.settings,
+                              Icons.notifications,
                               size: 40,
-                              color: Color(0xff39AEA9),
+                              color: Color(0xffEAE126),
                             )),
                       ),
                     ],
@@ -215,37 +182,6 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
@@ -297,13 +233,13 @@ class _JacketPageState extends State<JacketPage> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
+                                    child: noti()),
                               );
                             },
                             icon: Icon(
-                              Icons.settings,
+                              Icons.notifications,
                               size: 40,
-                              color: Color(0xff39AEA9),
+                              color: Color(0xffEAE126),
                             )),
                       ),
                     ],
@@ -354,13 +290,13 @@ class _JacketPageState extends State<JacketPage> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
+                                    child: noti()),
                               );
                             },
                             icon: Icon(
-                              Icons.settings,
+                              Icons.notifications,
                               size: 40,
-                              color: Color(0xff39AEA9),
+                              color: Color(0xffEAE126),
                             )),
                       ),
                     ],
@@ -368,37 +304,6 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
@@ -450,13 +355,13 @@ class _JacketPageState extends State<JacketPage> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
+                                    child: noti()),
                               );
                             },
                             icon: Icon(
-                              Icons.settings,
+                              Icons.notifications,
                               size: 40,
-                              color: Color(0xff39AEA9),
+                              color: Color(0xffEAE126),
                             )),
                       ),
                     ],
@@ -464,37 +369,6 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
@@ -546,13 +420,13 @@ class _JacketPageState extends State<JacketPage> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
+                                    child: noti()),
                               );
                             },
                             icon: Icon(
-                              Icons.settings,
+                              Icons.notifications,
                               size: 40,
-                              color: Color(0xff39AEA9),
+                              color: Color(0xffEAE126),
                             )),
                       ),
                     ],
@@ -560,37 +434,6 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
@@ -642,13 +485,13 @@ class _JacketPageState extends State<JacketPage> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
+                                    child: noti()),
                               );
                             },
                             icon: Icon(
-                              Icons.settings,
+                              Icons.notifications,
                               size: 40,
-                              color: Color(0xff39AEA9),
+                              color: Color(0xffEAE126),
                             )),
                       ),
                     ],
@@ -656,37 +499,6 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
@@ -738,13 +550,13 @@ class _JacketPageState extends State<JacketPage> {
                                 context,
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
-                                    child: JacketPro()),
+                                    child: noti()),
                               );
                             },
                             icon: Icon(
-                              Icons.settings,
+                              Icons.notifications,
                               size: 40,
-                              color: Color(0xff39AEA9),
+                              color: Color(0xffEAE126),
                             )),
                       ),
                     ],
@@ -752,37 +564,6 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
@@ -802,37 +583,6 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
@@ -851,70 +601,9 @@ class _JacketPageState extends State<JacketPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
           ],
         ),
       );
-  }
-
-  Widget showLogo() {
-    return Image.asset(
-      "assets/BG.png",
-      width: 300,
-      height: 300,
-    );
-  }
-
-  Widget showText() {
-    if (jackName == null) {
-      return Text(
-        'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
-        style: TextStyle(
-          fontSize: 30.0,
-          color: Colors.white,
-          fontFamily: "Jasmine",
-        ),
-      );
-    } else {
-      return Text('');
-    }
-  }
-
-  Widget sixedbox() {
-    return SizedBox(
-      width: 150,
-      height: 30,
-    );
   }
 
   Widget box() {
@@ -923,61 +612,52 @@ class _JacketPageState extends State<JacketPage> {
     );
   }
 
-  
-
-  Widget showButton() {
-    return SizedBox(
-      width: 150,
-      height: 50,
-      child: ElevatedButton(
-        child: Text(
-          "เพิ่มอุปกรณ์",
-          style: TextStyle(
-            fontFamily: "Jasmine",
-            color: Color(0xFF707070),
-            fontSize: 25.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: Color(0xFFE5EFC1),
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30))),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            PageTransition(
-                type: PageTransitionType.rightToLeft, child: AddDevice()),
-          );
-        },
-      ),
+   Widget showLogo() {
+    return Image.asset(
+      "assets/BG.png",
+      width: 300,
+      height: 300,
     );
   }
 
+  @override
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
-          automaticallyImplyLeading: false,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(25),
-                  bottomRight: Radius.circular(25))),
-          centerTitle: true,
-          backgroundColor: Color(0xff39AEA9),
-          title: Column(children: [
-            box(),
-            Text(
-              "แจ็คเก็ต",
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontFamily: "Jasmine",
-                  fontSize: 60.0,
-                  fontWeight: FontWeight.bold),
+         automaticallyImplyLeading: true,
+            leading: Padding(
+              padding: const EdgeInsets.only(left: 15, top: 12),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Image.asset(
+                  'assets/backbutton.png',
+                  scale: 12,
+                ),
+              ),
             ),
-          ]),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(25),
+                    bottomRight: Radius.circular(25))),
+            centerTitle: true,
+            backgroundColor: Color(0xff39AEA9),
+            title: Column(children: [
+              SizedBox(
+                height: 20,
+              ),
+              Text(
+                "แจ้งเตือนแจ็คเก็ต",
+                style: TextStyle(
+                    color: Color(0xFFFFFFFF),
+                    fontFamily: "Jasmine",
+                    fontSize: 60.0,
+                    fontWeight: FontWeight.bold),
+              ),
+            ]),
         ),
       ),
       backgroundColor: Color(0xFF557B83),
@@ -986,13 +666,7 @@ class _JacketPageState extends State<JacketPage> {
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                _checkJacket(),
-                sixedbox(),
-                showLogo(),
-                sixedbox(),
-                sixedbox(),
-              ],
+              children: <Widget>[_checkJacket(),showLogo()],
             ),
           ),
         ),
