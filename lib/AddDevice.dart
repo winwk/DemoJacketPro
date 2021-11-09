@@ -75,15 +75,7 @@ class _AddDeviceState extends State<AddDevice> {
   //   });
   // }
 
-  void updateJack() {
-    var firebaseUser = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection("test")
-        .doc(firebaseUser!.uid)
-        .update({"JacketName": nameString}).then((_) {
-      print("success!");
-    });
-  }
+  
 
   Widget box() {
     return SizedBox(
@@ -199,7 +191,6 @@ class _AddDeviceState extends State<AddDevice> {
           print('####you click addDevice###');
           if (_formKey.currentState!.validate()) {
             _formKey.currentState?.save();
-           
             updateProfile(context);
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) {

@@ -108,9 +108,8 @@ class _HomemapPageState extends State<HomemapPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      setState(() {
-        jackName = value.data()!['JacketName'];
-      });
+      jackName = value.data()!['JacketName'];
+
       print("jacketName = $jackName");
     });
   }
@@ -181,384 +180,372 @@ class _HomemapPageState extends State<HomemapPage> {
 
     if (jackName == "Jacket01" && jackName02 == "Jacket02") {
       return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10,top: 10),
-     
-          child: Column(
-            children: [
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    getPic == null
-                        ? CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage("assets/person.png"),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: NetworkImage(getPic),
-                            backgroundColor: Colors.white,
-                          ),
-                    Text(
-                      _displayName,
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+        padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+        child: Column(
+          children: [
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getPic == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: AssetImage("assets/person.png"),
+                          backgroundColor: Colors.white,
+                        )
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: NetworkImage(getPic),
+                          backgroundColor: Colors.white,
+                        ),
+                  Text(
+                    _displayName,
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    status(),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ),
-                onPressed: _gotojacket,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  status(),
+                ],
               ),
-              SizedBox(
-                height: 20,
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFE5EFC1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    getPic02 == null
-                        ? CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage("assets/person.png"),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: NetworkImage(getPic02),
-                            backgroundColor: Colors.white,
-                          ),
-                    Text(
-                      _displayName02,
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+              onPressed: _gotojacket,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getPic02 == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: AssetImage("assets/person.png"),
+                          backgroundColor: Colors.white,
+                        )
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: NetworkImage(getPic02),
+                          backgroundColor: Colors.white,
+                        ),
+                  Text(
+                    _displayName02,
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    status(),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ),
-                onPressed: _gotojacket,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  status(),
+                ],
               ),
-            ],
-          ),
-        );
-      
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFE5EFC1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
+              ),
+              onPressed: _gotojacket,
+            ),
+          ],
+        ),
+      );
     }
     if (jackName02 == "Jacket01" && jackName == "Jacket02") {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        
-          child: Column(
-            children: [
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    getPic == null
-                        ? CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage("assets/person.png"),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: NetworkImage(getPic),
-                            backgroundColor: Colors.white,
-                          ),
-                    Text(
-                      _displayName,
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: Column(
+          children: [
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getPic == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: AssetImage("assets/person.png"),
+                          backgroundColor: Colors.white,
+                        )
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: NetworkImage(getPic),
+                          backgroundColor: Colors.white,
+                        ),
+                  Text(
+                    _displayName,
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    status(),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ),
-                onPressed: _gotojacket,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  status(),
+                ],
               ),
-              SizedBox(
-                height: 30,
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFE5EFC1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    getPic02 == null
-                        ? CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage("assets/person.png"),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: NetworkImage(getPic02),
-                            backgroundColor: Colors.white,
-                          ),
-                    Text(
-                      _displayName02,
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+              onPressed: _gotojacket,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getPic02 == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: AssetImage("assets/person.png"),
+                          backgroundColor: Colors.white,
+                        )
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: NetworkImage(getPic02),
+                          backgroundColor: Colors.white,
+                        ),
+                  Text(
+                    _displayName02,
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    status(),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ),
-                onPressed: _gotojacket,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  status(),
+                ],
               ),
-            ],
-          ),
-        );
-      
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFE5EFC1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
+              ),
+              onPressed: _gotojacket,
+            ),
+          ],
+        ),
+      );
     }
 
     if (jackName == "Jacket01" && jackName02 == null) {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        
-          child: Column(
-            children: [
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    getPic == null
-                        ? CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage("assets/person.png"),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: NetworkImage(getPic),
-                            backgroundColor: Colors.white,
-                          ),
-                    Text(
-                      _displayName,
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: Column(
+          children: [
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getPic == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: AssetImage("assets/person.png"),
+                          backgroundColor: Colors.white,
+                        )
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: NetworkImage(getPic),
+                          backgroundColor: Colors.white,
+                        ),
+                  Text(
+                    _displayName,
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    status(),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ),
-                onPressed: _gotojacket,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  status(),
+                ],
               ),
-              SizedBox(
-                height: 30,
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFE5EFC1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-            ],
-          ),
-        );
-      
+              onPressed: _gotojacket,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
+      );
     }
     if (jackName == "Jacket02" && jackName02 == null) {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        
-          child: Column(
-            children: [
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    getPic02 == null
-                        ? CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage("assets/person.png"),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: NetworkImage(getPic02),
-                            backgroundColor: Colors.white,
-                          ),
-                    Text(
-                      _displayName02,
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: Column(
+          children: [
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getPic02 == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: AssetImage("assets/person.png"),
+                          backgroundColor: Colors.white,
+                        )
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: NetworkImage(getPic02),
+                          backgroundColor: Colors.white,
+                        ),
+                  Text(
+                    _displayName02,
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    status(),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ),
-                onPressed: _gotojacket,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  status(),
+                ],
               ),
-              SizedBox(
-                height: 30,
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFE5EFC1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-            ],
-          ),
-        );
-      
+              onPressed: _gotojacket,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
+      );
     }
     if (jackName == null && jackName02 == "Jacket01") {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        
-          child: Column(
-            children: [
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    getPic == null
-                        ? CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage("assets/person.png"),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: NetworkImage(getPic),
-                            backgroundColor: Colors.white,
-                          ),
-                    Text(
-                      _displayName,
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: Column(
+          children: [
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getPic == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: AssetImage("assets/person.png"),
+                          backgroundColor: Colors.white,
+                        )
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: NetworkImage(getPic),
+                          backgroundColor: Colors.white,
+                        ),
+                  Text(
+                    _displayName,
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    status(),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ),
-                onPressed: _gotojacket,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  status(),
+                ],
               ),
-              SizedBox(
-                height: 30,
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFE5EFC1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-            ],
-          ),
-        );
-      
+              onPressed: _gotojacket,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
+      );
     }
     if (jackName == null && jackName02 == "Jacket02") {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        
-          child: Column(
-            children: [
-              ElevatedButton(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    getPic02 == null
-                        ? CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: AssetImage("assets/person.png"),
-                            backgroundColor: Colors.white,
-                          )
-                        : CircleAvatar(
-                            radius: 30.0,
-                            backgroundImage: NetworkImage(getPic02),
-                            backgroundColor: Colors.white,
-                          ),
-                    Text(
-                      _displayName02,
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 40.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+        child: Column(
+          children: [
+            ElevatedButton(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  getPic02 == null
+                      ? CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: AssetImage("assets/person.png"),
+                          backgroundColor: Colors.white,
+                        )
+                      : CircleAvatar(
+                          radius: 30.0,
+                          backgroundImage: NetworkImage(getPic02),
+                          backgroundColor: Colors.white,
+                        ),
+                  Text(
+                    _displayName02,
+                    style: TextStyle(
+                      fontFamily: "Jasmine",
+                      color: Color(0xFF707070),
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    status(),
-                  ],
-                ),
-                style: ElevatedButton.styleFrom(
-                  primary: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(25))),
-                ),
-                onPressed: _gotojacket,
+                  ),
+                  SizedBox(
+                    width: 20,
+                  ),
+                  status(),
+                ],
               ),
-              SizedBox(
-                height: 30,
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFFE5EFC1),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-            ],
-          ),
-        );
-      
+              onPressed: _gotojacket,
+            ),
+            SizedBox(
+              height: 30,
+            ),
+          ],
+        ),
+      );
     }
 
     if (checkJackName == null || checkJackName == "") {
