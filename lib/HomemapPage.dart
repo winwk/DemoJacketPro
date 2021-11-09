@@ -8,6 +8,7 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:jackket/API/notification_api.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:jackket/JacketProfileNoti.dart';
 import 'package:jackket/LocalNotifyManager.dart';
@@ -71,6 +72,13 @@ class _HomemapPageState extends State<HomemapPage> {
   var dislat;
   var dislng;
 
+
+
+  var noti;
+  var date01;
+
+  var noti02;
+  var date02;
   @override
   void initState() {
     super.initState();
@@ -86,9 +94,9 @@ class _HomemapPageState extends State<HomemapPage> {
         date = values['datetime'];
       });
     });
-    localNotifyManager.showNotification();
+    // localNotifyManager.showNotification();
 
-    Timer.run(() => _database.child('Jacket01/notinow').remove());
+    // Timer.run(() => _database.child('Jacket01/notinow').remove());
   }
 
   _checkJacket() {
@@ -182,6 +190,40 @@ class _HomemapPageState extends State<HomemapPage> {
     });
 
     if (jackName == "Jacket01" && jackName02 == "Jacket02") {
+      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti = values['title'];
+          date01 = values['datetime'];
+          print("noti = $noti");
+          if (noti == null || noti == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti  จาก $_displayName',
+                body: '$date01',
+                payload: 'NEW payload Jacket01 ');
+            Timer.run(() => _database.child('Jacket01/notinow').remove());
+          }
+        });
+      });
+      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti02 = values['title'];
+          date02 = values['datetime'];
+          print("noti = $noti");
+          if (noti02 == null || noti02 == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti02   จาก $_displayName02  ',
+                body: '$date02',
+                payload: 'NEW payload Jacket02 ');
+            Timer.run(() => _database.child('Jacket02/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
         child: Column(
@@ -268,6 +310,41 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
     if (jackName02 == "Jacket01" && jackName == "Jacket02") {
+       _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti = values['title'];
+          date01 = values['datetime'];
+          print("noti = $noti");
+          if (noti == null || noti == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti  จาก $_displayName',
+                body: '$date01',
+                payload: 'NEW payload Jacket01 ');
+            Timer.run(() => _database.child('Jacket01/notinow').remove());
+          }
+        });
+      });
+      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti02 = values['title'];
+          date02 = values['datetime'];
+          print("noti = $noti");
+          if (noti02 == null || noti02 == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti02   จาก $_displayName02 ',
+                body: '$date02',
+                payload: 'NEW payload Jacket02 ');
+            Timer.run(() => _database.child('Jacket02/notinow').remove());
+          }
+        });
+      });
+
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(
@@ -355,6 +432,23 @@ class _HomemapPageState extends State<HomemapPage> {
     }
 
     if (jackName == "Jacket01" && jackName02 == null) {
+      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti = values['title'];
+          date01 = values['datetime'];
+          print("noti = $noti");
+          if (noti == null || noti == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti  จาก $_displayName',
+                body: '$date01',
+                payload: 'NEW payload Jacket01 ');
+            Timer.run(() => _database.child('Jacket01/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(
@@ -404,6 +498,23 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
     if (jackName == "Jacket02" && jackName02 == null) {
+       _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti02 = values['title'];
+          date02 = values['datetime'];
+          print("noti = $noti");
+          if (noti02 == null || noti02 == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti02   จาก $_displayName02',
+                body: '$date02',
+                payload: 'NEW payload Jacket02 ');
+            Timer.run(() => _database.child('Jacket02/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(
@@ -453,6 +564,23 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
     if (jackName == null && jackName02 == "Jacket01") {
+       _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti = values['title'];
+          date01 = values['datetime'];
+          print("noti = $noti");
+          if (noti == null || noti == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti  จาก $_displayName',
+                body: '$date01',
+                payload: 'NEW payload Jacket01 ');
+            Timer.run(() => _database.child('Jacket01/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(
@@ -502,6 +630,23 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
     if (jackName == null && jackName02 == "Jacket02") {
+      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti02 = values['title'];
+          date02 = values['datetime'];
+          print("noti = $noti");
+          if (noti02 == null || noti02 == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti02   จาก $_displayName02  ',
+                body: '$date02',
+                payload: 'NEW payload Jacket02 ');
+            Timer.run(() => _database.child('Jacket02/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(

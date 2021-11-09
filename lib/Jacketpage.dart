@@ -4,14 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:jackket/API/notification_api.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:jackket/ChangeProJacket.dart';
 import 'package:jackket/JacketProfile.dart';
 import 'package:jackket/LocalNotifyManager.dart';
 import 'package:jackket/notitest.dart';
-import 'package:jackket/read_examples.dart';
 import 'package:jackket/user/showListofUsers.dart';
-import 'package:jackket/write_examples.dart';
 import 'package:page_transition/page_transition.dart';
 
 class JacketPage extends StatefulWidget {
@@ -31,6 +30,12 @@ class _JacketPageState extends State<JacketPage> {
   var jackName02;
   var getPic02;
   var checkJackName;
+
+  var noti;
+  var date;
+
+  var noti02;
+  var date02;
   // @override
   // void initState() {
   //   super.initState();
@@ -60,8 +65,9 @@ class _JacketPageState extends State<JacketPage> {
   void initState() {
     super.initState();
     _checkJacket();
-    localNotifyManager.showNotification();
-    Timer.run(() => _database.child('Jacket01/notinow').remove());
+
+    // localNotifyManager.showNotification();
+    // Timer.run(() => _database.child('Jacket01/notinow').remove());
   }
 
   _checkJacket() {
@@ -98,6 +104,40 @@ class _JacketPageState extends State<JacketPage> {
     });
 
     if (jackName == "Jacket01" && jackName02 == "Jacket02") {
+      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti = values['title'];
+          date = values['datetime'];
+          print("noti = $noti");
+          if (noti == null || noti == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti  จาก $_displayName',
+                body: '$date',
+                payload: 'NEW payload Jacket01 ');
+            Timer.run(() => _database.child('Jacket01/notinow').remove());
+          }
+        });
+      });
+      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti02 = values['title'];
+          date02 = values['datetime'];
+          print("noti = $noti");
+          if (noti02 == null || noti02 == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti02   จาก $_displayName02',
+                body: '$date02',
+                payload: 'NEW payload Jacket02 ');
+            Timer.run(() => _database.child('Jacket02/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -251,6 +291,41 @@ class _JacketPageState extends State<JacketPage> {
       );
     }
     if (jackName02 == "Jacket01" && jackName == "Jacket02") {
+      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti = values['title'];
+          date = values['datetime'];
+          print("noti = $noti");
+          if (noti == null || noti == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti  จาก  $_displayName',
+                body: '$date',
+                payload: 'NEW payload Jacket01 ');
+            Timer.run(() => _database.child('Jacket01/notinow').remove());
+          }
+        });
+      });
+      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti02 = values['title'];
+          date02 = values['datetime'];
+          print("noti = $noti");
+          if (noti02 == null || noti02 == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti02   จาก $_displayName02',
+                body: '$date02',
+                payload: 'NEW payload Jacket02 ');
+            Timer.run(() => _database.child('Jacket02/notinow').remove());
+          }
+        });
+      });
+
       return Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -404,6 +479,23 @@ class _JacketPageState extends State<JacketPage> {
       );
     }
     if (jackName == "Jacket01" && jackName02 == null) {
+      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti = values['title'];
+          date = values['datetime'];
+          print("noti = $noti");
+          if (noti == null || noti == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti  จาก $_displayName',
+                body: '$date',
+                payload: 'NEW payload Jacket01 ');
+            Timer.run(() => _database.child('Jacket01/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -500,6 +592,23 @@ class _JacketPageState extends State<JacketPage> {
       );
     }
     if (jackName == "Jacket02" && jackName02 == null) {
+      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti02 = values['title'];
+          date02 = values['datetime'];
+          print("noti = $noti");
+          if (noti02 == null || noti02 == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti02   จาก $_displayName02',
+                body: '$date02',
+                payload: 'NEW payload Jacket02 ');
+            Timer.run(() => _database.child('Jacket02/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -596,6 +705,23 @@ class _JacketPageState extends State<JacketPage> {
       );
     }
     if (jackName == null && jackName02 == "Jacket01") {
+      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti = values['title'];
+          date = values['datetime'];
+          print("noti = $noti");
+          if (noti == null || noti == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti  จาก $_displayName',
+                body: '$date',
+                payload: 'NEW payload Jacket01 ');
+            Timer.run(() => _database.child('Jacket01/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -692,6 +818,23 @@ class _JacketPageState extends State<JacketPage> {
       );
     }
     if (jackName == null && jackName02 == "Jacket02") {
+      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+        Map<dynamic, dynamic> values = snapshot.value;
+        values.forEach((key, values) async {
+          noti02 = values['title'];
+          date02 = values['datetime'];
+          print("noti = $noti");
+          if (noti02 == null || noti02 == "") {
+            return null;
+          } else {
+            await NotificationApi.showNotification(
+                title: '$noti02   จาก $_displayName02 ',
+                body: '$date02',
+                payload: 'NEW payload Jacket02 ');
+            Timer.run(() => _database.child('Jacket02/notinow').remove());
+          }
+        });
+      });
       return Padding(
         padding: const EdgeInsets.only(top: 20),
         child: Column(
@@ -922,8 +1065,6 @@ class _JacketPageState extends State<JacketPage> {
       height: 20,
     );
   }
-
-  
 
   Widget showButton() {
     return SizedBox(

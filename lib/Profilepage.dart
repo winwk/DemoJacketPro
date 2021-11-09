@@ -35,7 +35,6 @@ class _ProfilePageState extends State<ProfilePage> {
   var getPic;
   var noti;
 
-
   final _database = FirebaseDatabase.instance.reference();
 
   @override
@@ -45,7 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
     checkPic();
     localNotifyManager.showNotification();
     Timer.run(() => _database.child('Jacket01/notinow').remove());
-    
   }
 
   void checkPic() {
@@ -137,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
+  
   Widget EditProButton() {
     return SizedBox(
       width: 350,

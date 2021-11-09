@@ -23,6 +23,7 @@ class _AddLocationPageState extends State<AddLocationPage> {
   var savelat;
 
   var savelng;
+    var jackId;
 
   String? titleString;
   void locatePosition() async {
@@ -37,6 +38,19 @@ class _AddLocationPageState extends State<AddLocationPage> {
     newGoogleMapController
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
+
+  @override
+  void initState() {
+    super.initState();
+    database.child('Jacket01').onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final sendJackID = data['sendJackID'];
+      setState(() {
+        jackId = sendJackID;
+      });
+    });
+  }
+
 
   List<Marker> myMarker = [];
   Widget place() {
@@ -152,7 +166,7 @@ class _AddLocationPageState extends State<AddLocationPage> {
                           });
                     } else if (_formKey.currentState!.validate()) {
                       _formKey.currentState?.save();
-                      database.child('Jacket01/savelocate').push().set({
+                      database.child('$jackId/savelocate').push().set({
                         'title': titleString,
                         'lat': savelat,
                         'lng': savelng
