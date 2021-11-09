@@ -20,7 +20,7 @@ class _AddDeviceState extends State<AddDevice> {
       FirebaseFirestore.instance.collection("Jacket01");
   String deviceName01 = "Jacket01";
   String deviceName02 = "Jacket02";
-    TextEditingController _device = TextEditingController();
+  TextEditingController _device = TextEditingController();
 
   TextEditingController _password = TextEditingController();
   String? passwordString;
@@ -28,25 +28,31 @@ class _AddDeviceState extends State<AddDevice> {
   String? password02;
 
   String? nameString;
+  var jackId;
 
   @override
   void initState() {
     super.initState();
-    check();
-   
-  
-  }
-
-  void check() {
-    _database.child('Jacket01').onValue.listen((event) {
+    
+      _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final pass = data['pass'] as String;
-      password = pass;
-      print(password);
+      final sendJackID = data['sendJackID'];
+      setState(() {
+        jackId = sendJackID;
+      });
+      
     });
+    
   }
 
-   
+  // void check() {
+  //   _database.child('Jacket01').onValue.listen((event) {
+  //     final data = new Map<String, dynamic>.from(event.snapshot.value);
+  //     final pass = data['pass'] as String;
+  //     password = pass;
+  //     print(password);
+  //   });
+  // }
 
   // void onPressed() {
   //   _jackCollection.get().then((querySnapshot) {
@@ -75,8 +81,6 @@ class _AddDeviceState extends State<AddDevice> {
   //   });
   // }
 
-  
-
   Widget box() {
     return SizedBox(
       height: 20,
@@ -100,7 +104,7 @@ class _AddDeviceState extends State<AddDevice> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
-              controller:_device ,
+              controller: _device,
               decoration: InputDecoration(
                   icon: Icon(Icons.face),
                   labelText: "ชื่ออุปกรณ์",
@@ -124,7 +128,6 @@ class _AddDeviceState extends State<AddDevice> {
               onSaved: (String? value) {
                 nameString = value;
               },
-              
             )
           ],
         ),
@@ -132,14 +135,16 @@ class _AddDeviceState extends State<AddDevice> {
     );
   }
 
+
+
+  
+
   Widget Password() {
-    
-    _database.child('Jacket02').onValue.listen((event) {
-      final data02 = new Map<String, dynamic>.from(event.snapshot.value);
-      final pass02 = data02['pass'] as String;
-      password02 = pass02;
-      print("+++++++++++++++++++++");
-      print(password02);
+    _database.child(_device.text).onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final pass = data['pass'] as String;
+      password = pass;
+      print(password);
     });
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -165,12 +170,9 @@ class _AddDeviceState extends State<AddDevice> {
                   if (value == null || value.trim().length == 0) {
                     return "กรุณาระบุข้อมูล";
                   }
-                  
                   if (value != password) {
                     return "รหัสผ่านผิด กรุณากรอกใหม่";
-                    
-                  }
-                  else
+                  } else
                     return null;
                 },
                 onSaved: (String? value) {
@@ -191,11 +193,57 @@ class _AddDeviceState extends State<AddDevice> {
           print('####you click addDevice###');
           if (_formKey.currentState!.validate()) {
             _formKey.currentState?.save();
+            print(nameString);
             updateProfile(context);
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) {
-              return home1();
-            }));
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    title: Text(
+                      'เพิ่มอุปกรณ์เสร็จสิ้น',
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 27.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    actions: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            child: Text(
+                              "ตกลง",
+                              style: TextStyle(
+                                fontFamily: "Jasmine",
+                                color: Color(0xFF707070),
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFE5EFC1),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                            ),
+                            onPressed: () {
+                              _formKey.currentState?.reset();
+                              Navigator.of(context).pushAndRemoveUntil(
+                                  MaterialPageRoute(
+                                      builder: (context) => home1()),
+                                  (Route<dynamic> route) => false);
+                            },
+                          ),
+                        ],
+                      )
+                    ],
+                  );
+                });
           }
         },
         child: Text(
@@ -278,26 +326,20 @@ class _AddDeviceState extends State<AddDevice> {
   }
 
   updateProfile(BuildContext context) async {
-     var val=[];
+    var val = [];
     Map<String, dynamic> map = Map();
     if (nameString != null) {
-      
       val.add(nameString);
-      
     }
-   
-    
+
     await FirebaseFirestore.instance
         .collection("test")
         .doc(FirebaseAuth.instance.currentUser!.uid)
-        .update({
-          "JacketName":FieldValue.arrayUnion(val)
-        });
+        .update({"JacketName": FieldValue.arrayUnion(val)});
 
-  //  await FirebaseFirestore.instance
-  //       .doc(FirebaseAuth.instance.currentUser!.uid)
-  //       .collection("test")
-  //       .add(map);
-
+    //  await FirebaseFirestore.instance
+    //       .doc(FirebaseAuth.instance.currentUser!.uid)
+    //       .collection("test")
+    //       .add(map);
   }
 }
