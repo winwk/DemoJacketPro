@@ -29,57 +29,20 @@ class _AddDeviceState extends State<AddDevice> {
 
   String? nameString;
   var jackId;
-
+var jackName;
+  var jackName02;
+  var checkJackName;
   @override
   void initState() {
     super.initState();
-    
-      _database.child('Jacket01').onValue.listen((event) {
+    _database.child('Jacket01').onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final sendJackID = data['sendJackID'];
       setState(() {
         jackId = sendJackID;
       });
-      
     });
-    
   }
-
-  // void check() {
-  //   _database.child('Jacket01').onValue.listen((event) {
-  //     final data = new Map<String, dynamic>.from(event.snapshot.value);
-  //     final pass = data['pass'] as String;
-  //     password = pass;
-  //     print(password);
-  //   });
-  // }
-
-  // void onPressed() {
-  //   _jackCollection.get().then((querySnapshot) {
-  //     querySnapshot.docs.forEach((result) {
-  //       _jackCollection
-  //           .doc(result.id)
-  //           .collection("noti")
-  //           .get()
-  //           .then((querySnapshot) {
-  //         querySnapshot.docs.forEach((result) {
-  //           print(result.data());
-  //         });
-  //       });
-  //     });
-  //   });
-  // }
-
-  // void _onPressed() {
-  //   FirebaseFirestore.instance
-  //       .collection("Jacket01")
-  //       .get()
-  //       .then((querySnapshot) {
-  //     querySnapshot.docs.forEach((result) {
-  //       print(result.data());
-  //     });
-  //   });
-  // }
 
   Widget box() {
     return SizedBox(
@@ -96,6 +59,21 @@ class _AddDeviceState extends State<AddDevice> {
   }
 
   Widget buildUserName() {
+     var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        jackName = value.data()!['JacketName'][0];
+        jackName02 = value.data()!['JacketName'][1];
+        checkJackName = value.data()!['JacketName'];
+      });
+    });
+    print("jacketName = $jackName");
+    print("jacketName02 =$jackName02");
+    print("chckJacketName =$checkJackName");
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
@@ -121,7 +99,12 @@ class _AddDeviceState extends State<AddDevice> {
                   if (value != deviceName02) {
                     return "ชื่ออุปกรณ์ไม่ถูกต้อง";
                   }
-                } else {
+                }
+                if (value == jackName || value == jackName02) {
+                  return "คุณเพิ่มอุปกรณ์นี้ไปแล้ว";
+                }
+                
+                 else {
                   return null;
                 }
               },
@@ -134,10 +117,6 @@ class _AddDeviceState extends State<AddDevice> {
       ),
     );
   }
-
-
-
-  
 
   Widget Password() {
     _database.child(_device.text).onValue.listen((event) {
@@ -185,12 +164,14 @@ class _AddDeviceState extends State<AddDevice> {
   }
 
   Widget addButton() {
+   
     return SizedBox(
       width: 200,
       height: 50,
       child: ElevatedButton(
         onPressed: () {
           print('####you click addDevice###');
+          
           if (_formKey.currentState!.validate()) {
             _formKey.currentState?.save();
             print(nameString);
@@ -245,6 +226,7 @@ class _AddDeviceState extends State<AddDevice> {
                   );
                 });
           }
+          
         },
         child: Text(
           "เพิ่มอุปกรณ์",
