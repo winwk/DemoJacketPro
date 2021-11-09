@@ -9,7 +9,6 @@ import 'package:jackket/AddDevice.dart';
 import 'package:jackket/ChangeProJacket.dart';
 import 'package:jackket/JacketProfile.dart';
 import 'package:jackket/LocalNotifyManager.dart';
-import 'package:jackket/notitest.dart';
 import 'package:jackket/user/showListofUsers.dart';
 import 'package:page_transition/page_transition.dart';
 

@@ -14,6 +14,10 @@ class _notiState extends State<noti> {
   late Future<void> _launched;
   var datevideo;
   var video;
+  var jackId;
+
+  final _database = FirebaseDatabase.instance.reference();
+
   Future<void> _launchInApp(String url) async {
     if (await canLaunch(url)) {
       await launch(
@@ -31,6 +35,12 @@ class _notiState extends State<noti> {
       .reference()
       .child("Jacket01/noti")
       .orderByChild("timestamp");
+
+  final db02 = FirebaseDatabase.instance
+      .reference()
+      .child("Jacket02/noti")
+      .orderByChild("timestamp");
+
   final dbvideo = FirebaseDatabase.instance.reference().child("Jacket01/video");
   late final bool reverse;
 
@@ -51,18 +61,232 @@ class _notiState extends State<noti> {
   @override
   void initState() {
     super.initState();
-    db.once().then((DataSnapshot snapshot) {
-      Map<dynamic, dynamic> values = snapshot.value;
-      values.forEach((key, values) {});
-      //print(snapshot.value['datetime']);
+    _database.child('Jacket01').onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final sendJackID = data['sendJackID'];
+      setState(() {
+        jackId = sendJackID;
+      });
     });
-    _checkvideo();
+    checknoti();
+
+    // db.once().then((DataSnapshot snapshot) {
+    //   Map<dynamic, dynamic> values = snapshot.value;
+    //   values.forEach((key, values) {});
+    //   //print(snapshot.value['datetime']);
+    // });
+    // _checkvideo();
   }
 
   Widget box() {
     return SizedBox(
       height: 20,
     );
+  }
+
+  checknoti() {
+    if (jackId == "Jacket01") {
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FirebaseAnimatedList(
+            physics: BouncingScrollPhysics(),
+            query: db,
+            itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                Animation<double> animation, int index) {
+              return SizedBox(
+                  width: 355,
+                  height: 90,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Center(
+                      child: ListTile(
+                        title: new Text(snapshot.value['title']),
+                        subtitle: snapshot.value['lat'] == null
+                            ? Text("วันเวลา : " + snapshot.value['datetime'])
+                            : Text("Latitude : " +
+                                snapshot.value['lat'] +
+                                "  Longtitude : " +
+                                snapshot.value['lng'] +
+                                "\n" +
+                                "วันเวลา : " +
+                                snapshot.value['datetime']),
+                        leading: snapshot.value['title'] == "SOS!!!"
+                            ? Icon(
+                                Icons.warning_amber_rounded,
+                                color: Colors.red[200],
+                                size: 40,
+                              )
+                            : Icon(
+                                Icons.location_pin,
+                                color: Colors.green[200],
+                                size: 40,
+                              ),
+                        onTap: snapshot.value['video'] != null
+                            ? () {
+                                _launchInApp(snapshot.value['video']);
+                              }
+                            : () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        title: Text(
+                                          'ไม่พบวิดีโอ',
+                                          style: TextStyle(
+                                            fontFamily: "Jasmine",
+                                            color: Color(0xFF707070),
+                                            fontSize: 30.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        actions: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              ElevatedButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: TextStyle(
+                                                    fontFamily: "Jasmine",
+                                                    color: Color(0xFF707070),
+                                                    fontSize: 22.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFE5EFC1),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    });
+                              },
+                      ),
+                    ),
+                  ));
+            },
+          ),
+        ),
+      );
+    }
+    if (jackId == "Jacket02") {
+      return SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: FirebaseAnimatedList(
+            physics: BouncingScrollPhysics(),
+            query: db02,
+            itemBuilder: (BuildContext context, DataSnapshot snapshot,
+                Animation<double> animation, int index) {
+              return SizedBox(
+                  width: 355,
+                  height: 90,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Center(
+                      child: ListTile(
+                        title: new Text(snapshot.value['title']),
+                        subtitle: snapshot.value['lat'] == null
+                            ? Text("วันเวลา : " + snapshot.value['datetime'])
+                            : Text("Latitude : " +
+                                snapshot.value['lat'] +
+                                "  Longtitude : " +
+                                snapshot.value['lng'] +
+                                "\n" +
+                                "วันเวลา : " +
+                                snapshot.value['datetime']),
+                        leading: snapshot.value['title'] == "SOS!!!"
+                            ? Icon(
+                                Icons.warning_amber_rounded,
+                                color: Colors.red[200],
+                                size: 40,
+                              )
+                            : Icon(
+                                Icons.location_pin,
+                                color: Colors.green[200],
+                                size: 40,
+                              ),
+                        onTap: snapshot.value['video'] != null
+                            ? () {
+                                _launchInApp(snapshot.value['video']);
+                              }
+                            : () {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        title: Text(
+                                          'ไม่พบวิดีโอ',
+                                          style: TextStyle(
+                                            fontFamily: "Jasmine",
+                                            color: Color(0xFF707070),
+                                            fontSize: 30.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        actions: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              ElevatedButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: TextStyle(
+                                                    fontFamily: "Jasmine",
+                                                    color: Color(0xFF707070),
+                                                    fontSize: 22.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFE5EFC1),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    });
+                              },
+                      ),
+                    ),
+                  ));
+            },
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -105,111 +329,7 @@ class _notiState extends State<noti> {
               ]),
             ),
           ),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FirebaseAnimatedList(
-                physics: BouncingScrollPhysics(),
-                query: db,
-                itemBuilder: (BuildContext context, DataSnapshot snapshot,
-                    Animation<double> animation, int index) {
-                  return SizedBox(
-                      width: 355,
-                      height: 90,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Center(
-                          child: ListTile(
-                            title: new Text(snapshot.value['title']),
-                            subtitle: snapshot.value['lat'] == null
-                                ? Text(
-                                    "วันเวลา : " + snapshot.value['datetime'])
-                                : Text("Latitude : " +
-                                    snapshot.value['lat'] +
-                                    "  Longtitude : " +
-                                    snapshot.value['lng'] +
-                                    "\n" +
-                                    "วันเวลา : " +
-                                    snapshot.value['datetime']),
-                            leading: snapshot.value['title'] == "SOS!!!"
-                                ? Icon(
-                                    Icons.warning_amber_rounded,
-                                    color: Colors.red[200],
-                                    size: 40,
-                                  )
-                                : Icon(
-                                    Icons.location_pin,
-                                    color: Colors.green[200],
-                                    size: 40,
-                                  ),
-                            onTap: snapshot.value['video'] != null
-                                ? () {
-                                    _launchInApp(snapshot.value['video']);
-                                  }
-                                : () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            title: Text(
-                                              'ไม่พบวิดีโอ',
-                                              style: TextStyle(
-                                                fontFamily: "Jasmine",
-                                                color: Color(0xFF707070),
-                                                fontSize: 30.0,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            actions: <Widget>[
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  ElevatedButton(
-                                                    child: Text(
-                                                      "ตกลง",
-                                                      style: TextStyle(
-                                                        fontFamily: "Jasmine",
-                                                        color:
-                                                            Color(0xFF707070),
-                                                        fontSize: 22.0,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    style: ElevatedButton
-                                                        .styleFrom(
-                                                      primary:
-                                                          Color(0xFFE5EFC1),
-                                                      shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          20))),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          );
-                                        });
-                                  },
-                          ),
-                        ),
-                      ));
-                },
-              ),
-            ),
-          )),
+          body: checknoti()),
     );
   }
 }

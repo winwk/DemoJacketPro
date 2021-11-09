@@ -83,9 +83,7 @@ class _HomemapPageState extends State<HomemapPage> {
   void initState() {
     super.initState();
     Profile();
-
     _checkJacket();
-
     Timer.run(() => _database.child('Jacket01/').update({'status': 'off'}));
     db.once().then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
