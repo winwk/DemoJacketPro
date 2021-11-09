@@ -31,6 +31,7 @@ class _HomemapPageState extends State<HomemapPage> {
   var geoLocator = Geolocator();
 
   var statusnow;
+  var statusnow02;
   void locatePosition() async {
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -46,12 +47,16 @@ class _HomemapPageState extends State<HomemapPage> {
 
   Future _gotojacket() async {
     LatLng LatLngJac = LatLng(dislat, dislng);
-    Marker(
-        markerId: MarkerId("2"),
-        position: LatLngJac,
-        infoWindow: InfoWindow(title: _displayName));
     CameraPosition cameraPosition =
         new CameraPosition(target: LatLngJac, zoom: 15);
+    newGoogleMapController
+        .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
+  }
+
+  Future _gotojacket02() async {
+    LatLng LatLngJac02 = LatLng(dislat02, dislng02);
+    CameraPosition cameraPosition =
+        new CameraPosition(target: LatLngJac02, zoom: 15);
     newGoogleMapController
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
@@ -71,8 +76,8 @@ class _HomemapPageState extends State<HomemapPage> {
   var jackUser;
   var dislat;
   var dislng;
-
-
+  var dislat02;
+  var dislng02;
 
   var noti;
   var date01;
@@ -85,6 +90,7 @@ class _HomemapPageState extends State<HomemapPage> {
     Profile();
     _checkJacket();
     Timer.run(() => _database.child('Jacket01/').update({'status': 'off'}));
+    Timer.run(() => _database.child('Jacket02/').update({'status': 'off'}));
     db.once().then((DataSnapshot snapshot) {
       Map<dynamic, dynamic> values = snapshot.value;
       values.forEach((key, values) {
@@ -153,6 +159,36 @@ class _HomemapPageState extends State<HomemapPage> {
     }
   }
 
+  status02() {
+    if (statusnow02 == 'off') {
+      return Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Text(
+          'ออฟไลน์',
+          style: TextStyle(
+            fontFamily: "Jasmine",
+            color: Colors.red[300],
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    } else {
+      return Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: Text(
+          'ออนไลน์',
+          style: TextStyle(
+            fontFamily: "Jasmine",
+            color: Colors.green[300],
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    }
+  }
+
   Profile() {
     var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
@@ -182,7 +218,14 @@ class _HomemapPageState extends State<HomemapPage> {
       final data02 = new Map<String, dynamic>.from(event.snapshot.value);
       final user02 = data02['user'] as String;
       final profileImage02 = data02['imageProfile'];
-
+      final lat02 = data02['lat'];
+      final lng02 = data02['lng'];
+      final status02 = data02['status'];
+      setState(() {
+        dislat02 = lat02;
+        dislng02 = lng02;
+        statusnow02 = status02;
+      });
       _displayName02 = user02;
       getPic02 = profileImage02;
     });
@@ -293,7 +336,7 @@ class _HomemapPageState extends State<HomemapPage> {
                   SizedBox(
                     width: 20,
                   ),
-                  status(),
+                  status02(),
                 ],
               ),
               style: ElevatedButton.styleFrom(
@@ -301,14 +344,14 @@ class _HomemapPageState extends State<HomemapPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-              onPressed: _gotojacket,
+              onPressed: _gotojacket02,
             ),
           ],
         ),
       );
     }
     if (jackName02 == "Jacket01" && jackName == "Jacket02") {
-       _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
         Map<dynamic, dynamic> values = snapshot.value;
         values.forEach((key, values) async {
           noti = values['title'];
@@ -414,7 +457,7 @@ class _HomemapPageState extends State<HomemapPage> {
                   SizedBox(
                     width: 20,
                   ),
-                  status(),
+                  status02(),
                 ],
               ),
               style: ElevatedButton.styleFrom(
@@ -422,7 +465,7 @@ class _HomemapPageState extends State<HomemapPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-              onPressed: _gotojacket,
+              onPressed: _gotojacket02,
             ),
           ],
         ),
@@ -496,7 +539,7 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
     if (jackName == "Jacket02" && jackName02 == null) {
-       _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
+      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
         Map<dynamic, dynamic> values = snapshot.value;
         values.forEach((key, values) async {
           noti02 = values['title'];
@@ -544,7 +587,7 @@ class _HomemapPageState extends State<HomemapPage> {
                   SizedBox(
                     width: 20,
                   ),
-                  status(),
+                  status02(),
                 ],
               ),
               style: ElevatedButton.styleFrom(
@@ -552,7 +595,7 @@ class _HomemapPageState extends State<HomemapPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-              onPressed: _gotojacket,
+              onPressed: _gotojacket02,
             ),
             SizedBox(
               height: 30,
@@ -562,7 +605,7 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
     if (jackName == null && jackName02 == "Jacket01") {
-       _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
+      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
         Map<dynamic, dynamic> values = snapshot.value;
         values.forEach((key, values) async {
           noti = values['title'];
@@ -676,7 +719,7 @@ class _HomemapPageState extends State<HomemapPage> {
                   SizedBox(
                     width: 20,
                   ),
-                  status(),
+                  status02(),
                 ],
               ),
               style: ElevatedButton.styleFrom(
@@ -684,7 +727,7 @@ class _HomemapPageState extends State<HomemapPage> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(25))),
               ),
-              onPressed: _gotojacket,
+              onPressed: _gotojacket02,
             ),
             SizedBox(
               height: 30,
@@ -883,11 +926,23 @@ class _HomemapPageState extends State<HomemapPage> {
                                 markerId: MarkerId("1"),
                                 position: LatLng(-85.961937, -89.259939),
                                 infoWindow: InfoWindow(title: "no"))
-                            : Marker(
-                                //icon: _markerIcon,
-                                markerId: MarkerId("1"),
-                                position: LatLng(dislat, dislng),
-                                infoWindow: InfoWindow(title: _displayName))
+                            : jackName02 != 'Jacket02'
+                                ? Marker(
+                                    //icon: _markerIcon,
+                                    markerId: MarkerId("1"),
+                                    position: LatLng(dislat, dislng),
+                                    infoWindow: InfoWindow(title: _displayName))
+                                : Marker(
+                                    //icon: _markerIcon,
+                                    markerId: MarkerId("1"),
+                                    position: LatLng(dislat, dislng),
+                                    infoWindow:
+                                        InfoWindow(title: _displayName)),
+                        Marker(
+                            //icon: _markerIcon,
+                            markerId: MarkerId("2"),
+                            position: LatLng(dislat02, dislng02),
+                            infoWindow: InfoWindow(title: _displayName02))
                       }),
                 ),
               )
