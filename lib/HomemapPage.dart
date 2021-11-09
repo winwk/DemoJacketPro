@@ -152,9 +152,11 @@ class _HomemapPageState extends State<HomemapPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      jackName = value.data()!['JacketName'][0];
-      jackName02 = value.data()!['JacketName'][1];
-      checkJackName = value.data()!['JacketName'];
+      setState(() {
+        jackName = value.data()!['JacketName'][0];
+        jackName02 = value.data()!['JacketName'][1];
+        checkJackName = value.data()!['JacketName'];
+      });
     });
     print("jacketName = $jackName");
     print("jacketName02 =$jackName02");
@@ -179,10 +181,8 @@ class _HomemapPageState extends State<HomemapPage> {
 
     if (jackName == "Jacket01" && jackName02 == "Jacket02") {
       return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: SizedBox(
-          width: 30,
-          height: 70,
+        padding: const EdgeInsets.only(left: 10, right: 10,top: 10),
+     
           child: Column(
             children: [
               ElevatedButton(
@@ -223,7 +223,7 @@ class _HomemapPageState extends State<HomemapPage> {
                 onPressed: _gotojacket,
               ),
               SizedBox(
-                height: 30,
+                height: 20,
               ),
               ElevatedButton(
                 child: Row(
@@ -264,15 +264,13 @@ class _HomemapPageState extends State<HomemapPage> {
               ),
             ],
           ),
-        ),
-      );
+        );
+      
     }
     if (jackName02 == "Jacket01" && jackName == "Jacket02") {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        child: SizedBox(
-          width: 30,
-          height: 70,
+        
           child: Column(
             children: [
               ElevatedButton(
@@ -354,16 +352,14 @@ class _HomemapPageState extends State<HomemapPage> {
               ),
             ],
           ),
-        ),
-      );
+        );
+      
     }
 
     if (jackName == "Jacket01" && jackName02 == null) {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        child: SizedBox(
-          width: 30,
-          height: 70,
+        
           child: Column(
             children: [
               ElevatedButton(
@@ -408,15 +404,13 @@ class _HomemapPageState extends State<HomemapPage> {
               ),
             ],
           ),
-        ),
-      );
+        );
+      
     }
     if (jackName == "Jacket02" && jackName02 == null) {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        child: SizedBox(
-          width: 30,
-          height: 70,
+        
           child: Column(
             children: [
               ElevatedButton(
@@ -461,15 +455,13 @@ class _HomemapPageState extends State<HomemapPage> {
               ),
             ],
           ),
-        ),
-      );
+        );
+      
     }
     if (jackName == null && jackName02 == "Jacket01") {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        child: SizedBox(
-          width: 30,
-          height: 70,
+        
           child: Column(
             children: [
               ElevatedButton(
@@ -514,15 +506,13 @@ class _HomemapPageState extends State<HomemapPage> {
               ),
             ],
           ),
-        ),
-      );
+        );
+      
     }
     if (jackName == null && jackName02 == "Jacket02") {
       return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
-        child: SizedBox(
-          width: 30,
-          height: 70,
+        
           child: Column(
             children: [
               ElevatedButton(
@@ -567,11 +557,24 @@ class _HomemapPageState extends State<HomemapPage> {
               ),
             ],
           ),
-        ),
-      );
+        );
+      
     }
 
     if (checkJackName == null || checkJackName == "") {
+      return Padding(
+        padding: const EdgeInsets.only(top: 20, left: 90),
+        child: Text(
+          'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
+          style: TextStyle(
+            fontSize: 30.0,
+            color: Colors.white,
+            fontFamily: "Jasmine",
+          ),
+        ),
+      );
+    }
+    if (jackName == null || jackName02 == null) {
       return Padding(
         padding: const EdgeInsets.only(top: 20, left: 90),
         child: Text(
@@ -680,7 +683,6 @@ class _HomemapPageState extends State<HomemapPage> {
   }
 
   Widget build(BuildContext context) {
-  
     return new Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
