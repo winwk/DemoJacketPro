@@ -11,7 +11,7 @@ class _ChangeDistanceState extends State<ChangeDistance> {
   final _database = FirebaseDatabase.instance.reference();
 
   double getdistance = 0.4;
-      var jackId;
+  var jackId;
 
   @override
   void initState() {
@@ -23,19 +23,20 @@ class _ChangeDistanceState extends State<ChangeDistance> {
       setState(() {
         jackId = sendJackID;
       });
-    });
-    _database.child('$jackId').onValue.listen((event) {
-      final data = new Map<dynamic, dynamic>.from(event.snapshot.value);
-      final distance = data['distance'] as double;
-      setState(() {
-        getdistance = distance;
+      _database.child('$jackId').onValue.listen((event) {
+        final data = new Map<dynamic, dynamic>.from(event.snapshot.value);
+        final distance = data['distance'] as double;
+        setState(() {
+          getdistance = distance;
+        });
       });
     });
   }
+
   void updatedistance() {
     _database.child('$jackId').update({'distance': getdistance});
   }
-  
+
   Widget box() {
     return SizedBox(
       height: 20,
