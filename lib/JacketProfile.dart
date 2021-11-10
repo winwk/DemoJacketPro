@@ -12,6 +12,7 @@ import 'package:jackket/Locationpage.dart';
 import 'package:jackket/Videopage.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/home1.dart';
+import 'package:jackket/noti.dart';
 import 'package:jackket/status.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -299,6 +300,42 @@ class _JacketProState extends State<JacketPro> {
     );
   }
 
+   Widget notiButton() {
+    return SizedBox(
+      width: 350,
+      height: 60,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.rightToLeft, child: noti()),
+          );
+        },
+        child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(" การแจ้งเตือน",
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 35.0,
+                  )),
+              Icon(
+                Icons.arrow_forward_ios_outlined,
+                color: Color(0xFF707070),
+              ),
+            ]),
+        style: ElevatedButton.styleFrom(
+            primary: Colors.white,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)))),
+      ),
+    );
+  }
+
+
   Widget LogoutButton() {
     return SizedBox(
         width: 150,
@@ -463,6 +500,10 @@ class _JacketProState extends State<JacketPro> {
                     height: 15.0,
                   ),
                   EditToolButton(),
+                  SizedBox(
+                    height: 15.0,
+                  ),
+                  notiButton(),
                   SizedBox(
                     height: 15.0,
                   ),

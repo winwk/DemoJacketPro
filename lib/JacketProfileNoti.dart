@@ -23,7 +23,6 @@ class _jacketProNotiState extends State<jacketProNoti> {
   var jackName;
   var jackName02;
   var getPic02;
-  var checkJackName;
 
   @override
   void initState() {
@@ -39,15 +38,13 @@ class _jacketProNotiState extends State<jacketProNoti> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      setState(() {
-        jackName = value.data()!['JacketName'][0];
-        jackName02 = value.data()!['JacketName'][1];
-        checkJackName = value.data()!['JacketName'];
-      });
+      jackName = value.data()!['JacketName'][0];
+      jackName02 = value.data()!['JacketName'][1];
+
       print("jacketName = $jackName");
       print("jacketName02 =$jackName02");
-      print("chckJacketName =$checkJackName");
     });
+
     _database.child("Jacket01").onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final user = data['user'] as String;
@@ -117,7 +114,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
                             icon: Icon(
                               Icons.notifications,
                               size: 40,
-                              color: Color(0xffEAE126),
+                              color: Color(0xff39AEA9),
                             )),
                       ),
                     ],
@@ -174,7 +171,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
                             icon: Icon(
                               Icons.notifications,
                               size: 40,
-                              color: Color(0xffEAE126),
+                              color: Color(0xff39AEA9),
                             )),
                       ),
                     ],
@@ -239,7 +236,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
                             icon: Icon(
                               Icons.notifications,
                               size: 40,
-                              color: Color(0xffEAE126),
+                              color: Color(0xff39AEA9),
                             )),
                       ),
                     ],
@@ -296,7 +293,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
                             icon: Icon(
                               Icons.notifications,
                               size: 40,
-                              color: Color(0xffEAE126),
+                              color: Color(0xff39AEA9),
                             )),
                       ),
                     ],
@@ -361,7 +358,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
                             icon: Icon(
                               Icons.notifications,
                               size: 40,
-                              color: Color(0xffEAE126),
+                              color: Color(0xff39AEA9),
                             )),
                       ),
                     ],
@@ -426,7 +423,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
                             icon: Icon(
                               Icons.notifications,
                               size: 40,
-                              color: Color(0xffEAE126),
+                              color: Color(0xff39AEA9),
                             )),
                       ),
                     ],
@@ -491,7 +488,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
                             icon: Icon(
                               Icons.notifications,
                               size: 40,
-                              color: Color(0xffEAE126),
+                              color: Color(0xff39AEA9),
                             )),
                       ),
                     ],
@@ -556,7 +553,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
                             icon: Icon(
                               Icons.notifications,
                               size: 40,
-                              color: Color(0xffEAE126),
+                              color: Color(0xff39AEA9),
                             )),
                       ),
                     ],
@@ -568,8 +565,9 @@ class _jacketProNotiState extends State<jacketProNoti> {
         ),
       );
     }
-    if (checkJackName == null || checkJackName == "") {
-      return Padding(
+
+    if (jackName == null && jackName02 == null) {
+      Padding(
         padding: const EdgeInsets.only(top: 100),
         child: Column(
           children: [
@@ -586,24 +584,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
           ],
         ),
       );
-    } else
-      return Padding(
-        padding: const EdgeInsets.only(top: 100),
-        child: Column(
-          children: [
-            SizedBox(
-              child: Text(
-                'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  color: Colors.white,
-                  fontFamily: "Jasmine",
-                ),
-              ),
-            ),
-          ],
-        ),
-      );
+    }
   }
 
   Widget box() {
@@ -622,22 +603,10 @@ class _jacketProNotiState extends State<jacketProNoti> {
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+     return new Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
-          actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 20, top: 10),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child:
-                    Icon(Icons.cancel_rounded, size: 42, color: Colors.white),
-              ),
-            )
-          ],
           automaticallyImplyLeading: false,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -646,15 +615,13 @@ class _jacketProNotiState extends State<jacketProNoti> {
           centerTitle: true,
           backgroundColor: Color(0xff39AEA9),
           title: Column(children: [
-            SizedBox(
-              height: 20,
-            ),
+            box(),
             Text(
-              "การแจ้งเตือน",
+              "แจ้งเตือนแจ็คเก็ต",
               style: TextStyle(
                   color: Color(0xFFFFFFFF),
                   fontFamily: "Jasmine",
-                  fontSize: 55.0,
+                  fontSize: 60.0,
                   fontWeight: FontWeight.bold),
             ),
           ]),
@@ -666,7 +633,11 @@ class _jacketProNotiState extends State<jacketProNoti> {
           child: Center(
             child: Column(
               mainAxisSize: MainAxisSize.min,
-              children: <Widget>[_checkJacket(), showLogo()],
+              children: <Widget>[
+                _checkJacket(),
+                showLogo(),
+                
+              ],
             ),
           ),
         ),

@@ -28,20 +28,14 @@ class _AddDeviceState extends State<AddDevice> {
   String? password02;
 
   String? nameString;
-  var jackId;
-var jackName;
+  var jackName;
   var jackName02;
-  var checkJackName;
+
   @override
   void initState() {
     super.initState();
-    _database.child('Jacket01').onValue.listen((event) {
-      final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final sendJackID = data['sendJackID'];
-      setState(() {
-        jackId = sendJackID;
-      });
-    });
+    Password();
+    buildUserName();
   }
 
   Widget box() {
@@ -59,7 +53,7 @@ var jackName;
   }
 
   Widget buildUserName() {
-     var firebaseUser = FirebaseAuth.instance.currentUser;
+    var firebaseUser = FirebaseAuth.instance.currentUser;
     FirebaseFirestore.instance
         .collection("test")
         .doc(firebaseUser!.uid)
@@ -68,12 +62,10 @@ var jackName;
       setState(() {
         jackName = value.data()!['JacketName'][0];
         jackName02 = value.data()!['JacketName'][1];
-        checkJackName = value.data()!['JacketName'];
       });
     });
     print("jacketName = $jackName");
     print("jacketName02 =$jackName02");
-    print("chckJacketName =$checkJackName");
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
       child: Padding(
@@ -102,9 +94,7 @@ var jackName;
                 }
                 if (value == jackName || value == jackName02) {
                   return "คุณเพิ่มอุปกรณ์นี้ไปแล้ว";
-                }
-                
-                 else {
+                } else {
                   return null;
                 }
               },
@@ -118,11 +108,13 @@ var jackName;
     );
   }
 
-  Widget Password() {
+  Password() {
     _database.child(_device.text).onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final pass = data['pass'] as String;
+
       password = pass;
+
       print(password);
     });
     return Card(
@@ -149,6 +141,7 @@ var jackName;
                   if (value == null || value.trim().length == 0) {
                     return "กรุณาระบุข้อมูล";
                   }
+
                   if (value != password) {
                     return "รหัสผ่านผิด กรุณากรอกใหม่";
                   } else
@@ -164,14 +157,11 @@ var jackName;
   }
 
   Widget addButton() {
-   
     return SizedBox(
       width: 200,
       height: 50,
       child: ElevatedButton(
         onPressed: () {
-          print('####you click addDevice###');
-          
           if (_formKey.currentState!.validate()) {
             _formKey.currentState?.save();
             print(nameString);
@@ -226,7 +216,6 @@ var jackName;
                   );
                 });
           }
-          
         },
         child: Text(
           "เพิ่มอุปกรณ์",

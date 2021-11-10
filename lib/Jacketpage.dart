@@ -8,6 +8,7 @@ import 'package:jackket/API/notification_api.dart';
 import 'package:jackket/AddDevice.dart';
 import 'package:jackket/ChangeProJacket.dart';
 import 'package:jackket/JacketProfile.dart';
+import 'package:jackket/JacketProfileNoti.dart';
 import 'package:jackket/LocalNotifyManager.dart';
 import 'package:jackket/user/showListofUsers.dart';
 import 'package:page_transition/page_transition.dart';
@@ -28,38 +29,13 @@ class _JacketPageState extends State<JacketPage> {
   var jackName;
   var jackName02;
   var getPic02;
-  var checkJackName;
 
   var noti;
   var date;
 
   var noti02;
   var date02;
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   // _checkJacket();
-  //   _database.child('Jacket01').onValue.listen((event) {
-  //     final data = new Map<String, dynamic>.from(event.snapshot.value);
-  //     final user = data['user'] as String;
-  //     final profileImage = data['imageProfile'];
 
-  //     _displayName = user;
-  //     getPic = profileImage;
-  //   });
-  //   var firebaseUser = FirebaseAuth.instance.currentUser;
-  //   FirebaseFirestore.instance
-  //       .collection("test")
-  //       .doc(firebaseUser!.uid)
-  //       .get()
-  //       .then((value) {
-  //     jackName = value.data()!['JacketName'];
-  //   });
-  //   // setState(() {
-  //   //   print("jackName = $jackName");
-  //   // });
-
-  // }
   @override
   void initState() {
     super.initState();
@@ -77,14 +53,12 @@ class _JacketPageState extends State<JacketPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      setState(() {
-        jackName = value.data()!['JacketName'][0];
+     setState(() {
+       jackName = value.data()!['JacketName'][0];
         jackName02 = value.data()!['JacketName'][1];
-        checkJackName = value.data()!['JacketName'];
-      });
+     });
       print("jacketName = $jackName");
       print("jacketName02 =$jackName02");
-      print("chckJacketName =$checkJackName");
     });
     _database.child("Jacket01").onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
@@ -929,8 +903,9 @@ class _JacketPageState extends State<JacketPage> {
         ),
       );
     }
-    if (checkJackName == null || checkJackName == "") {
-      return Padding(
+
+    if (jackName == null && jackName02 == null) {
+      Padding(
         padding: const EdgeInsets.only(top: 100),
         child: Column(
           children: [
@@ -978,55 +953,7 @@ class _JacketPageState extends State<JacketPage> {
           ],
         ),
       );
-    } else
-      return Padding(
-        padding: const EdgeInsets.only(top: 100),
-        child: Column(
-          children: [
-            SizedBox(
-              child: Text(
-                'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  color: Colors.white,
-                  fontFamily: "Jasmine",
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 50),
-              child: SizedBox(
-                width: 150,
-                height: 50,
-                child: ElevatedButton(
-                  child: Text(
-                    "เพิ่มอุปกรณ์",
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE5EFC1),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30))),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: AddDevice()),
-                    );
-                  },
-                ),
-              ),
-            )
-          ],
-        ),
-      );
+    }
   }
 
   Widget showLogo() {
@@ -1100,6 +1027,7 @@ class _JacketPageState extends State<JacketPage> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
+           
           automaticallyImplyLeading: false,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(

@@ -99,7 +99,6 @@ class _HomemapPageState extends State<HomemapPage> {
       });
     });
     // localNotifyManager.showNotification();
-
     // Timer.run(() => _database.child('Jacket01/notinow').remove());
   }
 
@@ -196,15 +195,13 @@ class _HomemapPageState extends State<HomemapPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      setState(() {
+     
         jackName = value.data()!['JacketName'][0];
         jackName02 = value.data()!['JacketName'][1];
-        checkJackName = value.data()!['JacketName'];
-      });
+    
     });
     print("jacketName = $jackName");
     print("jacketName02 =$jackName02");
-    print("chckJacketName =$checkJackName");
 
     _database.child("Jacket01").onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
@@ -737,19 +734,7 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
 
-    if (checkJackName == null || checkJackName == "") {
-      return Padding(
-        padding: const EdgeInsets.only(top: 20, left: 90),
-        child: Text(
-          'ไม่พบอุปกรณ์ที่เชื่อมต่อ',
-          style: TextStyle(
-            fontSize: 30.0,
-            color: Colors.white,
-            fontFamily: "Jasmine",
-          ),
-        ),
-      );
-    }
+   
     if (jackName == null || jackName02 == null) {
       return Padding(
         padding: const EdgeInsets.only(top: 20, left: 90),
@@ -864,23 +849,7 @@ class _HomemapPageState extends State<HomemapPage> {
         preferredSize: Size.fromHeight(70),
         child: AppBar(
           automaticallyImplyLeading: false,
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 20, top: 10),
-              child: IconButton(
-                icon: Icon(Icons.notifications,
-                    size: 40, color: Color(0xffE5EFC1)),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageTransition(
-                        type: PageTransitionType.topToBottom,
-                        child: jacketProNoti()),
-                  );
-                },
-              ),
-            )
-          ],
+          
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25),
