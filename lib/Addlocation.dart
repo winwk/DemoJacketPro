@@ -23,7 +23,7 @@ class _AddLocationPageState extends State<AddLocationPage> {
   var savelat;
 
   var savelng;
-    var jackId;
+  var jackId;
 
   String? titleString;
   void locatePosition() async {
@@ -50,7 +50,6 @@ class _AddLocationPageState extends State<AddLocationPage> {
       });
     });
   }
-
 
   List<Marker> myMarker = [];
   Widget place() {
@@ -261,54 +260,46 @@ class _AddLocationPageState extends State<AddLocationPage> {
             ]),
           ),
         ),
-        body: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                  child: Column(
-                children: [
-                  place(),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 450,
-                      //width: 300,
-                      child: Expanded(
-                        child: GoogleMap(
-                          mapType: MapType.normal,
-                          myLocationEnabled: true,
-                          myLocationButtonEnabled: true,
-                          initialCameraPosition: CameraPosition(
-                              target: LatLng(14.0424397, 100.7387475), zoom: 5),
-                          zoomControlsEnabled: true,
-                          onMapCreated: (GoogleMapController controller) {
-                            _controllerGoogleMap.complete(controller);
-                            newGoogleMapController = controller;
+        body: Form(
+          key: _formKey,
+          child: Stack(children: <Widget>[
+            Column(
+              children: [
+                place(),
+                Expanded(
+                  child: GoogleMap(
+                    mapType: MapType.normal,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    initialCameraPosition: CameraPosition(
+                        target: LatLng(14.0424397, 100.7387475), zoom: 5),
+                    zoomControlsEnabled: true,
+                    onMapCreated: (GoogleMapController controller) {
+                      _controllerGoogleMap.complete(controller);
+                      newGoogleMapController = controller;
 
-                            locatePosition();
-                          },
-                          onTap: (LatLng taplatlng) {
-                            //print(taplatlng);
-                            setState(() {
-                              savelat = taplatlng.latitude;
-                              savelng = taplatlng.longitude;
-                              myMarker = [];
-                              myMarker.add(Marker(
-                                markerId: MarkerId(taplatlng.toString()),
-                                position: taplatlng,
-                              ));
-                            });
-                            print('lat: $savelat');
-                            print('lng: $savelng');
-                          },
-                          markers: Set.from(myMarker),
-                        ),
-                      ),
-                    ),
+                      locatePosition();
+                    },
+                    onTap: (LatLng taplatlng) {
+                      //print(taplatlng);
+                      setState(() {
+                        savelat = taplatlng.latitude;
+                        savelng = taplatlng.longitude;
+                        myMarker = [];
+                        myMarker.add(Marker(
+                          markerId: MarkerId(taplatlng.toString()),
+                          position: taplatlng,
+                        ));
+                      });
+                      print('lat: $savelat');
+                      print('lng: $savelng');
+                    },
+                    markers: Set.from(myMarker),
                   ),
-                ],
-              )),
-            )));
+                ),
+              ],
+            )
+          ]),
+        ));
   }
 }
