@@ -112,8 +112,9 @@ class _AddDeviceState extends State<AddDevice> {
     _database.child(_device.text).onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
       final pass = data['pass'] as String;
-
-      password = pass;
+      setState(() {
+        password = pass;
+      });
 
       print(password);
     });
@@ -163,25 +164,13 @@ class _AddDeviceState extends State<AddDevice> {
       child: ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            _formKey.currentState?.save();
-            print(nameString);
-            updateProfile(context);
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20))),
-                    title: Text(
-                      'เพิ่มอุปกรณ์เสร็จสิ้น',
-                      style: TextStyle(
-                        fontFamily: "Jasmine",
-                        color: Color(0xFF707070),
-                        fontSize: 27.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+                    title: Password(),
                     actions: <Widget>[
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -203,11 +192,120 @@ class _AddDeviceState extends State<AddDevice> {
                                       BorderRadius.all(Radius.circular(20))),
                             ),
                             onPressed: () {
-                              _formKey.currentState?.reset();
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                      builder: (context) => home1()),
-                                  (Route<dynamic> route) => false);
+                              if (_password.text != password) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        title: Text(
+                                          'รหัสผ่านไม่ถูกต้อง',
+                                          style: TextStyle(
+                                            fontFamily: "Jasmine",
+                                            color: Color(0xFF707070),
+                                            fontSize: 30.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        actions: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              ElevatedButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: TextStyle(
+                                                    fontFamily: "Jasmine",
+                                                    color: Color(0xFF707070),
+                                                    fontSize: 22.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFE5EFC1),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    });
+                              } else {
+                                _formKey.currentState?.save();
+                                print(nameString);
+                                updateProfile(context);
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20))),
+                                        title: Text(
+                                          'เพิ่มอุปกรณ์เสร็จสิ้น',
+                                          style: TextStyle(
+                                            fontFamily: "Jasmine",
+                                            color: Color(0xFF707070),
+                                            fontSize: 27.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        actions: <Widget>[
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              ElevatedButton(
+                                                child: Text(
+                                                  "ตกลง",
+                                                  style: TextStyle(
+                                                    fontFamily: "Jasmine",
+                                                    color: Color(0xFF707070),
+                                                    fontSize: 22.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                style: ElevatedButton.styleFrom(
+                                                  primary: Color(0xFFE5EFC1),
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20))),
+                                                ),
+                                                onPressed: () {
+                                                  _formKey.currentState
+                                                      ?.reset();
+                                                  Navigator.of(context)
+                                                      .pushAndRemoveUntil(
+                                                          MaterialPageRoute(
+                                                              builder:
+                                                                  (context) =>
+                                                                      home1()),
+                                                          (Route<dynamic>
+                                                                  route) =>
+                                                              false);
+                                                },
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    });
+                              }
                             },
                           ),
                         ],
@@ -282,7 +380,7 @@ class _AddDeviceState extends State<AddDevice> {
                 SizedBox(
                   height: 50,
                 ),
-                Password(),
+                //Password(),
                 SizedBox(
                   height: 50,
                 ),

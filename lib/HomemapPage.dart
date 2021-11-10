@@ -61,9 +61,6 @@ class _HomemapPageState extends State<HomemapPage> {
         .animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
-  static final CameraPosition _jacket =
-      CameraPosition(target: LatLng(678, 678), zoom: 10);
-
   String _displayName = '';
   String _displayName02 = '';
   List? date;
@@ -76,8 +73,8 @@ class _HomemapPageState extends State<HomemapPage> {
   var jackUser;
   var dislat;
   var dislng;
-  var dislat02;
-  var dislng02;
+  var dislat02 = 1.1;
+  var dislng02 = 1.1;
 
   var noti;
   var date01;
@@ -195,10 +192,8 @@ class _HomemapPageState extends State<HomemapPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-     
-        jackName = value.data()!['JacketName'][0];
-        jackName02 = value.data()!['JacketName'][1];
-    
+      jackName = value.data()!['JacketName'][0];
+      jackName02 = value.data()!['JacketName'][1];
     });
     print("jacketName = $jackName");
     print("jacketName02 =$jackName02");
@@ -734,7 +729,6 @@ class _HomemapPageState extends State<HomemapPage> {
       );
     }
 
-   
     if (jackName == null || jackName02 == null) {
       return Padding(
         padding: const EdgeInsets.only(top: 20, left: 90),
@@ -849,7 +843,6 @@ class _HomemapPageState extends State<HomemapPage> {
         preferredSize: Size.fromHeight(70),
         child: AppBar(
           automaticallyImplyLeading: false,
-          
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25),
@@ -892,26 +885,25 @@ class _HomemapPageState extends State<HomemapPage> {
                         jackName != 'Jacket01'
                             ? Marker(
                                 //icon: _markerIcon,
-                                markerId: MarkerId("1"),
+                                markerId: MarkerId("0"),
                                 position: LatLng(-85.961937, -89.259939),
                                 infoWindow: InfoWindow(title: "no"))
-                            : jackName02 != 'Jacket02'
-                                ? Marker(
-                                    //icon: _markerIcon,
-                                    markerId: MarkerId("1"),
-                                    position: LatLng(dislat, dislng),
-                                    infoWindow: InfoWindow(title: _displayName))
-                                : Marker(
-                                    //icon: _markerIcon,
-                                    markerId: MarkerId("1"),
-                                    position: LatLng(dislat, dislng),
-                                    infoWindow:
-                                        InfoWindow(title: _displayName)),
-                        Marker(
-                            //icon: _markerIcon,
-                            markerId: MarkerId("2"),
-                            position: LatLng(dislat02, dislng02),
-                            infoWindow: InfoWindow(title: _displayName02))
+                            : Marker(
+                                //icon: _markerIcon,
+                                markerId: MarkerId("1"),
+                                position: LatLng(dislat, dislng),
+                                infoWindow: InfoWindow(title: _displayName)),
+                        jackName02 != 'Jacket02'
+                            ? Marker(
+                                //icon: _markerIcon,
+                                markerId: MarkerId("0"),
+                                position: LatLng(-85.961937, -89.259939),
+                                infoWindow: InfoWindow(title: "no"))
+                            : Marker(
+                                //icon: _markerIcon,
+                                markerId: MarkerId("2"),
+                                position: LatLng(dislat02, dislng02),
+                                infoWindow: InfoWindow(title: _displayName02)),
                       }),
                 ),
               )

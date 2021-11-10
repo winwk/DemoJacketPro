@@ -53,10 +53,10 @@ class _JacketPageState extends State<JacketPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-     setState(() {
-       jackName = value.data()!['JacketName'][0];
+      setState(() {
+        jackName = value.data()!['JacketName'][0];
         jackName02 = value.data()!['JacketName'][1];
-     });
+      });
       print("jacketName = $jackName");
       print("jacketName02 =$jackName02");
     });
@@ -905,7 +905,7 @@ class _JacketPageState extends State<JacketPage> {
     }
 
     if (jackName == null && jackName02 == null) {
-      Padding(
+      return Padding(
         padding: const EdgeInsets.only(top: 100),
         child: Column(
           children: [
@@ -1027,7 +1027,6 @@ class _JacketPageState extends State<JacketPage> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
-           
           automaticallyImplyLeading: false,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
