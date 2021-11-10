@@ -949,7 +949,8 @@ class _JacketPageState extends State<JacketPage> {
                   },
                 ),
               ),
-            )
+            ),
+            showLogo()
           ],
         ),
       );
@@ -1055,10 +1056,6 @@ class _JacketPageState extends State<JacketPage> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 _checkJacket(),
-                sixedbox(),
-                showLogo(),
-                sixedbox(),
-                sixedbox(),
               ],
             ),
           ),

@@ -282,10 +282,7 @@ class _ManualState extends State<Manual> {
                   ),
                   onPressed: () {
                     if (_currentPage == _numPages - 1) {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (context) => home()),
-                      );
+                      Navigator.pop(context);
                     }
                   },
                   color: Color(0xFFE5EFC1),

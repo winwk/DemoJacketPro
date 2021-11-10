@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jackket/home1.dart';
 import 'package:jackket/login.dart';
+import 'package:jackket/manual.dart';
 import 'register.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -64,7 +65,7 @@ class _homeState extends State<home> {
       children: [
         showButton1(),
         SizedBox(
-          height: 50.0,
+          height: 20.0,
         ),
         showButton2()
       ],
@@ -95,6 +96,36 @@ class _homeState extends State<home> {
             context,
             PageTransition(
                 type: PageTransitionType.rightToLeft, child: signin_Screen()),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget showmanual() {
+    return SizedBox(
+      width: 100,
+      height: 30,
+      child: ElevatedButton(
+        child: Text(
+          "วิธีใช้งาน",
+          style: TextStyle(
+            fontFamily: "Jasmine",
+            color: Color(0xFF707070),
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          primary: Colors.green[50],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop, child: Manual()),
           );
         },
       ),
@@ -143,7 +174,11 @@ class _homeState extends State<home> {
                 showTextLogo(),
                 showTextLogo2(),
                 showPic(),
-                showButton()
+                showButton(),
+                SizedBox(
+                  height: 10,
+                ),
+                showmanual()
               ],
             ),
           )),

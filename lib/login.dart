@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:jackket/changepassword.dart';
 import 'package:jackket/home1.dart';
+import 'package:page_transition/page_transition.dart';
 
 class signin_Screen extends StatefulWidget {
   static String route = "sign_SC";
@@ -66,6 +68,36 @@ class _signin_ScreenState extends State<signin_Screen> {
                 })
           ],
         ),
+      ),
+    );
+  }
+
+  Widget repass() {
+    return SizedBox(
+      width: 120,
+      height: 30,
+      child: ElevatedButton(
+        child: Text(
+          "ลืมรหัสผ่าน",
+          style: TextStyle(
+            fontFamily: "Jasmine",
+            color: Color(0xFF707070),
+            fontSize: 25.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          primary: Colors.green[50],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(30))),
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            PageTransition(
+                type: PageTransitionType.bottomToTop, child: Changepass()),
+          );
+        },
       ),
     );
   }
@@ -273,7 +305,11 @@ class _signin_ScreenState extends State<signin_Screen> {
                           SizedBox(
                             height: 20.0,
                           ),
-                          loginButton2()
+                          loginButton2(),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          repass()
                         ],
                       ),
                     ),
