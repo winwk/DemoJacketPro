@@ -603,7 +603,7 @@ class _jacketProNotiState extends State<jacketProNoti> {
 
   @override
   Widget build(BuildContext context) {
-     return new Scaffold(
+    return new Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70),
         child: AppBar(
@@ -636,7 +636,6 @@ class _jacketProNotiState extends State<jacketProNoti> {
               children: <Widget>[
                 _checkJacket(),
                 showLogo(),
-                
               ],
             ),
           ),

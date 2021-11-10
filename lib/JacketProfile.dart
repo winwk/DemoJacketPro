@@ -40,20 +40,20 @@ class _JacketProState extends State<JacketPro> {
       setState(() {
         jackId = sendJackID;
       });
+      _database.child('$jackId').onValue.listen((event) {
+        final data = new Map<String, dynamic>.from(event.snapshot.value);
+        final profileImage = data['imageProfile'];
+        //print(profileImage);
+        final user = data['user'] as String;
+        setState(() {
+          JackUser = user;
+          getPic = profileImage;
+        });
+      });
     });
   }
 
   Widget getProfileJack() {
-    _database.child('$jackId').onValue.listen((event) {
-      final data = new Map<String, dynamic>.from(event.snapshot.value);
-      final profileImage = data['imageProfile'];
-      //print(profileImage);
-      final user = data['user'] as String;
-      setState(() {
-        JackUser = user;
-        getPic = profileImage;
-      });
-    });
     return SizedBox(
       width: 355,
       height: 200,
@@ -300,7 +300,7 @@ class _JacketProState extends State<JacketPro> {
     );
   }
 
-   Widget notiButton() {
+  Widget notiButton() {
     return SizedBox(
       width: 350,
       height: 60,
@@ -308,8 +308,7 @@ class _JacketProState extends State<JacketPro> {
         onPressed: () {
           Navigator.push(
             context,
-            PageTransition(
-                type: PageTransitionType.rightToLeft, child: noti()),
+            PageTransition(type: PageTransitionType.rightToLeft, child: noti()),
           );
         },
         child: Row(
@@ -334,7 +333,6 @@ class _JacketProState extends State<JacketPro> {
       ),
     );
   }
-
 
   Widget LogoutButton() {
     return SizedBox(
@@ -449,6 +447,22 @@ class _JacketProState extends State<JacketPro> {
           preferredSize: Size.fromHeight(70),
           child: AppBar(
             automaticallyImplyLeading: true,
+            actions: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right: 20, top: 8),
+                child: IconButton(
+                  icon: Icon(Icons.notifications,
+                      size: 40, color: Color(0xffE5EFC1)),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.topToBottom, child: noti()),
+                    );
+                  },
+                ),
+              )
+            ],
             leading: Padding(
               padding: const EdgeInsets.only(left: 15, top: 12),
               child: GestureDetector(
@@ -500,10 +514,6 @@ class _JacketProState extends State<JacketPro> {
                     height: 15.0,
                   ),
                   EditToolButton(),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  notiButton(),
                   SizedBox(
                     height: 15.0,
                   ),
