@@ -36,6 +36,8 @@ class _JacketPageState extends State<JacketPage> {
   var noti02;
   var date02;
 
+  var statusNoti;
+
   @override
   void initState() {
     super.initState();
@@ -56,9 +58,11 @@ class _JacketPageState extends State<JacketPage> {
       setState(() {
         jackName = value.data()!['JacketName'][0];
         jackName02 = value.data()!['JacketName'][1];
+        statusNoti = value.data()!['statusNoti'];
       });
       print("jacketName = $jackName");
       print("jacketName02 =$jackName02");
+      print("statusnoti =$statusNoti");
     });
     _database.child("Jacket01").onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
@@ -83,6 +87,10 @@ class _JacketPageState extends State<JacketPage> {
           noti = values['title'];
           date = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket01/notinow').remove());
+          }
           if (noti == null || noti == "") {
             return null;
           } else {
@@ -100,6 +108,10 @@ class _JacketPageState extends State<JacketPage> {
           noti02 = values['title'];
           date02 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket02/notinow').remove());
+          }
           if (noti02 == null || noti02 == "") {
             return null;
           } else {
@@ -270,6 +282,10 @@ class _JacketPageState extends State<JacketPage> {
           noti = values['title'];
           date = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket01/notinow').remove());
+          }
           if (noti == null || noti == "") {
             return null;
           } else {
@@ -287,6 +303,10 @@ class _JacketPageState extends State<JacketPage> {
           noti02 = values['title'];
           date02 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket02/notinow').remove());
+          }
           if (noti02 == null || noti02 == "") {
             return null;
           } else {
@@ -458,6 +478,10 @@ class _JacketPageState extends State<JacketPage> {
           noti = values['title'];
           date = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket01/notinow').remove());
+          }
           if (noti == null || noti == "") {
             return null;
           } else {
@@ -571,6 +595,10 @@ class _JacketPageState extends State<JacketPage> {
           noti02 = values['title'];
           date02 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket02/notinow').remove());
+          }
           if (noti02 == null || noti02 == "") {
             return null;
           } else {
@@ -684,6 +712,10 @@ class _JacketPageState extends State<JacketPage> {
           noti = values['title'];
           date = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket01/notinow').remove());
+          }
           if (noti == null || noti == "") {
             return null;
           } else {
@@ -797,6 +829,10 @@ class _JacketPageState extends State<JacketPage> {
           noti02 = values['title'];
           date02 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket02/notinow').remove());
+          }
           if (noti02 == null || noti02 == "") {
             return null;
           } else {

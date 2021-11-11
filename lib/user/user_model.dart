@@ -5,6 +5,7 @@ class UserModel {
   String email;
   String name;
   String profileImage;
+  bool statusNoti;
   List JacketName;
 
   UserModel({
@@ -12,7 +13,9 @@ class UserModel {
     required this.email,
     required this.name,
     required this.profileImage,
+    required this.statusNoti,
     required this.JacketName,
+    
 
   });
 
@@ -23,9 +26,12 @@ class UserModel {
       email: map['email'],
       name: map['name'],
       profileImage: map['profileImage'],
+      statusNoti: map['statusNoti'],
       JacketName: map['JacketName']
     );
   }
+
+
   // sending data to server
   Map<String, dynamic> toMap() {
     return {
@@ -33,6 +39,7 @@ class UserModel {
       'email': email,
       'name': name,
       'profileImage': profileImage,
+      'statusNoti': statusNoti,
       'JacketName': JacketName
     };
   }

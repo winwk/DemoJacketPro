@@ -81,6 +81,8 @@ class _HomemapPageState extends State<HomemapPage> {
 
   var noti02;
   var date02;
+
+  var statusNoti;
   @override
   void initState() {
     super.initState();
@@ -229,6 +231,10 @@ class _HomemapPageState extends State<HomemapPage> {
           noti = values['title'];
           date01 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket01/notinow').remove());
+          }
           if (noti == null || noti == "") {
             return null;
           } else {
@@ -246,6 +252,10 @@ class _HomemapPageState extends State<HomemapPage> {
           noti02 = values['title'];
           date02 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket02/notinow').remove());
+          }
           if (noti02 == null || noti02 == "") {
             return null;
           } else {
@@ -349,6 +359,10 @@ class _HomemapPageState extends State<HomemapPage> {
           noti = values['title'];
           date01 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket01/notinow').remove());
+          }
           if (noti == null || noti == "") {
             return null;
           } else {
@@ -366,6 +380,10 @@ class _HomemapPageState extends State<HomemapPage> {
           noti02 = values['title'];
           date02 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket02/notinow').remove());
+          }
           if (noti02 == null || noti02 == "") {
             return null;
           } else {
@@ -471,6 +489,10 @@ class _HomemapPageState extends State<HomemapPage> {
           noti = values['title'];
           date01 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket01/notinow').remove());
+          }
           if (noti == null || noti == "") {
             return null;
           } else {
@@ -537,6 +559,10 @@ class _HomemapPageState extends State<HomemapPage> {
           noti02 = values['title'];
           date02 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket02/notinow').remove());
+          }
           if (noti02 == null || noti02 == "") {
             return null;
           } else {
@@ -603,6 +629,10 @@ class _HomemapPageState extends State<HomemapPage> {
           noti = values['title'];
           date01 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket01/notinow').remove());
+          }
           if (noti == null || noti == "") {
             return null;
           } else {
@@ -669,6 +699,10 @@ class _HomemapPageState extends State<HomemapPage> {
           noti02 = values['title'];
           date02 = values['datetime'];
           print("noti = $noti");
+          if (statusNoti == false) {
+            return Timer.run(
+                () => _database.child('Jacket02/notinow').remove());
+          }
           if (noti02 == null || noti02 == "") {
             return null;
           } else {

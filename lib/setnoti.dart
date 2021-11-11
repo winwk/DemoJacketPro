@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
@@ -7,6 +9,28 @@ class setnotiPage extends StatefulWidget {
 
 class _setnotiPageState extends State<setnotiPage> {
   bool isSwitched = false;
+
+  
+
+  @override
+  void initState() {
+    super.initState();
+ checknotiset();
+
+  }
+  void checknotiset() {
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        isSwitched = value.data()!["statusNoti"];
+      });
+    });
+  }
+
   Widget box() {
     return SizedBox(
       height: 20,
@@ -87,6 +111,10 @@ class _setnotiPageState extends State<setnotiPage> {
                               isSwitched = value;
                               print(isSwitched);
                             });
+                            FirebaseFirestore.instance
+                                .collection("test")
+                                .doc(FirebaseAuth.instance.currentUser!.uid)
+                                .update({"statusNoti": isSwitched});
                           },
                           activeTrackColor: Colors.lightGreenAccent,
                           activeColor: Colors.green,

@@ -459,11 +459,11 @@ class _Register_ScreenState extends State<Register_Screen> {
     User? user = FirebaseAuth.instance.currentUser;
 
     UserModel userModel =
-        UserModel(email: '', name: '', profileImage: '', uid: '',JacketName: []);
+        UserModel(email: '', name: '', profileImage: '', uid: '',statusNoti: true,JacketName: []);
     userModel.uid = user!.uid;
     // narimetisaigopi@gmail.com
     userModel.email = user.email!;
-    userModel.name = user.email!.split("@")[0];
+    userModel.name = user.displayName!;
     
     await firebaseFirestore
         .collection("test")
