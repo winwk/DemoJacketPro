@@ -7,7 +7,7 @@
 <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 <uses-permission android:name="android.permission.VIBRATE" />
    <application
-        android:label="jackket"
+        android:label="Jacket"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:showWhenLocked="true"
