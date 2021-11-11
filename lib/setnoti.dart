@@ -6,8 +6,7 @@ class setnotiPage extends StatefulWidget {
 }
 
 class _setnotiPageState extends State<setnotiPage> {
-    String? Token;
-
+  bool isSwitched = false;
   Widget box() {
     return SizedBox(
       height: 20,
@@ -50,25 +49,56 @@ class _setnotiPageState extends State<setnotiPage> {
                     fontSize: 50.0,
                     fontWeight: FontWeight.bold),
               ),
-             
             ]),
           ),
         ),
-        body: Column(
-          children: [
-             ElevatedButton(
-              onPressed: () async {
-                String? token = await FirebaseMessaging.instance.getToken();
-                
-                Token = token;
-                print(Token);
-              },
-              child: Text('getToken'),
+        body: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: 350,
+                  height: 80,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(24)),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 20,
+                        ),
+                        Text("การแจ้งเตือน",
+                            style: TextStyle(
+                              fontFamily: "Jasmine",
+                              color: Color(0xFF707070),
+                              fontSize: 35.0,
+                            )),
+                        SizedBox(
+                          width: 110,
+                        ),
+                        Switch(
+                          value: isSwitched,
+                          onChanged: (value) {
+                            setState(() {
+                              isSwitched = value;
+                              print(isSwitched);
+                            });
+                          },
+                          activeTrackColor: Colors.lightGreenAccent,
+                          activeColor: Colors.green,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-
-            Text(Token!)
-          ],
-        )
+          ),
+        ),
       ),
     );
   }
