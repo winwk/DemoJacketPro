@@ -42,8 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     findDisplayName();
     checkPic();
-    localNotifyManager.showNotification();
-    Timer.run(() => _database.child('Jacket01/notinow').remove());
+    
   }
 
   void checkPic() {

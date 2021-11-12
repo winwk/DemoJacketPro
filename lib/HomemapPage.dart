@@ -86,6 +86,16 @@ class _HomemapPageState extends State<HomemapPage> {
   @override
   void initState() {
     super.initState();
+    var firebaseUser = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection("test")
+        .doc(firebaseUser!.uid)
+        .get()
+        .then((value) {
+      jackName = value.data()!['JacketName'][0];
+      jackName02 = value.data()!['JacketName'][1];
+      statusNoti = value.data()!['statusNoti'];
+    });
     Profile();
     _checkJacket();
     Timer.run(() => _database.child('Jacket01/').update({'status': 'off'}));
@@ -194,11 +204,15 @@ class _HomemapPageState extends State<HomemapPage> {
         .doc(firebaseUser!.uid)
         .get()
         .then((value) {
-      jackName = value.data()!['JacketName'][0];
-      jackName02 = value.data()!['JacketName'][1];
+      setState(() {
+        jackName = value.data()!['JacketName'][0];
+        jackName02 = value.data()!['JacketName'][1];
+        statusNoti = value.data()!['statusNoti'];
+      });
     });
     print("jacketName = $jackName");
     print("jacketName02 =$jackName02");
+    print("statusNoti =$statusNoti");
 
     _database.child("Jacket01").onValue.listen((event) {
       final data = new Map<String, dynamic>.from(event.snapshot.value);
@@ -225,542 +239,937 @@ class _HomemapPageState extends State<HomemapPage> {
     });
 
     if (jackName == "Jacket01" && jackName02 == "Jacket02") {
-      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach((key, values) async {
-          noti = values['title'];
-          date01 = values['datetime'];
-          print("noti = $noti");
-          if (statusNoti == false) {
-            return Timer.run(
-                () => _database.child('Jacket01/notinow').remove());
-          }
-          if (noti == null || noti == "") {
-            return null;
-          } else {
-            await NotificationApi.showNotification(
-                title: '$noti  จาก $_displayName',
-                body: '$date01',
-                payload: 'NEW payload Jacket01 ');
-            Timer.run(() => _database.child('Jacket01/notinow').remove());
-          }
-        });
-      });
-      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach((key, values) async {
-          noti02 = values['title'];
-          date02 = values['datetime'];
-          print("noti = $noti");
-          if (statusNoti == false) {
-            return Timer.run(
-                () => _database.child('Jacket02/notinow').remove());
-          }
-          if (noti02 == null || noti02 == "") {
-            return null;
-          } else {
-            await NotificationApi.showNotification(
-                title: '$noti02   จาก $_displayName02  ',
-                body: '$date02',
-                payload: 'NEW payload Jacket02 ');
-            Timer.run(() => _database.child('Jacket02/notinow').remove());
-          }
-        });
-      });
-      return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-        child: Column(
-          children: [
-            ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getPic == null
-                      ? CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: AssetImage("assets/person.png"),
-                          backgroundColor: Colors.white,
-                        )
-                      : CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(getPic),
-                          backgroundColor: Colors.white,
-                        ),
-                  Text(
-                    _displayName,
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+      if (statusNoti == false) {
+        Timer.run(() => _database.child('Jacket01/notinow').remove());
+        Timer.run(() => _database.child('Jacket02/notinow').remove());
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  status(),
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE5EFC1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
-              ),
-              onPressed: _gotojacket,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getPic02 == null
-                      ? CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: AssetImage("assets/person.png"),
-                          backgroundColor: Colors.white,
-                        )
-                      : CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(getPic02),
-                          backgroundColor: Colors.white,
-                        ),
-                  Text(
-                    _displayName02,
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+                    SizedBox(
+                      width: 20,
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  status02(),
-                ],
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
               ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE5EFC1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
+              SizedBox(
+                height: 20,
               ),
-              onPressed: _gotojacket02,
-            ),
-          ],
-        ),
-      );
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status02(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket02,
+              ),
+            ],
+          ),
+        );
+      }
+    else{
+        _database
+            .child("Jacket01/notinow")
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
+          values.forEach((key, values) async {
+            noti = values['title'];
+            date01 = values['datetime'];
+            print("noti = $noti");
+            if (noti == null || noti == "") {
+              return null;
+            } else {
+              await NotificationApi.showNotification(
+                  title: '$noti  จาก $_displayName',
+                  body: '$date01',
+                  payload: 'NEW payload Jacket01 ');
+              Timer.run(() => _database.child('Jacket01/notinow').remove());
+            }
+          });
+        });
+        _database
+            .child("Jacket02/notinow")
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
+          values.forEach((key, values) async {
+            noti02 = values['title'];
+            date02 = values['datetime'];
+            print("noti = $noti");
+            if (statusNoti == false) {
+              return Timer.run(
+                  () => _database.child('Jacket02/notinow').remove());
+            }
+            if (noti02 == null || noti02 == "") {
+              return null;
+            } else {
+              await NotificationApi.showNotification(
+                  title: '$noti02   จาก $_displayName02  ',
+                  body: '$date02',
+                  payload: 'NEW payload Jacket02 ');
+              Timer.run(() => _database.child('Jacket02/notinow').remove());
+            }
+          });
+        });
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status02(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket02,
+              ),
+            ],
+          ),
+        );
+      }
     }
     if (jackName02 == "Jacket01" && jackName == "Jacket02") {
-      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach((key, values) async {
-          noti = values['title'];
-          date01 = values['datetime'];
-          print("noti = $noti");
-          if (statusNoti == false) {
-            return Timer.run(
-                () => _database.child('Jacket01/notinow').remove());
-          }
-          if (noti == null || noti == "") {
-            return null;
-          } else {
-            await NotificationApi.showNotification(
-                title: '$noti  จาก $_displayName',
-                body: '$date01',
-                payload: 'NEW payload Jacket01 ');
-            Timer.run(() => _database.child('Jacket01/notinow').remove());
-          }
+      if (statusNoti == false) {
+        Timer.run(() => _database.child('Jacket01/notinow').remove());
+        Timer.run(() => _database.child('Jacket02/notinow').remove());
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status02(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket02,
+              ),
+            ],
+          ),
+        );
+      }
+      else{
+        _database
+            .child("Jacket01/notinow")
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
+          values.forEach((key, values) async {
+            noti = values['title'];
+            date01 = values['datetime'];
+            print("noti = $noti");
+            if (noti == null || noti == "") {
+              return null;
+            } else {
+              await NotificationApi.showNotification(
+                  title: '$noti  จาก $_displayName',
+                  body: '$date01',
+                  payload: 'NEW payload Jacket01 ');
+              Timer.run(() => _database.child('Jacket01/notinow').remove());
+            }
+          });
         });
-      });
-      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach((key, values) async {
-          noti02 = values['title'];
-          date02 = values['datetime'];
-          print("noti = $noti");
-          if (statusNoti == false) {
-            return Timer.run(
-                () => _database.child('Jacket02/notinow').remove());
-          }
-          if (noti02 == null || noti02 == "") {
-            return null;
-          } else {
-            await NotificationApi.showNotification(
-                title: '$noti02   จาก $_displayName02 ',
-                body: '$date02',
-                payload: 'NEW payload Jacket02 ');
-            Timer.run(() => _database.child('Jacket02/notinow').remove());
-          }
+        _database
+            .child("Jacket02/notinow")
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
+          values.forEach((key, values) async {
+            noti02 = values['title'];
+            date02 = values['datetime'];
+            print("noti = $noti");
+            if (statusNoti == false) {
+              return Timer.run(
+                  () => _database.child('Jacket02/notinow').remove());
+            }
+            if (noti02 == null || noti02 == "") {
+              return null;
+            } else {
+              await NotificationApi.showNotification(
+                  title: '$noti02   จาก $_displayName02 ',
+                  body: '$date02',
+                  payload: 'NEW payload Jacket02 ');
+              Timer.run(() => _database.child('Jacket02/notinow').remove());
+            }
+          });
         });
-      });
 
-      return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Column(
-          children: [
-            ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getPic == null
-                      ? CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: AssetImage("assets/person.png"),
-                          backgroundColor: Colors.white,
-                        )
-                      : CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(getPic),
-                          backgroundColor: Colors.white,
-                        ),
-                  Text(
-                    _displayName,
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  status(),
-                ],
-              ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE5EFC1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
-              ),
-              onPressed: _gotojacket,
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getPic02 == null
-                      ? CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: AssetImage("assets/person.png"),
-                          backgroundColor: Colors.white,
-                        )
-                      : CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(getPic02),
-                          backgroundColor: Colors.white,
-                        ),
-                  Text(
-                    _displayName02,
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+                    SizedBox(
+                      width: 20,
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  status02(),
-                ],
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
               ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE5EFC1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
+              SizedBox(
+                height: 30,
               ),
-              onPressed: _gotojacket02,
-            ),
-          ],
-        ),
-      );
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status02(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket02,
+              ),
+            ],
+          ),
+        );
+      }
     }
 
     if (jackName == "Jacket01" && jackName02 == null) {
-      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach((key, values) async {
-          noti = values['title'];
-          date01 = values['datetime'];
-          print("noti = $noti");
-          if (statusNoti == false) {
-            return Timer.run(
-                () => _database.child('Jacket01/notinow').remove());
-          }
-          if (noti == null || noti == "") {
-            return null;
-          } else {
-            await NotificationApi.showNotification(
-                title: '$noti  จาก $_displayName',
-                body: '$date01',
-                payload: 'NEW payload Jacket01 ');
-            Timer.run(() => _database.child('Jacket01/notinow').remove());
-          }
-        });
-      });
-      return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Column(
-          children: [
-            ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getPic == null
-                      ? CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: AssetImage("assets/person.png"),
-                          backgroundColor: Colors.white,
-                        )
-                      : CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(getPic),
-                          backgroundColor: Colors.white,
-                        ),
-                  Text(
-                    _displayName,
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+      if (statusNoti == false) {
+        Timer.run(() => _database.child('Jacket01/notinow').remove());
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  status(),
-                ],
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
               ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE5EFC1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
+              SizedBox(
+                height: 30,
               ),
-              onPressed: _gotojacket,
-            ),
-            SizedBox(
-              height: 30,
-            ),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
+      }
+      else{
+        _database
+            .child("Jacket01/notinow")
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
+          values.forEach((key, values) async {
+            noti = values['title'];
+            date01 = values['datetime'];
+            print("noti = $noti");
+            if (statusNoti == false) {
+              return Timer.run(
+                  () => _database.child('Jacket01/notinow').remove());
+            }
+            if (noti == null || noti == "") {
+              return null;
+            } else {
+              await NotificationApi.showNotification(
+                  title: '$noti  จาก $_displayName',
+                  body: '$date01',
+                  payload: 'NEW payload Jacket01 ');
+              Timer.run(() => _database.child('Jacket01/notinow').remove());
+            }
+          });
+        });
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        );
+      }
     }
     if (jackName == "Jacket02" && jackName02 == null) {
-      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach((key, values) async {
-          noti02 = values['title'];
-          date02 = values['datetime'];
-          print("noti = $noti");
-          if (statusNoti == false) {
-            return Timer.run(
-                () => _database.child('Jacket02/notinow').remove());
-          }
-          if (noti02 == null || noti02 == "") {
-            return null;
-          } else {
-            await NotificationApi.showNotification(
-                title: '$noti02   จาก $_displayName02',
-                body: '$date02',
-                payload: 'NEW payload Jacket02 ');
-            Timer.run(() => _database.child('Jacket02/notinow').remove());
-          }
-        });
-      });
-      return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Column(
-          children: [
-            ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getPic02 == null
-                      ? CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: AssetImage("assets/person.png"),
-                          backgroundColor: Colors.white,
-                        )
-                      : CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(getPic02),
-                          backgroundColor: Colors.white,
-                        ),
-                  Text(
-                    _displayName02,
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+      if (statusNoti == false) {
+        Timer.run(() => _database.child('Jacket02/notinow').remove());
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  status02(),
-                ],
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status02(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket02,
               ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE5EFC1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
+              SizedBox(
+                height: 30,
               ),
-              onPressed: _gotojacket02,
-            ),
-            SizedBox(
-              height: 30,
-            ),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
+      }
+      else{
+        _database
+            .child("Jacket02/notinow")
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
+          values.forEach((key, values) async {
+            noti02 = values['title'];
+            date02 = values['datetime'];
+            print("noti = $noti");
+
+            if (noti02 == null || noti02 == "") {
+              return null;
+            } else {
+              await NotificationApi.showNotification(
+                  title: '$noti02   จาก $_displayName02',
+                  body: '$date02',
+                  payload: 'NEW payload Jacket02 ');
+              Timer.run(() => _database.child('Jacket02/notinow').remove());
+            }
+          });
+        });
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status02(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket02,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        );
+      }
     }
     if (jackName == null && jackName02 == "Jacket01") {
-      _database.child("Jacket01/notinow").once().then((DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach((key, values) async {
-          noti = values['title'];
-          date01 = values['datetime'];
-          print("noti = $noti");
-          if (statusNoti == false) {
-            return Timer.run(
-                () => _database.child('Jacket01/notinow').remove());
-          }
-          if (noti == null || noti == "") {
-            return null;
-          } else {
-            await NotificationApi.showNotification(
-                title: '$noti  จาก $_displayName',
-                body: '$date01',
-                payload: 'NEW payload Jacket01 ');
-            Timer.run(() => _database.child('Jacket01/notinow').remove());
-          }
-        });
-      });
-      return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Column(
-          children: [
-            ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getPic == null
-                      ? CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: AssetImage("assets/person.png"),
-                          backgroundColor: Colors.white,
-                        )
-                      : CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(getPic),
-                          backgroundColor: Colors.white,
-                        ),
-                  Text(
-                    _displayName,
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+      if (statusNoti == false) {
+        Timer.run(() => _database.child('Jacket01/notinow').remove());
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  status(),
-                ],
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
               ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE5EFC1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
+              SizedBox(
+                height: 30,
               ),
-              onPressed: _gotojacket,
-            ),
-            SizedBox(
-              height: 30,
-            ),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
+      }
+      else{
+        _database
+            .child("Jacket01/notinow")
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
+          values.forEach((key, values) async {
+            noti = values['title'];
+            date01 = values['datetime'];
+            print("noti = $noti");
+
+            if (noti == null || noti == "") {
+              return null;
+            } else {
+              await NotificationApi.showNotification(
+                  title: '$noti  จาก $_displayName',
+                  body: '$date01',
+                  payload: 'NEW payload Jacket01 ');
+              Timer.run(() => _database.child('Jacket01/notinow').remove());
+            }
+          });
+        });
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        );
+      }
     }
     if (jackName == null && jackName02 == "Jacket02") {
-      _database.child("Jacket02/notinow").once().then((DataSnapshot snapshot) {
-        Map<dynamic, dynamic> values = snapshot.value;
-        values.forEach((key, values) async {
-          noti02 = values['title'];
-          date02 = values['datetime'];
-          print("noti = $noti");
-          if (statusNoti == false) {
-            return Timer.run(
-                () => _database.child('Jacket02/notinow').remove());
-          }
-          if (noti02 == null || noti02 == "") {
-            return null;
-          } else {
-            await NotificationApi.showNotification(
-                title: '$noti02   จาก $_displayName02  ',
-                body: '$date02',
-                payload: 'NEW payload Jacket02 ');
-            Timer.run(() => _database.child('Jacket02/notinow').remove());
-          }
-        });
-      });
-      return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10),
-        child: Column(
-          children: [
-            ElevatedButton(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getPic02 == null
-                      ? CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: AssetImage("assets/person.png"),
-                          backgroundColor: Colors.white,
-                        )
-                      : CircleAvatar(
-                          radius: 30.0,
-                          backgroundImage: NetworkImage(getPic02),
-                          backgroundColor: Colors.white,
-                        ),
-                  Text(
-                    _displayName02,
-                    style: TextStyle(
-                      fontFamily: "Jasmine",
-                      color: Color(0xFF707070),
-                      fontSize: 40.0,
-                      fontWeight: FontWeight.bold,
+      if (statusNoti == false) {
+        Timer.run(() => _database.child('Jacket02/notinow').remove());
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  status02(),
-                ],
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status02(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket02,
               ),
-              style: ElevatedButton.styleFrom(
-                primary: Color(0xFFE5EFC1),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(25))),
+              SizedBox(
+                height: 30,
               ),
-              onPressed: _gotojacket02,
-            ),
-            SizedBox(
-              height: 30,
-            ),
-          ],
-        ),
-      );
+            ],
+          ),
+        );
+      }
+      else {
+        _database
+            .child("Jacket02/notinow")
+            .once()
+            .then((DataSnapshot snapshot) {
+          Map<dynamic, dynamic> values = snapshot.value;
+          values.forEach((key, values) async {
+            noti02 = values['title'];
+            date02 = values['datetime'];
+            print("noti = $noti");
+
+            if (noti02 == null || noti02 == "") {
+              return null;
+            } else {
+              await NotificationApi.showNotification(
+                  title: '$noti02   จาก $_displayName02  ',
+                  body: '$date02',
+                  payload: 'NEW payload Jacket02 ');
+              Timer.run(() => _database.child('Jacket02/notinow').remove());
+            }
+          });
+        });
+        return Padding(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    getPic02 == null
+                        ? CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: AssetImage("assets/person.png"),
+                            backgroundColor: Colors.white,
+                          )
+                        : CircleAvatar(
+                            radius: 30.0,
+                            backgroundImage: NetworkImage(getPic02),
+                            backgroundColor: Colors.white,
+                          ),
+                    Text(
+                      _displayName02,
+                      style: TextStyle(
+                        fontFamily: "Jasmine",
+                        color: Color(0xFF707070),
+                        fontSize: 40.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    status02(),
+                  ],
+                ),
+                style: ElevatedButton.styleFrom(
+                  primary: Color(0xFFE5EFC1),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(25))),
+                ),
+                onPressed: _gotojacket02,
+              ),
+              SizedBox(
+                height: 30,
+              ),
+            ],
+          ),
+        );
+      }
     }
 
     if (jackName == null || jackName02 == null) {
