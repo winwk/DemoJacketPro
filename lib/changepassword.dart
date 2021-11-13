@@ -25,6 +25,9 @@ class _ChangepassState extends State<Changepass> {
 
   final emailController = TextEditingController();
 
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -33,7 +36,9 @@ class _ChangepassState extends State<Changepass> {
   }
 
   resetPassword() async {
-    try {
+
+    if (emailController.text == auth.currentUser!.email!) {
+      try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       showDialog(
           context: context,
@@ -137,6 +142,57 @@ class _ChangepassState extends State<Changepass> {
             });
       }
     }
+    }
+    else{
+      showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
+                title: Text(
+                  'อีเมลไม่ถูกต้อง กรุณากรอกใหม่อีกครั้ง',
+                  style: TextStyle(
+                    fontFamily: "Jasmine",
+                    color: Color(0xFF707070),
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                actions: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        child: Text(
+                          "โอเค",
+                          style: TextStyle(
+                            fontFamily: "Jasmine",
+                            color: Color(0xFF707070),
+                            fontSize: 22.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE5EFC1),
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(
+                            context,
+                          );
+                        },
+                      ),
+                    ],
+                  )
+                ],
+              );
+            });
+    }
+    
   }
 
   validator() {

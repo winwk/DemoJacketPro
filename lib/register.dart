@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:email_auth/email_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:jackket/Homepage.dart';
 import 'package:jackket/home.dart';
 import 'package:jackket/login.dart';
 import 'package:jackket/user/user_model.dart';
+import 'package:email_auth/email_auth.dart';
 
 class Register_Screen extends StatefulWidget {
   static String route = "register";
@@ -20,9 +22,33 @@ class _Register_ScreenState extends State<Register_Screen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   CollectionReference _userCollection =
       FirebaseFirestore.instance.collection("test");
-  String? nameString, emailString, passwordString, confirmpassString;
+  String? nameString, emailString, passwordString, confirmpassString, otpString;
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmpassword = TextEditingController();
+  TextEditingController _otpController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  late EmailAuth emailAuth;
+  var submitValid;
+
+  void sendOTP() async {
+    EmailAuth.sessionName = "Test Session";
+    var res = await EmailAuth.sendOtp(receiverMail: _emailController.text);
+    if (res) {
+      print("OTP Sent");
+    } else {
+      print("We could not sent the OTP");
+    }
+  }
+
+  void verifyOTP() {
+    var res = EmailAuth.validate(
+        receiverMail: _emailController.text, userOTP: _otpController.text);
+    if (res) {
+      print("OTP verified");
+    } else {
+      print("Invalid OTP");
+    }
+  }
 
   validator() {
     if (_formKey.currentState != null && _formKey.currentState!.validate()) {
@@ -72,6 +98,43 @@ class _Register_ScreenState extends State<Register_Screen> {
     );
   }
 
+  Widget otp() {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      child: Padding(
+        padding: const EdgeInsets.all(7.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextFormField(
+              controller: _otpController,
+              decoration: InputDecoration(
+                  icon: Icon(Icons.face),
+                  labelText: "รหัส OTP",
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(
+                        color: Colors.white,
+                      ))),
+              validator: (String? value) {
+                if (value == null || value.trim().length == 0) {
+                  return "กรุณาระบุข้อมูล";
+                }
+                
+                 else {
+                  return null;
+                }
+              },
+              onSaved: (String? value) {
+                otpString = value;
+              },
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget buildEmail() {
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
@@ -81,12 +144,15 @@ class _Register_ScreenState extends State<Register_Screen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
+                controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,
                 decoration: InputDecoration(
                     hintText: "name@example.com",
                     icon: Icon(Icons.email),
                     labelText: "อีเมล",
+                    suffixIcon: TextButton(
+                        onPressed: () => sendOTP(), child: Text("Send OTP")),
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide(
@@ -105,8 +171,7 @@ class _Register_ScreenState extends State<Register_Screen> {
                 },
                 onSaved: (String? value) {
                   emailString = value;
-                }
-            )
+                })
           ],
         ),
       ),
@@ -211,106 +276,20 @@ class _Register_ScreenState extends State<Register_Screen> {
           onPressed: () async {
             print("You Click upload");
             if (_formKey.currentState!.validate()) {
-              _formKey.currentState?.save();
-              _userCollection.add({
-                "name": nameString,
-                "email": emailString,
-                "password": confirmpassString
-              });
-              print(
-                  "name = $nameString, email = $emailString, password = $passwordString , confirmpass = $confirmpassString");
-
-              try {
-                await FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(
-                  email: emailString!,
-                  password: passwordString!,
-                )
-                    .then((value) async {
-                  _formKey.currentState?.reset();
-                  print('Regis success');
-                  await value.user?.updateProfile(displayName: nameString);
-                  postDetailsToFirestore();
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          title: Text(
-                            'ลงทะเบียนเสร็จสิ้น',
-                            style: TextStyle(
-                              fontFamily: "Jasmine",
-                              color: Color(0xFF707070),
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          actions: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  child: Text(
-                                    "เข้าสู่ระบบ",
-                                    style: TextStyle(
-                                      fontFamily: "Jasmine",
-                                      color: Color(0xFF707070),
-                                      fontSize: 22.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Color(0xFFE5EFC1),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20))),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              signin_Screen()),
-                                    );
-                                  },
-                                ),
-                              ],
-                            )
-                          ],
-                        );
-                      });
-                });
-              } on FirebaseAuthException catch (e) {
-                print(e.code);
-                String message = "";
-                if (e.code == "email-already-in-use") {
-                  message = "มีอีเมลนี้ในระบบแล้ว";
-                }
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
-                        title: Text(
-                          message,
-                          style: TextStyle(
-                            fontFamily: "Jasmine",
-                            color: Color(0xFF707070),
-                            fontSize: 30.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        actions: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      title: otp(),
+                      actions: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15),
+                              child: ElevatedButton(
                                 child: Text(
                                   "ตกลง",
                                   style: TextStyle(
@@ -323,23 +302,245 @@ class _Register_ScreenState extends State<Register_Screen> {
                                 style: ElevatedButton.styleFrom(
                                   primary: Color(0xFFE5EFC1),
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(20))),
                                 ),
-                                onPressed: () {
-                                  Navigator.pop(
-                                    context,
-                                  );
+                                onPressed: () async {
+                                  var res = EmailAuth.validate(
+                                      receiverMail: _emailController.text,
+                                      userOTP: _otpController.text);
+                                  if (res) {
+                                    print("OTP verified");
+                                    _formKey.currentState?.save();
+                                    _userCollection.add({
+                                      "name": nameString,
+                                      "email": emailString,
+                                      "password": confirmpassString
+                                    });
+                                    print(
+                                        "name = $nameString, email = $emailString, password = $passwordString , confirmpass = $confirmpassString");
+
+                                    try {
+                                      await FirebaseAuth.instance
+                                          .createUserWithEmailAndPassword(
+                                        email: emailString!,
+                                        password: passwordString!,
+                                      )
+                                          .then((value) async {
+                                        _formKey.currentState?.reset();
+                                        print('Regis success');
+                                        await value.user?.updateProfile(
+                                            displayName: nameString);
+                                        postDetailsToFirestore();
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(20))),
+                                                title: Text(
+                                                  'ลงทะเบียนเสร็จสิ้น',
+                                                  style: TextStyle(
+                                                    fontFamily: "Jasmine",
+                                                    color: Color(0xFF707070),
+                                                    fontSize: 30.0,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.center,
+                                                    children: [
+                                                      ElevatedButton(
+                                                        child: Text(
+                                                          "เข้าสู่ระบบ",
+                                                          style: TextStyle(
+                                                            fontFamily: "Jasmine",
+                                                            color:
+                                                                Color(0xFF707070),
+                                                            fontSize: 22.0,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                          primary:
+                                                              Color(0xFFE5EFC1),
+                                                          shape: RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .all(Radius
+                                                                          .circular(
+                                                                              20))),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator
+                                                              .pushReplacement(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder: (context) =>
+                                                                    signin_Screen()),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              );
+                                            });
+                                      });
+                                    } on FirebaseAuthException catch (e) {
+                                      print(e.code);
+                                      String message = "";
+                                      if (e.code == "email-already-in-use") {
+                                        message = "มีอีเมลนี้ในระบบแล้ว";
+                                      }
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(20))),
+                                              title: Text(
+                                                message,
+                                                style: TextStyle(
+                                                  fontFamily: "Jasmine",
+                                                  color: Color(0xFF707070),
+                                                  fontSize: 30.0,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                              actions: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    ElevatedButton(
+                                                      child: Text(
+                                                        "ตกลง",
+                                                        style: TextStyle(
+                                                          fontFamily: "Jasmine",
+                                                          color:
+                                                              Color(0xFF707070),
+                                                          fontSize: 22.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        primary:
+                                                            Color(0xFFE5EFC1),
+                                                        shape: RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius
+                                                                        .circular(
+                                                                            20))),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.pop(
+                                                          context,
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                                
+                                              ],
+                                            );
+                                          });
+                                      //Fluttertoast.showToast(
+                                      //msg: message, gravity: ToastGravity.BOTTOM);
+                                    }
+                                  }
+                                  else {
+                                     print("Invalid OTP");
+                                      showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                          title: Text(
+                                            'รหัสผ่าน OTP ไม่ถูกต้อง',
+                                            style: TextStyle(
+                                              fontFamily: "Jasmine",
+                                              color: Color(0xFF707070),
+                                              fontSize: 30.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          actions: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ElevatedButton(
+                                                  child: Text(
+                                                    "ตกลง",
+                                                    style: TextStyle(
+                                                      fontFamily: "Jasmine",
+                                                      color: Color(0xFF707070),
+                                                      fontSize: 22.0,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    primary: Color(0xFFE5EFC1),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20))),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                      });
+                                  }
                                 },
                               ),
-                            ],
-                          )
-                        ],
-                      );
-                    });
-                //Fluttertoast.showToast(
-                //msg: message, gravity: ToastGravity.BOTTOM);
-              }
+                            ),
+                            ElevatedButton(
+                            child: Text(
+                              "ยกเลิก",
+                              style: TextStyle(
+                                fontFamily: "Jasmine",
+                                color: Color(0xFF707070),
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xFFE5EFC1),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20))),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          ],
+                        )
+                      ],
+                    );
+                  });
             }
           },
           child: Text(
@@ -458,19 +659,23 @@ class _Register_ScreenState extends State<Register_Screen> {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = FirebaseAuth.instance.currentUser;
 
-    UserModel userModel =
-        UserModel(email: '', name: '', profileImage: '', uid: '',statusNoti: true,JacketName: []);
+    UserModel userModel = UserModel(
+        email: '',
+        name: '',
+        profileImage: '',
+        uid: '',
+        statusNoti: true,
+        JacketName: []);
     userModel.uid = user!.uid;
     // narimetisaigopi@gmail.com
     userModel.email = user.email!;
     userModel.name = user.displayName!;
-    
+
     await firebaseFirestore
         .collection("test")
         .doc(user.uid)
         .set(userModel.toMap());
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(content: Text("User account created")));
-   
   }
 }

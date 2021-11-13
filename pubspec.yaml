@@ -50,6 +50,7 @@ dependencies:
   flutter_sound_lite: ^8.4.2
   microphone: ^0.1.0
   permission_handler: ^6.0.0
+  email_auth: ^0.0.1
   
 
 

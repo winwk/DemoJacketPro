@@ -175,9 +175,145 @@ class _AddDeviceState extends State<AddDevice> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 15),
+                            child: ElevatedButton(
+                              child: Text(
+                                "ตกลง",
+                                style: TextStyle(
+                                  fontFamily: "Jasmine",
+                                  color: Color(0xFF707070),
+                                  fontSize: 22.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFFE5EFC1),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20))),
+                              ),
+                              onPressed: () {
+                                if (_password.text != password) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                          title: Text(
+                                            'รหัสผ่านไม่ถูกต้อง',
+                                            style: TextStyle(
+                                              fontFamily: "Jasmine",
+                                              color: Color(0xFF707070),
+                                              fontSize: 30.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          actions: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ElevatedButton(
+                                                  child: Text(
+                                                    "ตกลง",
+                                                    style: TextStyle(
+                                                      fontFamily: "Jasmine",
+                                                      color: Color(0xFF707070),
+                                                      fontSize: 22.0,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    primary: Color(0xFFE5EFC1),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20))),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                      });
+                                } else {
+                                  _formKey.currentState?.save();
+                                  print(nameString);
+                                  updateProfile(context);
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20))),
+                                          title: Text(
+                                            'เพิ่มอุปกรณ์เสร็จสิ้น',
+                                            style: TextStyle(
+                                              fontFamily: "Jasmine",
+                                              color: Color(0xFF707070),
+                                              fontSize: 27.0,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          actions: <Widget>[
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                ElevatedButton(
+                                                  child: Text(
+                                                    "ตกลง",
+                                                    style: TextStyle(
+                                                      fontFamily: "Jasmine",
+                                                      color: Color(0xFF707070),
+                                                      fontSize: 22.0,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                  style: ElevatedButton.styleFrom(
+                                                    primary: Color(0xFFE5EFC1),
+                                                    shape: RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20))),
+                                                  ),
+                                                  onPressed: () {
+                                                    _formKey.currentState
+                                                        ?.reset();
+                                                    Navigator.of(context)
+                                                        .pushAndRemoveUntil(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        home1()),
+                                                            (Route<dynamic>
+                                                                    route) =>
+                                                                false);
+                                                  },
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        );
+                                      });
+                                }
+                              },
+                            ),
+                          ),
                           ElevatedButton(
                             child: Text(
-                              "ตกลง",
+                              "ยกเลิก",
                               style: TextStyle(
                                 fontFamily: "Jasmine",
                                 color: Color(0xFF707070),
@@ -192,120 +328,7 @@ class _AddDeviceState extends State<AddDevice> {
                                       BorderRadius.all(Radius.circular(20))),
                             ),
                             onPressed: () {
-                              if (_password.text != password) {
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                        title: Text(
-                                          'รหัสผ่านไม่ถูกต้อง',
-                                          style: TextStyle(
-                                            fontFamily: "Jasmine",
-                                            color: Color(0xFF707070),
-                                            fontSize: 30.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        actions: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ElevatedButton(
-                                                child: Text(
-                                                  "ตกลง",
-                                                  style: TextStyle(
-                                                    fontFamily: "Jasmine",
-                                                    color: Color(0xFF707070),
-                                                    fontSize: 22.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xFFE5EFC1),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  20))),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      );
-                                    });
-                              } else {
-                                _formKey.currentState?.save();
-                                print(nameString);
-                                updateProfile(context);
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20))),
-                                        title: Text(
-                                          'เพิ่มอุปกรณ์เสร็จสิ้น',
-                                          style: TextStyle(
-                                            fontFamily: "Jasmine",
-                                            color: Color(0xFF707070),
-                                            fontSize: 27.0,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        actions: <Widget>[
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              ElevatedButton(
-                                                child: Text(
-                                                  "ตกลง",
-                                                  style: TextStyle(
-                                                    fontFamily: "Jasmine",
-                                                    color: Color(0xFF707070),
-                                                    fontSize: 22.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                                style: ElevatedButton.styleFrom(
-                                                  primary: Color(0xFFE5EFC1),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.all(
-                                                              Radius.circular(
-                                                                  20))),
-                                                ),
-                                                onPressed: () {
-                                                  _formKey.currentState
-                                                      ?.reset();
-                                                  Navigator.of(context)
-                                                      .pushAndRemoveUntil(
-                                                          MaterialPageRoute(
-                                                              builder:
-                                                                  (context) =>
-                                                                      home1()),
-                                                          (Route<dynamic>
-                                                                  route) =>
-                                                              false);
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      );
-                                    });
-                              }
+                              Navigator.pop(context);
                             },
                           ),
                         ],
