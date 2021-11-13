@@ -25,6 +25,8 @@ class _VideoPageState extends State<VideoPage> {
       .orderByChild("timestamp");
 
   late Future<void> _launched;
+
+  var usercheck = '';
   Future<void> _launchInApp(String url) async {
     if (await canLaunch(url)) {
       await launch(
@@ -38,6 +40,16 @@ class _VideoPageState extends State<VideoPage> {
     }
   }
 
+  checkuser() {
+    _database.child("$jackId").onValue.listen((event) {
+      final data = new Map<String, dynamic>.from(event.snapshot.value);
+      final user = data['user'];
+      setState(() {
+        usercheck = user;
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -47,6 +59,7 @@ class _VideoPageState extends State<VideoPage> {
       setState(() {
         jackId = sendJackID;
       });
+      checkuser();
     });
     checkvideo();
 
@@ -326,7 +339,6 @@ class _VideoPageState extends State<VideoPage> {
         ),
       );
     }
-
   }
 
   @override
@@ -359,11 +371,11 @@ class _VideoPageState extends State<VideoPage> {
               title: Column(children: [
                 box(),
                 Text(
-                  "วิดีโอ",
+                  "วิดีโอของ" + usercheck,
                   style: TextStyle(
                       color: Color(0xFFFFFFFF),
                       fontFamily: "Jasmine",
-                      fontSize: 60.0,
+                      fontSize: 50.0,
                       fontWeight: FontWeight.bold),
                 ),
               ]),
@@ -380,10 +392,9 @@ class _VideoPageState extends State<VideoPage> {
       throw ('cannot open link $link');
     }
   }
+
   _delete(var key) async {
-  final db = FirebaseDatabase.instance.reference().child("$jackId/video");
-  await db.child(key).remove();
+    final db = FirebaseDatabase.instance.reference().child("$jackId/video");
+    await db.child(key).remove();
+  }
 }
-}
-
-
