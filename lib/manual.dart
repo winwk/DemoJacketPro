@@ -270,7 +270,7 @@ class _ManualState extends State<Manual> {
               width: 150,
               child: Align(
                 alignment: FractionalOffset.bottomCenter,
-                child: FlatButton(
+                child: TextButton(
                   child: Text(
                     "เริ่มต้นใช้งาน",
                     style: TextStyle(
@@ -285,10 +285,11 @@ class _ManualState extends State<Manual> {
                       Navigator.pop(context);
                     }
                   },
-                  color: Color(0xFFE5EFC1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
+                  // style: ButtonStyle(),
+                  // color: Color(0xFFE5EFC1),
+                  // shape: RoundedRectangleBorder(
+                  //   borderRadius: BorderRadius.circular(40),
+                  // ),
                 ),
               ))
           : Text(''),

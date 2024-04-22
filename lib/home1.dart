@@ -15,7 +15,7 @@ class _home1State extends State<home1> {
   int _currentIndex = 1;
   PageController _pageController = PageController(initialPage: 1);
   DateTime timeBackPressed = DateTime.now();
- 
+
   final _bottomNavigationBarItem = [
     BottomNavigationBarItem(
       icon: new Image.asset(
@@ -26,7 +26,7 @@ class _home1State extends State<home1> {
         "assets/jacbuttontap.png",
         scale: 2.5,
       ),
-      title: new Text(''),
+      label: (''),
     ),
     BottomNavigationBarItem(
       icon: new Image.asset(
@@ -37,7 +37,7 @@ class _home1State extends State<home1> {
         "assets/homebuttontap.png",
         scale: 2.5,
       ),
-      title: new Text(''),
+      label: (''),
     ),
     BottomNavigationBarItem(
       icon: new Image.asset(
@@ -48,7 +48,7 @@ class _home1State extends State<home1> {
         "assets/profilebuttontap.png",
         scale: 2.5,
       ),
-      title: new Text(''),
+      label: (''),
     ),
   ];
 
@@ -67,7 +67,6 @@ class _home1State extends State<home1> {
           JacketPage(),
           HomemapPage(),
           ProfilePage(),
-          
         ],
       ),
       backgroundColor: Color(0xFF557B83),

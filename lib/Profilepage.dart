@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,7 +41,6 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     findDisplayName();
     checkPic();
-    
   }
 
   void checkPic() {

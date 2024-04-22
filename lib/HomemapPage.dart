@@ -1,19 +1,10 @@
 import 'dart:async';
-import 'dart:ffi';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:jackket/API/notification_api.dart';
-import 'package:jackket/AddDevice.dart';
-import 'package:jackket/JacketProfileNoti.dart';
-import 'package:jackket/LocalNotifyManager.dart';
-import 'package:jackket/noti.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class HomemapPage extends StatefulWidget {
@@ -326,8 +317,7 @@ class _HomemapPageState extends State<HomemapPage> {
             ],
           ),
         );
-      }
-    else{
+      } else {
         _database
             .child("Jacket01/notinow")
             .once()
@@ -546,8 +536,7 @@ class _HomemapPageState extends State<HomemapPage> {
             ],
           ),
         );
-      }
-      else{
+      } else {
         _database
             .child("Jacket01/notinow")
             .once()
@@ -730,8 +719,7 @@ class _HomemapPageState extends State<HomemapPage> {
             ],
           ),
         );
-      }
-      else{
+      } else {
         _database
             .child("Jacket01/notinow")
             .once()
@@ -855,8 +843,7 @@ class _HomemapPageState extends State<HomemapPage> {
             ],
           ),
         );
-      }
-      else{
+      } else {
         _database
             .child("Jacket02/notinow")
             .once()
@@ -977,8 +964,7 @@ class _HomemapPageState extends State<HomemapPage> {
             ],
           ),
         );
-      }
-      else{
+      } else {
         _database
             .child("Jacket01/notinow")
             .once()
@@ -1099,8 +1085,7 @@ class _HomemapPageState extends State<HomemapPage> {
             ],
           ),
         );
-      }
-      else {
+      } else {
         _database
             .child("Jacket02/notinow")
             .once()
